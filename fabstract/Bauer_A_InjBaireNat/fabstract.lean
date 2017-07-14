@@ -3,6 +3,7 @@ import folklore.categories
 import folklore.toposes
 import .realizability
 
+namespace Bauer_A_InjBaireNat
 noncomputable theory
 
 -- we construct a partial combinatory algebra based on
@@ -24,3 +25,5 @@ meta def fabstract : meta_data := {
   results := [`IITM, `R_to_N, `R_to_N_is_mono],
   description := "We construct a realizability topos in which the reals are embedded in the natural numbers. The topos is based on infinite-time Turing machines of Joel Hamkins."
 }
+
+end Bauer_A_InjBaireNat
