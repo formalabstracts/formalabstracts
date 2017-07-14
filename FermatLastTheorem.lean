@@ -5,5 +5,5 @@
 
 axiom FABSorry : Π {A : Sort}, A
 
-theorem FermatLastTheorem: ∀ (a b c : nat), ((a ≠ b) → (c > 2) → (a ^ c ≠ b ^ c)) :=
+theorem FermatLastTheorem: ∀ (x y z n : nat), ((x > 0 ∧ y > 0 ∧ n > 2) → (x ^ n + y ^ n ≠ z ^ n)) :=
     FABSorry
