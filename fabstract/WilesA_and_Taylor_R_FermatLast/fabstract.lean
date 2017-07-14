@@ -2,7 +2,7 @@ import meta_data
 
 namespace WilesA_and_Taylor_R_FermatLast
 
--- the statement of Fermar's last theorem
+-- the statement of Fermat's Last Theorem
 axiom fermat_last_theorem :
   ∀ (x y z n : nat), x > 0 → y > 0 → n > 2 → x ^ n + y ^ n ≠ z ^ n
 
