@@ -1,9 +1,12 @@
--- A result in number theory conjectured by Pierre de Fermat and proven by Andrew Wiles and Richard Taylor.
--- Coloquially referred to as Fermat Last Theorem.
--- source: Modular Elliptic Curves and Fermat's Last Theorem, http://www.jstor.org/stable/2118559
--- source: Ring-Theoretic Properties of Certain Hecke Algebras, http://www.jstor.org/stable/2118560
 
-axiom FABSorry : Π {A : Sort}, A
+structure meta_data : Type :=
+mk_meta_data :: (authors : list string) (doi : list string) (results : list Sort) (description : string)
 
-theorem FermatLastTheorem: ∀ (x y z n : nat), ((x > 0 ∧ y > 0 ∧ n > 2) → (x ^ n + y ^ n ≠ z ^ n)) :=
-    FABSorry
+definition fermat_last_theorem := (∀ (x y z n : nat), ((x > 0 ∧ y > 0 ∧ n > 2) → (x ^ n + y ^ n ≠ z ^ n)))
+
+definition fabstract : meta_data := {
+    authors := ["Andrew Wiles", "Richard Tylor"],
+    doi := ["10.2307/2118559", "10.2307/2118560"],
+    results := [fermat_last_theorem],
+    description := "A result in number theory conjectured by Pierre de Fermat and proven by Andrew Wiles and Richard Taylor. Coloquially referred to as Fermat Last Theorem."
+    }
