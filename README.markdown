@@ -9,6 +9,9 @@ may leave any piece of it unformalized. Commonly, proofs of statements are omitt
 
 A formal abstract is *not* the formalization of the abstract itself.
 
+If you are interested in the project, and especially if you plan to contribute, we kindly
+invite you to join the [Formal abstracts mailing list](https://groups.google.com/forum/#!forum/formalabstracts).
+
 ### Contributing
 
 Formal abstracts is a collaborative effort. Contributing even a single fabstract, or an
