@@ -13,12 +13,5 @@ structure topos :=
   mk_topos ::
     (underlying_category : category)
     (nno : natural_numbers underlying_category)
+    (exponent : Π (A B : underlying_category.obj), exponential A B)
     (other_structure_missing : Type)
-
-structure real_numbers (T : topos) :=
-  mk_real_numbers_object ::
-    (reals_object : T.underlying_category.obj)
-    (reals_structure : Type)
-
--- every topos has a real-numbers object
-axiom dedekind_reals : ∀ (T : topos), real_numbers T
