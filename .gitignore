@@ -1,0 +1,4 @@
+*~
+*.olean
+/_target
+/leanpkg.path
