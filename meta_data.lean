@@ -7,7 +7,6 @@ inductive {u} result : Type (u+1)
 -- Each formal abstract contains an instance of the meta_data structure,
 -- describing the contents.
 structure {u} meta_data : Type (u+1) :=
-  mk_meta_data ::
     (description : string) -- short description of the contents
     (authors : list string) -- list of authors
     (doi : list string) -- references to the original article
