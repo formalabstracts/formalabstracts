@@ -1,3 +1,5 @@
-# formalabstracts
+# Formal abstracts
 
-A repository to collaborate on formalising statements of open difficult problems, such as the [Clay Institue Millenium Problems](www.claymath.org/millennium-problems).
+A repository of formalized statements proved in mathematical research papers.
+
+This repository is part of the *Formal abstracts* projects initiated by [Thomas Hales](https://sites.google.com/site/thalespitt/).
