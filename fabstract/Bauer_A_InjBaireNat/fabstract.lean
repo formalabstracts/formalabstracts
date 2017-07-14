@@ -1,6 +1,7 @@
-import meta_data
-import folklore.categories
-import folklore.toposes
+import ...folklore.categories
+       ...folklore.toposes
+       ...meta_data
+
 import .realizability
 
 noncomputable theory

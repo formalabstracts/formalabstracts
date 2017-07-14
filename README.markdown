@@ -2,7 +2,7 @@
 
 This repository is part of the *Formal abstracts* projects initiated by [Thomas Hales](https://sites.google.com/site/thalespitt/).
 
-A **formal abstract**, or **fabstract* for short, is a formalization of the main results
+A **formal abstract**, or **fabstract** for short, is a formalization of the main results
 (constructions, definitions, proofs, conjectures) of a piece of informal mathematics, such
 as a research paper. There is no requirement that the entire text be formalized, and you
 may leave any piece of it unformalized. Commonly, proofs of statements are omitted.
