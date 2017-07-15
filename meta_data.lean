@@ -1,6 +1,3 @@
-import data.stream
-
-
 /- Each fabstract contains a list of results. The following type lists the
    various kinds of results. You may read the values as follows:
 
@@ -116,8 +113,5 @@ do nm ← ident,
    tk ":=",
    struct ← lean.parser.pexpr,
    add_undefined_const nm tp struct
-
-/-unproved_theorem my_new_theorem : ∀ n : ℕ, n > 0 :=
-{description := "hi", doi := ["bye"]}-/
 
 end user_commands
