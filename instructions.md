@@ -18,7 +18,7 @@ Once you are ready to contribute, assuming you took care of the prerequisites (s
 
 1. fork the [`formalabstracts` repository](https://github.com/formalabstracts/formalabstracts)
 2. clone it to your local computer
-3. run `leanpkg configure` inside the `formalbastracts` folder
+3. run `leanpkg configure` inside the `formalabstracts` folder
 
 ## Contributing
 
@@ -32,7 +32,7 @@ Let us run through a typical procedure, adding a fabstract:
 
         git checkout -b my-best-paper
 
-2. Add a new fabstract (see [fabstract/README.markdown](./fabstract/README.markdown)
+2. Add a new fabstract (see [fabstract/README.md](./fabstract/README.md)
    for instructions).
 
 3. Run `lean --make` inside the `formalabstracts` folder to make sure everything compiles
