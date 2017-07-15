@@ -8,14 +8,13 @@ noncomputable theory
 
 namespace Bauer_A_InjBaireNat
 
-
 -- we construct a partial combinatory algebra based on
 -- infinite-time Turing machines
 constant IITM : PCA
 
 def T := RT IITM
 
-definition N := T.nno.nno_object
+definition N := T.nno.underlying_object
 definition Baire := (T.exponent N N).underlying_object
 
 constant Baire_to_N : T.underlying_category.hom Baire N

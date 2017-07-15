@@ -2,14 +2,16 @@
 
 import .categories
 
-structure natural_numbers (C : category) :=
-    (nno_object : C.obj)
-    (nno_structure : Type)
+constant nno_structure : Type
 
--- an incomplete definition of toposes
--- this should probably be done using type classes
+structure natural_numbers (C : category) :=
+    (underlying_object : C.obj)
+    (nno_structure : nno_structure)
+
+constant missing_topos_structure : Type
+
 structure topos :=
     (underlying_category : category)
     (nno : natural_numbers underlying_category)
     (exponent : Π (A B : underlying_category.obj), exponential A B)
-    (other_structure_missing : Type)
+    (topos_structure : missing_topos_structure)
