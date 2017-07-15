@@ -18,7 +18,7 @@ Once you are ready to contribute, assuming you took care of the prerequisites (s
 
 1. fork the [`formalabstracts` repository](https://github.com/formalabstracts/formalabstracts)
 2. clone it to your local computer
-3. run `leanpgh configure` inside the `formalbastracts` folder
+3. run `leanpkg configure` inside the `formalbastracts` folder
 
 ## Contributing
 

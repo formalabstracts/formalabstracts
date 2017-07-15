@@ -10,16 +10,22 @@ namespace Bauer_A_InjBaireNat
 
 -- we construct a partial combinatory algebra based on
 -- infinite-time Turing machines
-constant IITM : PCA
+undefined_const IITM : PCA :=
+{description := "infinite time turing machine",
+ doi := []}
 
 def T := RT IITM
 
 definition N := T.nno.underlying_object
 definition Baire := (T.exponent N N).underlying_object
 
-constant Baire_to_N : T.underlying_category.hom Baire N
+undefined_const Baire_to_N : (T.underlying_category.hom Baire N) :=
+{description := "",
+ doi := []}
 
-axiom Baire_to_N_is_mono : monomorphism Baire_to_N
+unproved_theorem Baire_to_N_is_mono : (monomorphism Baire_to_N) :=
+{description := "",
+ doi := []}
 
 open result
 
@@ -31,5 +37,8 @@ def fabstract : meta_data := {
               Construction Baire_to_N,
               Proof Baire_to_N_is_mono]
 }
+
+#print axioms fabstract
+#print PCA._meta_data
 
 end Bauer_A_InjBaireNat
