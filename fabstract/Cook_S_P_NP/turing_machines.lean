@@ -1,18 +1,19 @@
 
 inductive direction | left | right
+instance : decidable_eq direction := by tactic.mk_dec_eq_instance
 
 local prefix ^ := option
 
-def nondet_turing_machine (state symbol : Type) :=
-state → ^symbol → state → ^symbol → direction → Prop
+def nondet_turing_machine (state symbol : Type) [decidable_eq state] [decidable_eq symbol] :=
+state → ^symbol → state → ^symbol → direction → bool
 
-def turing_machine (state symbol : Type) :=
+def turing_machine (state symbol : Type) [decidable_eq state] [decidable_eq symbol] :=
 state → ^symbol → ^(state × ^symbol × direction)
 
-variables {S A : Type}
+variables {S A : Type} [decidable_eq S] [decidable_eq A]
 
 def to_nondet (TM : turing_machine S A) : nondet_turing_machine S A :=
-λ s a s' a' d', TM s a = some (s', a', d')
+λ s a s' a' d', (TM s a = some (s', a', d') : bool)
 
 instance : has_coe (turing_machine S A) (nondet_turing_machine S A) :=
 ⟨to_nondet⟩
@@ -54,7 +55,7 @@ def next (TM : turing_machine S A) : TM_config S A → option (TM_config S A)
   end
 
 theorem next_step {TM : turing_machine S A}
-  (s s' : TM_config S A) : next TM s = some s' ↔ @step S A TM s s' :=
+  (s s' : TM_config S A) : next TM s = some s' ↔ @step S A _ _ TM s s' :=
 begin
   constructor,
   { cases s, simp [next],
@@ -62,15 +63,15 @@ begin
     { intro e, injection e },
     { cases a with s' a, cases a with v d,
       simp [next], intro i, injection i, subst h,
-      exact ⟨e⟩ } },
+      exact ⟨to_bool_true e⟩ } },
   { intro h, induction h,
     simp [next],
-    conv at a {whnf}, rw a,
+    conv at a {whnf}, rw of_to_bool_true a,
     refl }
 end
 
 theorem next_halts {TM : turing_machine S A}
-  (s : TM_config S A) : next TM s = none ↔ @halts S A TM s :=
+  (s : TM_config S A) : next TM s = none ↔ @halts S A _ _ TM s :=
 begin
   ginduction (next TM s) with e,
   { simp, intros s' h,
@@ -83,6 +84,7 @@ inductive tape_alpha (n : nat) : Type
 | input {} : bool → tape_alpha
 | delim {} : tape_alpha
 | work {} : fin n → tape_alpha
+instance (n) : decidable_eq (tape_alpha n) := by tactic.mk_dec_eq_instance
 
 def TATM (s n : nat) := turing_machine (fin (s+1)) (tape_alpha n)
 

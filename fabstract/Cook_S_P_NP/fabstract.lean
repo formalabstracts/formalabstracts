@@ -20,14 +20,26 @@ let f : (fin 1 → list bool) → list bool :=
 ∃ s n (TM : TATM s n) (c k : nat),
 @computes_fn_in_time s n TM _ f $ λ i, c * ((i 0).length^k + 1)
 
+/- Boolean satisfiability problem -/
+axiom SAT : set (list bool)
+
+/- SAT is in NP -/
+axiom SAT_NP : SAT ∈ NP
+
+/- SAT is in NP -/
+axiom P_reducible (L₁ L₂ : set (list bool)) : Prop
+
+/- Any problem in NP can be polynomial-time reduced to SAT -/
+axiom SAT_reducibility : ∀ L ∈ NP, P_reducible L SAT
+
 open result
-/- This is an incomplete fabstract; in fact Cook's paper proves a number of results in addition
-   to the P ≠ NP conjecture. -/
 def fabstract : meta_data := {
   description := "A conjecture that the complexity classes P and NP are unequal.",
   authors := ["Stephen A. Cook"],
   doi := ["https://doi.org/10.1145/800157.805047"],
-  results := [Conjecture (P ≠ NP)]
+  results := [Proof SAT_NP,
+              Proof SAT_reducibility,
+              Conjecture (P ≠ NP)]
 }
 
 end Cook_S_P_NP
