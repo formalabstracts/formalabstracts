@@ -13,7 +13,7 @@ noncomputable theory
 unfinished IITM : PCA :=
 {
    description := "infinite time turing machine",
-   doi := []
+   cite := []
 }
 
 definition T := RT IITM
@@ -35,10 +35,15 @@ unfinished Baire_to_N_is_mono : (monomorphism Baire_to_N) :=
   }
 
 open result
+open citation
 def fabstract : meta_data := {
   description := "We construct a realizability topos in which the reals are embedded in the natural numbers. The topos is based on infinite-time Turing machines of Joel Hamkins.",
   authors := ["Andrej Bauer"],
-  doi := ["https://doi.org/10.1017/S0960129513000406"],
+  primary := DOI "10.1017/S0960129513000406",
+  secondary := [
+    URL "http://math.andrej.com/2011/06/15/constructive-gem-an-injection-from-baire-space-to-natural-numbers/", -- blog
+    URL "https://vimeo.com/30368682" -- video of a talk about the paper
+  ],
   results := [Construction IITM,
               Construction Baire_to_N,
               Proof Baire_to_N_is_mono]

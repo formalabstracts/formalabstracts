@@ -11,7 +11,9 @@ structure natural_numbers (C : category) :=
     (underlying_object : C.obj)
     (nno_structure : nno_structure)
 
-constant missing_topos_structure : Type
+unfinished missing_topos_structure : Type :=
+  { description := "the rest of the structure of an elementary topos",
+    cite := [] }
 
 structure topos :=
     (underlying_category : category)

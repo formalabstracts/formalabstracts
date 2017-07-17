@@ -13,7 +13,7 @@
        definition S := ⟨formalization of statement S⟩
        unfinished proof_of_S : S :=
          { description := "… describe the proof …",
-           doi := […] }
+           cite := […] }
        ⋮
        definition fabstract : meta_data := {
           …,
@@ -37,22 +37,68 @@
        }
 -/
 inductive {u} result : Type (u+1)
-| Proof : Π {P : Prop}, P → result
-| Construction : Π {A : Type u}, A → result
-| Conjecture : Prop → result
+  | Proof : Π {P : Prop}, P → result
+  | Construction : Π {A : Type u}, A → result
+  | Conjecture : Prop → result
+
+/- There will be many citations everywhere, so it is a good idea
+   to introduce a datatype for them early on. Here are some typical
+   uses case:
+
+   * DOI "10.1000/123456" -- Digital Object Identifier https://doi.org/10.1000/123456
+   * Arxiv "1234.56789" -- ArXiV entry https://arxiv.org/abs/1234.56789
+   * URL "…" -- any Uniform Resource Locator
+   * Reference "…" -- string description of an article, as done traditionally by journals
+   * Ibidem -- use this if you refer to the primary fabstract source itself
+   * Item X E -- refer to entry Ein source X, for instance:
+        * Item (Arxiv "1234.56789") "Theorem 3.4" -- theorem 3.4 in ArXiV 1234.56789
+        * Item Ibidem "Definition 1.2" -- definition 1.2 in the primary fabstract source
+
+   Use your programming skills! For instance, suppose you refer a lot to entries in
+
+      Reference "Euclid N.N., Elements (five volumes), 300 B.C., Elsevier"
+
+   Then you need not keep writing things like
+
+      Item (Reference "Euclid N.N., Elements (five volumes), 300 B.C., Elsevier") "Proposition IV.2"
+      Item (Reference "Euclid N.N., Elements (five volumes), 300 B.C., Elsevier") "Proposition I.1"
+      …
+
+   Instead, define a shorthand:
+
+     definition Elements x :=
+       Item (Reference "Euclid N.N., Elements (five volumes), 300 B.C., Elsevier") x
+
+   and then it is easy:
+
+     Elements "IV.2"
+     Elements "I.1"
+
+-/
+inductive cite
+  | DOI : string → cite -- write evertying starting from the DOI prefix (which is 10)
+  | Arxiv : string → cite -- write these as Arxiv "1707.04448"
+  | URL : string → cite
+  | Reference : string → cite
+  | Ibidem : string → cite -- refer to original source (if fabstract has just one)
+  | Item : cite → string → cite -- refer to specific item in a source
 
 /-
 TODO: This definition forces all the results in a particular fabstract
 to lie in the same universe.
 
 Each formal abstract contains an instance of the meta_data structure,
-describing the contents.
+describing the contents. We insist that there be a primary source, since
+giving multiple equivalent sources (say a journal paper and the ArXiv version)
+makes it impossible to resolve conflicts when they arise. The primary source
+is always to be taken as the official one.
 -/
 structure {u} meta_data : Type (u+1) :=
     (description : string) -- short description of the contents
     (authors : list string) -- list of authors
-    (doi : list string) -- references to the original article
-    (results : list (result.{u})) -- the list of main results
+    (primary : cite) -- primary source (the most official one)
+    (secondary : list cite) -- auxiliary and alternative sources (such as ArXiv equivalent)
+    (results : list (result.{u})) -- the list of results
 
 /-
 Users will want to assume that a certain objects exist,
@@ -64,7 +110,7 @@ and references to the literature.
 -/
 structure unfinished_meta_data :=
     (description : string)
-    (doi : list string)
+    (references : list cite)
 
 section user_commands
 open lean.parser tactic interactive
