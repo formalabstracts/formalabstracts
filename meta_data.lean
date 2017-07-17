@@ -100,7 +100,7 @@ do eltp ← to_expr tp,
 meta def unproved_thm_cmd (meta_info : decl_meta_info) (_ : parse $ tk "unproved_theorem") : lean.parser unit := 
 do nm ← ident,
    tk ":",
-   tp ← lean.parser.pexpr,
+   tp ← lean.parser.pexpr 0,
    tk ":=",
    struct ← lean.parser.pexpr,
    add_unproved_thm nm tp struct
@@ -109,7 +109,7 @@ do nm ← ident,
 meta def undefined_const_cmd (meta_info : decl_meta_info) (_ : parse $ tk "undefined_const") : lean.parser unit := 
 do nm ← ident,
    tk ":",
-   tp ← lean.parser.pexpr,
+   tp ← lean.parser.pexpr 0,
    tk ":=",
    struct ← lean.parser.pexpr,
    add_undefined_const nm tp struct
