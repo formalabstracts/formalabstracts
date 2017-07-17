@@ -11,7 +11,9 @@
    contain
 
        definition S := ⟨formalization of statement S⟩
-       axiom proof_of_S : S
+       unfinished proof_of_S : S :=
+         { description := "… describe the proof …",
+           doi := […] }
        ⋮
        definition fabstract : meta_data := {
           …,
