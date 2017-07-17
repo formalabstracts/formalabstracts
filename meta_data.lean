@@ -80,7 +80,7 @@ inductive cite
   | Arxiv : string → cite -- write these as Arxiv "1707.04448"
   | URL : string → cite
   | Reference : string → cite
-  | Ibidem : string → cite -- refer to original source (if fabstract has just one)
+  | Ibidem : cite -- refer to the primary source of a fabstract
   | Item : cite → string → cite -- refer to specific item in a source
 
 /-
