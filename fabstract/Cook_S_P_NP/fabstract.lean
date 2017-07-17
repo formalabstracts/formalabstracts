@@ -1,4 +1,5 @@
-import .turing_machines ...meta_data
+import meta_data
+       .turing_machines
 
 namespace Cook_S_P_NP
 
@@ -6,23 +7,25 @@ namespace Cook_S_P_NP
 
 def NP_computable (f : list bool → list bool) : Prop :=
 ∃ s n (TM : NTATM s n) (c k : nat),
-computes_fn_in_time TM (λ i : fin 1 → list bool, f (i 0))
-  (λ i, c * ((i 0).length^k + 1))
+  computes_fn_in_time
+    TM
+    (λ i : fin 1 → list bool, f (i 0))
+    (λ i, c * ((i 0).length^k + 1))
 
 def P_computable (f : list bool → list bool) : Prop :=
 ∃ s n (TM : TATM s n) (c k : nat),
-@computes_fn_in_time s n TM _ (λ i : fin 1 → list bool, f (i 0))
-  (λ i, c * ((i 0).length^k + 1))
+  @computes_fn_in_time
+    s n TM _
+    (λ i : fin 1 → list bool, f (i 0))
+    (λ i, c * ((i 0).length^k + 1))
 
 -- NP: nondeterministic polynomial time computable problems
 def NP : set (set (list bool)) :=
-{ L | ∃ D : decidable_pred L,
-  NP_computable (λ x, [@to_bool _ (D x)]) }
+{ L | ∃ D : decidable_pred L, NP_computable (λ x, [@to_bool _ (D x)]) }
 
 -- P: deterministic polynomial time computable problems
 def P : set (set (list bool)) :=
-{ L | ∃ D : decidable_pred L,
-  P_computable (λ x, [@to_bool _ (D x)]) }
+{ L | ∃ D : decidable_pred L, P_computable (λ x, [@to_bool _ (D x)]) }
 
 inductive prop
 | true : prop
@@ -56,22 +59,25 @@ def SAT : set (list bool) :=
 { x | ∃ p v, encode_prop p = x ∧ eval v p = tt }
 
 /- SAT is in NP -/
-axiom SAT_NP : SAT ∈ NP
+unfinished SAT_NP : (SAT ∈ NP) :=
+{ description := "SAT is an NP-problem",
+  doi := [] }
 
 def P_reducible (L₁ L₂ : set (list bool)) : Prop :=
 ∃ f, P_computable f ∧ L₁ = {x | f x ∈ L₂}
 
 /- Any problem in NP can be polynomial-time reduced to SAT -/
-axiom SAT_reducibility : ∀ L ∈ NP, P_reducible L SAT
+unfinished SAT_reducibility : (∀ L ∈ NP, P_reducible L SAT) :=
+{ description := "Any problem in NP can be polynomial-time reduced to SAT",
+  doi := [] }
 
 open result
-def fabstract : meta_data := {
-  description := "A conjecture that the complexity classes P and NP are unequal.",
+def fabstract : meta_data :=
+{ description := "A conjecture that the complexity classes P and NP are unequal.",
   authors := ["Stephen A. Cook"],
   doi := ["https://doi.org/10.1145/800157.805047"],
   results := [Proof SAT_NP,
               Proof SAT_reducibility,
-              Conjecture (P ≠ NP)]
-}
+              Conjecture (P ≠ NP)] }
 
 end Cook_S_P_NP

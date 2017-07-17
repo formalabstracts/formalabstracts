@@ -1,6 +1,9 @@
 -- an incomplete definition of toposes
 
-import .categories
+import meta_data
+       .categories
+
+run_cmd tactic.skip -- temporary fix
 
 constant nno_structure : Type
 
