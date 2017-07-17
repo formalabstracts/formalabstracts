@@ -5,7 +5,7 @@ import meta_data
 
 run_cmd tactic.skip -- temporary fix
 
-unfinished nno_structure : (category → Type) :=
+unfinished nno_structure : category → Type :=
   { description := "natural numbers object in a category",
     references := [cite.URL "https://ncatlab.org/nlab/show/natural+numbers+object"] }
 

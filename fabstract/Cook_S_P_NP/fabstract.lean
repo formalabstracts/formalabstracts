@@ -59,7 +59,7 @@ def SAT : set (list bool) :=
 { x | ∃ p v, encode_prop p = x ∧ eval v p = tt }
 
 /- SAT is in NP -/
-unfinished SAT_NP : (SAT ∈ NP) :=
+unfinished SAT_NP : SAT ∈ NP :=
 { description := "SAT is an NP-problem",
   references := [cite.Item cite.Ibidem "TODO"] }
 
@@ -67,7 +67,7 @@ def P_reducible (L₁ L₂ : set (list bool)) : Prop :=
 ∃ f, P_computable f ∧ L₁ = {x | f x ∈ L₂}
 
 /- Any problem in NP can be polynomial-time reduced to SAT -/
-unfinished SAT_reducibility : (∀ L ∈ NP, P_reducible L SAT) :=
+unfinished SAT_reducibility : ∀ L ∈ NP, P_reducible L SAT :=
 { description := "Any problem in NP can be polynomial-time reduced to SAT",
   references := [cite.Item cite.Ibidem "TODO"] }
 

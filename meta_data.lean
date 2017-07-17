@@ -128,7 +128,7 @@ do eltp ← to_expr tp,
 meta def unfinished_cmd (meta_info : decl_meta_info) (_ : parse $ tk "unfinished") : lean.parser unit :=
 do nm ← ident,
    tk ":",
-   tp ← lean.parser.pexpr,
+   tp ← lean.parser.pexpr 0,
    tk ":=",
    struct ← lean.parser.pexpr,
    add_unfinished nm tp struct

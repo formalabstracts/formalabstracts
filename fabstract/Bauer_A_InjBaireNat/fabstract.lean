@@ -22,11 +22,11 @@ definition N := RT_J.nno.underlying_object
 
 definition Baire := (RT_J.exponent N N).underlying_object
 
-unfinished Baire_to_N : (RT_J.underlying_category.hom Baire N) :=
+unfinished Baire_to_N : RT_J.underlying_category.hom Baire N :=
 { description := "A morphism from N^N to N",
   references := [cite.Item cite.Ibidem "Section 4"] }
 
-unfinished Baire_to_N_is_mono : (monomorphism Baire_to_N) :=
+unfinished Baire_to_N_is_mono : monomorphism Baire_to_N :=
 { description := "The morphism Baire_to_N from N^Nto N is mono",
   references := [cite.Item cite.Ibidem "Section 4"] }
 
