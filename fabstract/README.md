@@ -14,6 +14,9 @@ where each `AuthorN` has the form `Lastname_Initials`, and `Initials` are the in
 separated by undercores. There is currently no good convention on how to create
 `TitleAcronym`. Look at the existing abstracts for conventions.
 
+If there are very many authors, it is permissible to use `Author1_et_al_TitleAcronym`.
+There is no formal definition of "very many".
+
 ### The contents of the fabstract folder
 
 You may put arbitrary auxiliary Lean files in the folder. You *must* include a file called
@@ -27,10 +30,12 @@ You may put arbitrary auxiliary Lean files in the folder. You *must* include a f
     
     def fabstracts : meta_data = {
       authors := …,
-      doi := …,
+      primary := …,
+      secondary := …,
       description := …,
       results := …
     }
+    
     end Author1_and_Author2_and_…_TitleAcronym
 
 The `results` field should list the main results of the paper. Consult the `result` type

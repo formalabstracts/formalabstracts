@@ -12,13 +12,13 @@ run_cmd tactic.skip -- temporary fix
 unfinished PCA : Type :=
   {
     description := "partial combinatory algebra",
-    doi := ["https://ncatlab.org/nlab/show/partial+combinatory+algebra"]
+    references := [cite.URL "https://ncatlab.org/nlab/show/partial+combinatory+algebra"]
   }
 
 -- TODO (@rlewis1988): fix binding power so that parens around the type aren't needed
 -- missing construction of realizability topos
-unfinished RT : (PCA → topos) :=
+unfinished RT : PCA → topos :=
   {
     description := "realizability topos",
-    doi := ["https://ncatlab.org/nlab/show/realizability+topos"]
+    references := [cite.URL "https://ncatlab.org/nlab/show/realizability+topos"]
   }

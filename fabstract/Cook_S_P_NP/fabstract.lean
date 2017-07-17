@@ -59,25 +59,25 @@ def SAT : set (list bool) :=
 { x | ∃ p v, encode_prop p = x ∧ eval v p = tt }
 
 /- SAT is in NP -/
-unfinished SAT_NP : (SAT ∈ NP) :=
+unfinished SAT_NP : SAT ∈ NP :=
 { description := "SAT is an NP-problem",
-  doi := [] }
+  references := [cite.Item cite.Ibidem "TODO"] }
 
 def P_reducible (L₁ L₂ : set (list bool)) : Prop :=
 ∃ f, P_computable f ∧ L₁ = {x | f x ∈ L₂}
 
 /- Any problem in NP can be polynomial-time reduced to SAT -/
-unfinished SAT_reducibility : (∀ L ∈ NP, P_reducible L SAT) :=
+unfinished SAT_reducibility : ∀ L ∈ NP, P_reducible L SAT :=
 { description := "Any problem in NP can be polynomial-time reduced to SAT",
-  doi := [] }
+  references := [cite.Item cite.Ibidem "TODO"] }
 
-open result
 def fabstract : meta_data :=
 { description := "A conjecture that the complexity classes P and NP are unequal.",
   authors := ["Stephen A. Cook"],
-  doi := ["https://doi.org/10.1145/800157.805047"],
-  results := [Proof SAT_NP,
-              Proof SAT_reducibility,
-              Conjecture (P ≠ NP)] }
+  primary := cite.DOI "10.1145/800157.805047",
+  secondary := [],
+  results := [result.Proof SAT_NP,
+              result.Proof SAT_reducibility,
+              result.Conjecture (P ≠ NP)] }
 
 end Cook_S_P_NP
