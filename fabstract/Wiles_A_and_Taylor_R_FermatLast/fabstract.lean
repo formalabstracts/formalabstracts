@@ -9,10 +9,9 @@ axiom fermat_last_theorem :
 definition fabstract : meta_data := {
     authors := ["Andrew Wiles", "Richard Tylor"],
     doi := ["10.2307/2118559", "10.2307/2118560"],
-    results := [result.Proof fermat_last_theorem],
-    description := "A result in number theory conjectured by Pierre de Fermat and proved by Andrew Wiles and Richard Taylor. Coloquially referred to as Fermat Last Theorem."
-    }
+    description := "A result in number theory conjectured by Pierre de Fermat and proved by Andrew Wiles and Richard Taylor. Coloquially referred to as Fermat Last Theorem.",
 
-#print axioms fabstract
+    results := [result.Proof fermat_last_theorem],
+    }
 
 end Wiles_A_and_Taylor_R_FermatLast

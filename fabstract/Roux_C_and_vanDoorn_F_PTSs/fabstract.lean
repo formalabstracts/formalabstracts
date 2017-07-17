@@ -1,7 +1,9 @@
-import ...folklore.pure_type_systems ...meta_data
+import meta_data
+       .pure_type_systems
 
 namespace Roux_C_and_vanDoorn_F_PTSs
 open pure_type_system sum
+
 -- noncomputable theory
 
 /- We investigate combinations and extensions of Pure Type Systems
@@ -15,8 +17,13 @@ definition morphism (P Q : pure_type_system) : Type :=
   (∀s₁ s₂ s₃, P.Relations s₁ s₂ s₃ → Q.Relations (f s₁) (f s₂) (f s₃))
 
 /- It is easy to see that the domain of a morphism is weakly normalizing if the codomain is -/
-axiom is_weakly_normalizing_domain (f : morphism P Q) (HQ : is_weakly_normalizing Q) :
-  is_weakly_normalizing P
+unfinished is_weakly_normalizing_domain :
+  (Π P Q
+     (f : morphism P Q) (HQ : is_weakly_normalizing Q),  is_weakly_normalizing P) :=
+  {
+    description := "It is easy to see that the domain of a morphism is weakly normalizing if the codomain is",
+    doi := []
+  }
 
 /- The direct sum of PTSs -/
 definition direct_sum (P Q : pure_type_system) : pure_type_system :=
@@ -33,8 +40,14 @@ definition direct_sum (P Q : pure_type_system) : pure_type_system :=
   end⟩
 
 /- It is normalizing if the original ones were -/
-axiom is_weakly_normalizing_direct_sum (HP : is_weakly_normalizing P)
-  (HQ : is_weakly_normalizing Q) : is_weakly_normalizing (direct_sum P Q)
+unfinished is_weakly_normalizing_direct_sum  :
+  (Π P Q(HP : is_weakly_normalizing P) (HQ : is_weakly_normalizing Q),
+    is_weakly_normalizing (direct_sum P Q))
+  :=
+  {
+    description := "It is normalizing if the original ones were",
+    doi := []
+  }
 
 /- The direct sum with quantification over sorts in P added. This can be interpreted as the
   Q-logic of P-terms -/
@@ -53,8 +66,14 @@ definition forall_PTS (P Q : pure_type_system) : pure_type_system :=
   end⟩
 
 /- It is normalizing if the original ones were -/
-axiom is_weakly_normalizing_forall (HP : is_weakly_normalizing P)
-  (HQ : is_weakly_normalizing Q) : is_weakly_normalizing (forall_PTS P Q)
+unfinished is_weakly_normalizing_forall :
+  (Π P Q (HP : is_weakly_normalizing P) (HQ : is_weakly_normalizing Q),
+     is_weakly_normalizing (forall_PTS P Q))
+  :=
+  {
+    description := "It is normalizing if the original ones were",
+    doi := []
+  }
 
 /- The predicative polymorphic extension of P -/
 definition poly (P : pure_type_system) : pure_type_system :=
@@ -71,7 +90,13 @@ definition poly (P : pure_type_system) : pure_type_system :=
   end⟩
 
 /- It is normalizing if the original ones was -/
-axiom is_weakly_normalizing_poly (HP : is_weakly_normalizing P) : is_weakly_normalizing (poly P)
+unfinished is_weakly_normalizing_poly :
+  (Π P (HP : is_weakly_normalizing P), is_weakly_normalizing (poly P))
+  :=
+  {
+    description := "It is normalizing if the original ones was",
+    doi := []
+  }
 
 open result
 def fabstract : meta_data := {

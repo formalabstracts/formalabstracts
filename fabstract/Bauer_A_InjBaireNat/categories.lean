@@ -1,5 +1,9 @@
 -- a random and incomplete selection of notions in category theory
 
+import meta_data
+
+run_cmd tactic.skip -- temporary fix
+
 structure category :=
     (obj : Type)
     (hom : obj → obj → Type)
@@ -22,7 +26,10 @@ structure terminal_object {C : category} :=
     (hom_to_terminal : ∀ (A : C.obj) (f g : C.hom A terminal_object), f = g)
 
 -- exponentials in a category
-constant missing_exponential_structure : Type
+unfinished missing_exponential_structure : Type :=
+{ description := "remaining properties of exponentials",
+  doi := []
+}
 
 structure exponential {C : category} (A B : C.obj) :=
      (underlying_object : C.obj)

@@ -1,34 +1,40 @@
-import ...folklore.categories
-       ...folklore.toposes
-       ...meta_data
+import meta_data
+       .toposes
+       .realizability
 
-import .realizability
-
-noncomputable theory
+run_cmd tactic.skip -- temporary fix
 
 namespace Bauer_A_InjBaireNat
 
+noncomputable theory
+
 -- we construct a partial combinatory algebra based on
 -- infinite-time Turing machines
-undefined_const IITM : PCA :=
-{description := "infinite time turing machine",
- doi := []}
+unfinished IITM : PCA :=
+{
+   description := "infinite time turing machine",
+   doi := []
+}
 
-def T := RT IITM
+definition T := RT IITM
 
 definition N := T.nno.underlying_object
+
 definition Baire := (T.exponent N N).underlying_object
 
-undefined_const Baire_to_N : (T.underlying_category.hom Baire N) :=
-{description := "",
- doi := []}
+unfinished Baire_to_N : (T.underlying_category.hom Baire N) :=
+  {
+    description := "",
+    doi := []
+  }
 
-unproved_theorem Baire_to_N_is_mono : (monomorphism Baire_to_N) :=
-{description := "",
- doi := []}
+unfinished Baire_to_N_is_mono : (monomorphism Baire_to_N) :=
+  {
+    description := "",
+    doi := []
+  }
 
 open result
-
 def fabstract : meta_data := {
   description := "We construct a realizability topos in which the reals are embedded in the natural numbers. The topos is based on infinite-time Turing machines of Joel Hamkins.",
   authors := ["Andrej Bauer"],
@@ -37,8 +43,5 @@ def fabstract : meta_data := {
               Construction Baire_to_N,
               Proof Baire_to_N_is_mono]
 }
-
-#print axioms fabstract
-#print PCA._meta_data
 
 end Bauer_A_InjBaireNat
