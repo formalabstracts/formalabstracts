@@ -21,7 +21,7 @@ quite right, the curators will help fix it.
 You may add your own fabstracts, improve existing ones, and work on the folklore. You may
 also contribute other people's fabstracts, but please be extra careful to get them right.
 
-Please consult the [instructions](./instructions.markdown) on how to contribute.
+Please consult the [instructions](./instructions.md) on how to contribute.
 
 ### License
 
