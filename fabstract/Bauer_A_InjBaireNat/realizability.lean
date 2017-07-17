@@ -13,8 +13,7 @@ undefined_const PCA : Type :=
 {description := "partial combinatory algebra",
  doi := ["https://ncatlab.org/nlab/show/partial+combinatory+algebra"]}
 
--- TODO (@rlewis1988): fix binding power so that parens around the type aren't needed
 -- missing construction of realizability topos
-undefined_const RT : (PCA → topos) :=
+undefined_const RT : PCA → topos :=
 {description := "realizability topos",
  doi := ["https://ncatlab.org/nlab/show/realizability+topos"]}
