@@ -1,5 +1,5 @@
 import ...meta_data ...folklore.real_axiom
-import data.list data.vector 
+import data.list data.vector
 
 namespace Hales_T_et_al_Kepler_conj
 
@@ -7,7 +7,7 @@ noncomputable theory
 
 open classical nat set list vector real_axiom
 
--- cardinality of finite sets. 
+-- cardinality of finite sets.
 -- Surely this must exist somewhere. But where?
 universe u
 
@@ -18,12 +18,18 @@ def set_of_list {α : Type u} : (list α) → set α
 def finite {α : Type u} (P : set α) :=
 (∃ l, P = set_of_list l)
 
-constant least (P : set ℕ) : ℕ
+unfinished least (P : set ℕ) : ℕ :=
+{ description := "every subset of natural numbers has a least element",
+  references := [] }
 
-axiom least_empty : (least ∅ = 0) 
+unfinished least_empty : least ∅ = 0 :=
+{ description := "the least element of the empty set is 0 by convention",
+  references := [] }
 
-axiom least_nonempty (P : set ℕ) : 
-(P ≠ ∅ → (least P ∈ P ∧ ∀ m, m ∈ P → least P ≤ m))
+unfinished least_nonempty (P : set ℕ) :
+  P ≠ ∅ → (least P ∈ P ∧ ∀ m, m ∈ P → least P ≤ m) :=
+{ description := "the defining property of the least element of a subset",
+  references := [] }
 
 -- defaults to zero if the set is not finite:
 def card {α : Type u} (P : set α) : ℕ :=
@@ -39,7 +45,7 @@ def euclid_metric {n : ℕ} (u : vector ℝ n) (v : vector ℝ n) : ℝ :=
 let subsquare (x : ℝ) (y : ℝ) : ℝ := (x-y)^2,
     d := to_list (map₂ subsquare u v) in real_sqrt (list.sum d)
 
-def packing {n : ℕ} (V : set (vector ℝ n)) := 
+def packing {n : ℕ} (V : set (vector ℝ n)) :=
 (∀ u v, V u ∧ v ∈ V ∧ euclid_metric u v < 2 → (u = v))
 
 -- Todo: check that open balls are used (not that it matters)
@@ -48,10 +54,12 @@ def open_ball {n : ℕ} (x0 : vector ℝ n) (r : ℝ) : (set (vector ℝ n)) :=
 
 def origin₃ : vector ℝ 3 := [0,0,0]
 
-axiom Kepler_conjecture :
-(∀ (V : set (vector ℝ 3)), packing V → 
-  (∃ (c : ℝ), ∀ (r : ℝ), (r ≥ 1) -> 
-  (↑(card(V ∩ open_ball origin₃ r)) ≤ pi* r^3/real_sqrt(18) + c*r^2)))
+unfinished Kepler_conjecture :
+(∀ (V : set (vector ℝ 3)), packing V →
+  (∃ (c : ℝ), ∀ (r : ℝ), (r ≥ 1) ->
+  (↑(card(V ∩ open_ball origin₃ r)) ≤ pi* r^3/real_sqrt(18) + c*r^2))) :=
+{ description := "Proof of Kepler conjecture",
+  references := Item Ibidem "PLEASE PROVIDE THEOREM NUMBER WITHIN PAPER" }
 
 open result
 
