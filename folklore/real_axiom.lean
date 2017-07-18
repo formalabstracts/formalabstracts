@@ -27,70 +27,12 @@ unfinished ℝ : Type :=
 unfinished real_of_int : ℤ → ℝ :=
 { description := "the canonical embedding of integers into reals" }
 
-def real_0 := real_of_int 0
-def real_1 := real_of_int 1
-
-unfinished real_add : ℝ → ℝ → ℝ :=
-{ description := "addition of real numbers" }
-
-unfinished real_sub : ℝ → ℝ → ℝ :=
-{ description := "subtraction of real numbers" }
-
-unfinished real_neg : ℝ → ℝ :=
-{ description := "the additive inverse of a real number" }
-
-unfinished real_mul : ℝ → ℝ → ℝ :=
-{ description := "multiplication of real numbers" }
-
--- TODO: properly treat division by 0
-unfinished real_div : ℝ → ℝ → ℝ :=
-{ description := "division of real numbers" }
-
--- TODO: properly treat multiplicative inverse of 0
-unfinished real_inv : ℝ → ℝ :=
-{ description := "the multiplicative inverse of a real number" }
-
-unfinished real_lt : ℝ → ℝ → Prop :=
-{ description := "the strict linear order on real numbers" }
-
 -- TODO: properly treat unbounded and empty sets
 unfinished sup : (set ℝ) → ℝ :=
 { description := "the supremum of a subset of real numbers" }
 
 instance real_of_nat_coe : has_coe ℤ ℝ :=
 ⟨ real_of_int ⟩
-
-instance real_has_lt : has_lt ℝ :=
-  ⟨ real_lt ⟩
-
-def real_le (x : ℝ) (y : ℝ) := x < y ∨ x = y
-
-instance real_has_zero : has_zero ℝ :=
-  ⟨ real_0 ⟩
-
-instance has_real_one : has_one ℝ :=
-  ⟨ real_1 ⟩
-
-instance real_has_neg : has_neg ℝ :=
- ⟨ real_neg ⟩
-
-instance real_has_add : has_add ℝ :=
- ⟨ real_add ⟩
-
-instance real_has_mul : has_mul ℝ :=
- ⟨ real_mul ⟩
-
-instance real_has_div : has_div ℝ :=
- ⟨ real_div ⟩
-
-instance real_has_inv : has_inv ℝ :=
- ⟨ real_inv ⟩
-
-instance real_has_sub : has_sub ℝ :=
- ⟨ real_sub ⟩
-
-instance real_has_le : has_le ℝ :=
- ⟨ real_le  ⟩
 
 @[instance] constant real_ordered_field : linear_ordered_field ℝ
 
@@ -110,11 +52,11 @@ def is_least_upper_bound {α : Type u} [R : linear_ordered_ring α] (S : set α)
 
 class complete_ordered_field (α : Type u) extends linear_ordered_field α :=
  (sup : (set α) → α)
- (dedekind_completeness : (∀ (S : set α), (S≠ ∅) → has_upper_bound S →
+ (dedekind_completeness : (∀ (S : set α), (S ≠ ∅) → has_upper_bound S →
   is_least_upper_bound S (sup S)))
 
 unfinished real_dedekind_completeness :
-  (∀ (S : set ℝ), (S≠ ∅) → has_upper_bound S →
+  (∀ (S : set ℝ), (S ≠ ∅) → has_upper_bound S →
     is_least_upper_bound S (sup S)) :=
 { description := "the real numbers are Dedekind complete" }
 
@@ -140,7 +82,7 @@ def real_sqrt (x : ℝ) : ℝ :=
    sup (λ (t : ℝ), (t = 0) ∨ t*t = x)
 
 def real_abs (x : ℝ) : ℝ :=
-  sup (λ (t : ℝ),  t = x ∨ t = -x)
+  sup (λ (t : ℝ), t = x ∨ t = -x)
 
 def real_max (x : ℝ) y : ℝ :=
   sup (λ (t : ℝ), t = x ∨ t = y)
