@@ -61,5 +61,5 @@ must be approved by at least `n` people, apart from the author.
 * When `n = 2`, well you get the point.
 
 **Currently we are at `n = 1`**. Among other things this means that the maintainers
-themselves **do not push directly**. Such a policy helps other be aware of changes to the
+themselves **do not push directly**. Such a policy helps everyone be aware of changes to the
 repository and generally encourages cooperation.
