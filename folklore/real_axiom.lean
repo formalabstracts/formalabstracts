@@ -8,6 +8,7 @@ construction.
 T.Hales, July 15, 2017
 -/
 
+import meta_data
 import data.list data.vector
 
 noncomputable theory
@@ -18,12 +19,14 @@ open classical nat int list vector
 
 universe u
 
-unfinished ℝ : Type u :=
+-- TODO: This definition used to be universe-polymorphic, but it looks like unfinished
+-- does not support parameters so the universe u is unavailable, fix it.
+unfinished ℝ : Type :=
 { description := "the type real numbers",
   references := [] }
 
 unfinished real_of_int : ℤ → ℝ :=
-{ descrption := "the canonical embedding of integers into reals",
+{ description := "the canonical embedding of integers into reals",
   references := [] }
 
 def real_0 := real_of_int 0
@@ -164,7 +167,7 @@ def real_pow : ℝ → ℕ → ℝ
 local infix `^` := real_pow
 
 unfinished pi : ℝ :=
-{ descrption := "the ratio of the circumference and the diameter of a circle",
+{ description := "the ratio of the circumference and the diameter of a circle",
   references := [] }
 
 -- one possible specification of pi
