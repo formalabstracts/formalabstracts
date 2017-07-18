@@ -33,9 +33,11 @@ least (λ n, ∃ xs, set_of_list xs = P ∧ list.length xs = n)
  Here are some Euclidean vector space definitions that
  should eventually be part of a general library
 -/
+local infix `^` := real_pow
 
 def euclid_metric {n : ℕ} (u : vector ℝ n) (v : vector ℝ n) : ℝ :=
-let d := to_list (map₂ real_sub u v) in real_sqrt (list.sum d)
+let subsquare (x : ℝ) (y : ℝ) : ℝ := (x-y)^2,
+    d := to_list (map₂ subsquare u v) in real_sqrt (list.sum d)
 
 def packing {n : ℕ} (V : set (vector ℝ n)) := 
 (∀ u v, V u ∧ v ∈ V ∧ euclid_metric u v < 2 → (u = v))
@@ -45,12 +47,6 @@ def open_ball {n : ℕ} (x0 : vector ℝ n) (r : ℝ) : (set (vector ℝ n)) :=
 { u | euclid_metric x0 u < r}
 
 def origin₃ : vector ℝ 3 := [0,0,0]
-
-local infix `^` := real_pow
-
-constant V : set (vector ℝ 3)
-constant r : ℝ
-constant c : ℝ
 
 axiom Kepler_conjecture :
 (∀ (V : set (vector ℝ 3)), packing V → 
@@ -62,7 +58,8 @@ open result
 def fabstract : meta_data := {
   description := "This article announces the formal proof of the Kepler conjecture on dense sphere packings in a combination of the HOL Light and Isabelle/HOL proof assistants.  It represents the primary result of the now completed Flyspeck project.",
   authors := ["Thomas Hales", "Mark Adams", "Gertrud Bauer", "Tat Dat Dang", "John Harrison", "Le Truong Hoang", "Cezary Kaliszyk", "Victor Magron", "Sean McLaughlin", "Tat Thang Nguyen", "Quang Truong Nguyen", "Tobias Nipkow", "Steven Obua", "Joseph Pleso", "Jason Rute", "Alexey Solovyev", "Thi Hoai An Ta", "Nam Trung Tran", "Thi Diep Trieu", "Josef Urban", "Ky Vu", "Roland Zumkeller"],
-  doi := ["https://doi.org/10.1017/fmp.2017.1"],
+  primary := cite.DOI "/10.1017/fmp.2017.1",
+  secondary := [],
   results := [Proof Kepler_conjecture]
 }
 
