@@ -52,14 +52,14 @@ the current state of the `my-best-paper` branch on GitHub.
 ## The review process
 
 Once you make a pull request the project maintainers will have a look at it. They may ask
-you to make questions or clarifications, so please participate in the discussion. The
+you to make clarifications and modifications, so please participate in the discussion. The
 maintainers follow the **`n` pairs of eyes policy** which states that every pull request
 must be approved by at least `n` people, apart from the author.
 
 * When `n = 0` anyone can push anything they want.
-* When `n = 1` one other person much agree.
+* When `n = 1` one maintainer must agree with the pull request.
 * When `n = 2`, well you get the point.
 
-**Currently we are at `n = 1`.** This means, in particular, that the maintainers
-themselves **do not push directly**. They too issue pull requests and wait for someone
-else to accept them.
+**Currently we are at `n = 1`**. Among other things this means that the maintainers
+themselves **do not push directly**. Such a policy helps other be aware of changes to the
+repository and generally encourages cooperation.
