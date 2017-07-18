@@ -22,21 +22,23 @@ There is no formal definition of "very many".
 You may put arbitrary auxiliary Lean files in the folder. You *must* include a file called
 `fabstract.lean` which must have the following form:
 
-    ⟨other imports⟩
-    import meta_data
-    namespace Author1_and_Author2_and_…_TitleAcronym
-    
-    ⟨auxiliary development⟩
-    
-    def fabstract : meta_data = {
-      authors := …,
-      primary := …,
-      secondary := …,
-      description := …,
-      results := …
-    }
-    
-    end Author1_and_Author2_and_…_TitleAcronym
+```lean
+⟨other imports⟩
+import meta_data
+namespace Author1_and_Author2_and_…_TitleAcronym
+
+⟨auxiliary development⟩
+
+def fabstract : meta_data = {
+  authors := …,
+  primary := …,
+  secondary := …,
+  description := …,
+  results := …
+}
+
+end Author1_and_Author2_and_…_TitleAcronym
+```
 
 The `results` field should list the main results of the paper. Consult the `result` type
 in `meta_data` to see what these may be.
@@ -52,9 +54,11 @@ Suppose that in your formalization you need to use the space of square-integrabl
 measurable functions, but there is no such definition yet. You may introduce an unfinished
 definition as follows:
 
-    unfinished L2 : Type :=
-    { description := "The set $L_2([0,1])$ of square-integrable measurable functions on the unit interval.",
-      references := […] }
+```lean
+unfinished L2 : Type :=
+{ description := "The set $L_2([0,1])$ of square-integrable measurable functions on the unit interval.",
+  references := […] }
+```
 
 The description should be good enough for a professional mathematician to be able to tell
 what the object is supposed to be. It is very helpful to provide a list of references (see
@@ -64,22 +68,26 @@ the time just put in an empty list `[]`.
 You will of course also need some further structure on `L2`, for example the vector space
 structure. You can just keep going with `unfinished`:
 
-    unfinished L2_add : L2 → L2 → L2 :=
-    { description := "Addition of functions.",
-      references := […] }
+```lean
+unfinished L2_add : L2 → L2 → L2 :=
+{ description := "Addition of functions.",
+  references := […] }
 
-    unfinished L2_scalar_mult : ℝ → L2 → L2 :=
-    { description := "Scalar multiplication of functions.",
-      references := […] }
-    
-    …
+unfinished L2_scalar_mult : ℝ → L2 → L2 :=
+{ description := "Scalar multiplication of functions.",
+  references := […] }
+
+…
+```
 
 You may of course assume well-known theorems and any other statements that you need:
 
-    unfinished Well_known_theorem :
-      ⟨statement of theorem⟩ :=
-    { description := "⟨informal description of theorem⟩,
-      references := […] }
+```lean
+unfinished Well_known_theorem :
+  ⟨statement of theorem⟩ :=
+{ description := "⟨informal description of theorem⟩,
+  references := […] }
+```
 
 It is also quite likely that you will *not* formalize all the proofs and definitions from
 the paper, because that is just too much work. You may use the same `unfinished` mechanism
@@ -90,18 +98,19 @@ Definition 4.2, defines what it means for a hyper-semi-quasi-space to have the *
 property* in Definition 5.1, and then shows that no hyper-semi-quasi-space has it in
 Theorem 6.9. The minimal formalization would look like this:
 
-    unfinished hyper_semi_quasi_space : Type :=
-    { description := "…",
-      references := [cite.Item cite.Ibidem "Definition 4.2" }
-    
-    unfinished is_McDonald : hyper_semi_quasi_space → prop :=
-    { description := "…",
-      references := [cite.Item cite.Ibidem "Definition 5.1" }
-    
-    unfinished hyper_semi_quasy_space_not_McDonald :
-      ∀ X, ¬ (is_McDonald X) :=
-    { description := "…",
-      references := [cite.Item cite.Ibidem "Theorem 6.9" }
+```lean
+unfinished hyper_semi_quasi_space : Type :=
+{ description := "…",
+  references := [cite.Item cite.Ibidem "Definition 4.2" }
+
+unfinished is_McDonald : hyper_semi_quasi_space → prop :=
+{ description := "…",
+  references := [cite.Item cite.Ibidem "Definition 5.1" }
+
+unfinished hyper_semi_quasy_space_not_McDonald :
+  ∀ X, ¬ (is_McDonald X) :=
+{ description := "…",
+  references := [cite.Item cite.Ibidem "Theorem 6.9" }
+```
 
 It is always easy to check which parts of formalization are unfinished with the `#print axioms` command.
-
