@@ -62,8 +62,8 @@ unfinished L2 : Type :=
 
 The description should be good enough for a professional mathematician to be able to tell
 what the object is supposed to be. It is very helpful to provide a list of references (see
-the `cite` datatype defined in [meta_data.lean](/meta_data.lean)), but if you do not have
-the time just put in an empty list `[]`.
+the `cite` datatype defined in [meta_data.lean](/meta_data.lean)), but if the result is
+well-known, you can leave it out.
 
 You will of course also need some further structure on `L2`, for example the vector space
 structure. You can just keep going with `unfinished`:

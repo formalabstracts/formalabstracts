@@ -110,7 +110,7 @@ and references to the literature.
 -/
 structure unfinished_meta_data :=
     (description : string)
-    (references : list cite)
+    (references : list cite := [])
 
 section user_commands
 open lean.parser tactic interactive
