@@ -85,7 +85,7 @@ You may of course assume well-known theorems and any other statements that you n
 ```lean
 unfinished Well_known_theorem :
   ⟨statement of theorem⟩ :=
-{ description := "⟨informal description of theorem⟩,
+{ description := "⟨informal description of theorem⟩",
   references := […] }
 ```
 
@@ -101,16 +101,16 @@ Theorem 6.9. The minimal formalization would look like this:
 ```lean
 unfinished hyper_semi_quasi_space : Type :=
 { description := "…",
-  references := [cite.Item cite.Ibidem "Definition 4.2" }
+  references := [cite.Item cite.Ibidem "Definition 4.2"] }
 
-unfinished is_McDonald : hyper_semi_quasi_space → prop :=
+unfinished is_McDonald : hyper_semi_quasi_space → Prop :=
 { description := "…",
-  references := [cite.Item cite.Ibidem "Definition 5.1" }
+  references := [cite.Item cite.Ibidem "Definition 5.1"] }
 
 unfinished hyper_semi_quasy_space_not_McDonald :
   ∀ X, ¬ (is_McDonald X) :=
 { description := "…",
-  references := [cite.Item cite.Ibidem "Theorem 6.9" }
+  references := [cite.Item cite.Ibidem "Theorem 6.9"] }
 ```
 
 It is always easy to check which parts of formalization are unfinished with the `#print axioms` command.
