@@ -39,7 +39,9 @@ meeting at Cambridge in July 2017, on the initiative
 of [Thomas Hales](https://sites.google.com/site/thalespitt/).
 
 * [Andrej Bauer](http://www.andrej.com) ([`@andrejbauer`](https://github.com/andrejbauer))
+* Mario Carneiro ([`@digama0`](https://github.com/digama0))
+* [Flooris van Dorn](http://www.contrib.andrew.cmu.edu/~fpv/) ([`@fpvandorn`](https://github.com/fpvandoorn))
 * [Thomas Hales](https://sites.google.com/site/thalespitt/) ([`@thalesant`](https://github.com/thalesant))
+* [Kuen-Bang Hou (Favonia)](http://favonia.org) ([`@favonia`](https//github.com/favonia))
 * [Adam Kurkiewicz](http://cv.adam.kurkiewicz.pl) ([`@picrin`](https://github.com/picrin))
 * [Rob Lewis](http://andrew.cmu.edu/user/rlewis1) ([`@rlewis1988`](https://github.com/rlewis1988))
-* [Flooris van Dorn](http://www.contrib.andrew.cmu.edu/~fpv/) ([`@fpvandorn`](https://github.com/fpvandoorn))
