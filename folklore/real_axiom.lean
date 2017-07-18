@@ -22,50 +22,40 @@ universe u
 -- TODO: This definition used to be universe-polymorphic, but it looks like unfinished
 -- does not support parameters so the universe u is unavailable, fix it.
 unfinished ℝ : Type :=
-{ description := "the type real numbers",
-  references := [] }
+{ description := "the type real numbers" }
 
 unfinished real_of_int : ℤ → ℝ :=
-{ description := "the canonical embedding of integers into reals",
-  references := [] }
+{ description := "the canonical embedding of integers into reals" }
 
 def real_0 := real_of_int 0
 def real_1 := real_of_int 1
 
 unfinished real_add : ℝ → ℝ → ℝ :=
-{ description := "addition of real numbers",
-  references := [] }
+{ description := "addition of real numbers" }
 
 unfinished real_sub : ℝ → ℝ → ℝ :=
-{ description := "subtraction of real numbers",
-  references := [] }
+{ description := "subtraction of real numbers" }
 
 unfinished real_neg : ℝ → ℝ :=
-{ description := "the additive inverse of a real number",
-  references := [] }
+{ description := "the additive inverse of a real number" }
 
 unfinished real_mul : ℝ → ℝ → ℝ :=
-{ description := "multiplication of real numbers",
-  references := [] }
+{ description := "multiplication of real numbers" }
 
 -- TODO: properly treat division by 0
 unfinished real_div : ℝ → ℝ → ℝ :=
-{ description := "division of real numbers",
-  references := [] }
+{ description := "division of real numbers" }
 
 -- TODO: properly treat multiplicative inverse of 0
 unfinished real_inv : ℝ → ℝ :=
-{ description := "the multiplicative inverse of a real number",
-  references := [] }
+{ description := "the multiplicative inverse of a real number" }
 
 unfinished real_lt : ℝ → ℝ → Prop :=
-{ description := "the strict linear order on real numbers",
-  references := [] }
+{ description := "the strict linear order on real numbers" }
 
 -- TODO: properly treat unbounded and empty sets
 unfinished sup : (set ℝ) → ℝ :=
-{ description := "the supremum of a subset of real numbers",
-  references := [] }
+{ description := "the supremum of a subset of real numbers" }
 
 instance real_of_nat_coe : has_coe ℤ ℝ :=
 ⟨ real_of_int ⟩
@@ -126,8 +116,7 @@ class complete_ordered_field (α : Type u) extends linear_ordered_field α :=
 unfinished real_dedekind_completeness :
   (∀ (S : set ℝ), (S≠ ∅) → has_upper_bound S →
     is_least_upper_bound S (sup S)) :=
-{ description := "the real numbers are Dedekind complete",
-  references := [] }
+{ description := "the real numbers are Dedekind complete" }
 
 instance real_complete_ordered_field : complete_ordered_field ℝ :=
 {
@@ -138,8 +127,7 @@ dedekind_completeness := real_dedekind_completeness
 
 unfinished real_archimedean :
   (∀ x y, x > 0 → y > 0 → ∃ (n : ℕ), y < n*x) :=
-{ description := "the real numbers are an archimedean field",
-  references := [] }
+{ description := "the real numbers are an archimedean field" }
 
 -- why does -x ∈ S fail?
 -- why does {x | ... } fail?
@@ -167,8 +155,7 @@ def real_pow : ℝ → ℕ → ℝ
 local infix `^` := real_pow
 
 unfinished pi : ℝ :=
-{ description := "the ratio of the circumference and the diameter of a circle",
-  references := [] }
+{ description := "the ratio of the circumference and the diameter of a circle" }
 
 -- one possible specification of pi
 unfinished pi_def :
@@ -176,7 +163,6 @@ unfinished pi_def :
     let iota := list.iota n,
         terms := list.map (λ k, (-1)^(k+1) / (2*k-1)) iota in
     (real_abs (pi/ 4 - list.sum terms)  < 1 / (2*n + 3))) :=
-{ description := "alternating series for pi/4  = 1 - 1/3 + 1/5 -...",
-  references := [] }
+{ description := "alternating series for pi/4  = 1 - 1/3 + 1/5 -..." }
 
 end real_axiom
