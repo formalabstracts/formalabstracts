@@ -103,5 +103,5 @@ def computes_fn_in_time {s n} (TM : NTATM s n) {m}
 ∀ i : fin m → list bool,
 ∃ (n ≤ tm i) e,
   computes TM
-    ⟨0, none, [], encode (array.to_list ⟨i⟩)⟩ n
-    ⟨e, none, [], encode [f i]⟩
+    ⟨e, none, [], encode [f i]⟩ n
+    ⟨0, none, [], encode (array.to_list ⟨i⟩)⟩
