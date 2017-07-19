@@ -8,7 +8,7 @@ axiom fermat_last_theorem :
 
 definition fabstract : meta_data :=
 { authors := ["Andrew Wiles", "Richard Tylor"],
-  description := "A result in number theory conjectured by Pierre de Fermat and proved by Andrew Wiles and Richard Taylor. Coloquially referred to as Fermat Last Theorem.",
+  description := "A result in number theory conjectured by Pierre de Fermat and proved by Andrew Wiles and Richard Taylor. Colloquially referred to as Fermat's Last Theorem.",
   primary := cite.DOI "10.2307/2118559",
   secondary := [cite.DOI "10.2307/2118560"],
   results := [result.Proof fermat_last_theorem] }
