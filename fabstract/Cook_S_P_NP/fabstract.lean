@@ -73,7 +73,7 @@ unfinished SAT_reducibility : ∀ L ∈ NP, P_reducible L SAT :=
 
 def fabstract : meta_data :=
 { description := "A conjecture that the complexity classes P and NP are unequal.",
-  authors := ["Stephen A. Cook"],
+  authors := [{name := "Stephen A. Cook"}],
   primary := cite.DOI "10.1145/800157.805047",
   secondary := [],
   results := [result.Proof SAT_NP,

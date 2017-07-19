@@ -32,7 +32,7 @@ unfinished Baire_to_N_is_mono : monomorphism Baire_to_N :=
 
 def fabstract : meta_data := {
   description := "We construct a realizability topos in which the reals are embedded in the natural numbers. The topos is based on infinite-time Turing machines of Joel Hamkins.",
-  authors := ["Andrej Bauer"],
+  authors := [{name := "Andrej Bauer", homepage := "http://www.andrej.com"}],
   primary := cite.DOI "10.1017/S0960129513000406",
   secondary := [
     cite.URL "http://math.andrej.com/2011/06/15/constructive-gem-an-injection-from-baire-space-to-natural-numbers/", -- blog

@@ -83,6 +83,14 @@ inductive cite
   | Ibidem : cite -- refer to the primary source of a fabstract
   | Item : cite → string → cite -- refer to specific item in a source
 
+/- A datatype describing a person, normally an author. You may leave out
+   most fields, but name has to be there. -/
+structure author :=
+    (name : string)
+    (institution : string := "")
+    (homepage : string := "")
+    (email : string := "")
+
 /-
 TODO: This definition forces all the results in a particular fabstract
 to lie in the same universe.
@@ -95,9 +103,9 @@ is always to be taken as the official one.
 -/
 structure {u} meta_data : Type (u+1) :=
     (description : string) -- short description of the contents
-    (authors : list string) -- list of authors
+    (authors : list author) -- list of authors
     (primary : cite) -- primary source (the most official one)
-    (secondary : list cite) -- auxiliary and alternative sources (such as ArXiv equivalent)
+    (secondary : list cite := []) -- auxiliary and alternative sources (such as ArXiv equivalent)
     (results : list (result.{u})) -- the list of results
 
 /-
