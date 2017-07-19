@@ -88,7 +88,10 @@ unfinished is_weakly_normalizing_poly :
 
 def fabstract : meta_data := {
   description := "We investigate possible extensions of arbitrary given Pure Type Systems with additional sorts and rules which preserve the normalization property.",
-  authors := ["Cody Roux", "Floris van Doorn"],
+  authors := [
+    {name := "Cody Roux"},
+    {name := "Floris van Doorn"}
+  ],
   primary := cite.DOI "10.1007/978-3-319-08918-8_25",
   secondary := [],
   results := [result.Proof is_weakly_normalizing_domain,

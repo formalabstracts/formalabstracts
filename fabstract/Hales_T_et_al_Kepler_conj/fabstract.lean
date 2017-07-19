@@ -1,4 +1,5 @@
-import ...meta_data ...folklore.real_axiom
+import meta_data
+       ...folklore.real_axiom
 
 import data.list data.vector
 
@@ -61,14 +62,34 @@ unfinished Kepler_conjecture :
 { description := "Proof of Kepler conjecture",
   references := [cite.Item cite.Ibidem "Theorem X.Y"] }
 
-open result
-
 def fabstract : meta_data := {
   description := "This article announces the formal proof of the Kepler conjecture on dense sphere packings in a combination of the HOL Light and Isabelle/HOL proof assistants.  It represents the primary result of the now completed Flyspeck project.",
-  authors := ["Thomas Hales", "Mark Adams", "Gertrud Bauer", "Tat Dat Dang", "John Harrison", "Le Truong Hoang", "Cezary Kaliszyk", "Victor Magron", "Sean McLaughlin", "Tat Thang Nguyen", "Quang Truong Nguyen", "Tobias Nipkow", "Steven Obua", "Joseph Pleso", "Jason Rute", "Alexey Solovyev", "Thi Hoai An Ta", "Nam Trung Tran", "Thi Diep Trieu", "Josef Urban", "Ky Vu", "Roland Zumkeller"],
+  authors := [
+    ({name := "Thomas Hales"} : author), -- TODO why do I have cast the type here but not in other fabstracts?
+    {name := "Mark Adams"},
+    {name := "Gertrud Bauer"},
+    {name := "Tat Dat Dang"},
+    {name := "John Harrison"},
+    {name := "Le Truong Hoang"},
+    {name := "Cezary Kaliszyk"},
+    {name := "Victor Magron"},
+    {name := "Sean McLaughlin"},
+    {name := "Tat Thang Nguyen"},
+    {name := "Quang Truong Nguyen"},
+    {name := "Tobias Nipkow"},
+    {name := "Steven Obua"},
+    {name := "Joseph Pleso"},
+    {name := "Jason Rute"},
+    {name := "Alexey Solovyev"},
+    {name := "Thi Hoai An Ta"},
+    {name := "Nam Trung Tran"},
+    {name := "Thi Diep Trieu"},
+    {name := "Josef Urban"},
+    {name := "Ky Vu"},
+    {name := "Roland Zumkelle"}
+  ],
   primary := cite.DOI "/10.1017/fmp.2017.1",
-  secondary := [],
-  results := [Proof Kepler_conjecture]
+  results := [result.Proof Kepler_conjecture]
 }
 
 end Hales_T_et_al_Kepler_conj

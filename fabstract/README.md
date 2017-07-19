@@ -41,7 +41,8 @@ end Author1_and_Author2_and_…_TitleAcronym
 ```
 
 The `results` field should list the main results of the paper. Consult the `result` type
-in `meta_data` to see what these may be.
+in `meta_data` to see what these may be. The authors field is a list of authors, each of
+which is a value of type `author` from `meta_data`.
 
 ### How to mark unfinished formalization
 
