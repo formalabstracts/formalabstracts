@@ -132,13 +132,14 @@ do eltp ← to_expr tp,
    add_decl $ mk_definition meta_data_name []
                   `(unfinished_meta_data) eldt
 
-@[user_command]
-meta def unfinished_cmd (meta_info : decl_meta_info) (_ : parse $ tk "unfinished") : lean.parser unit :=
-do nm ← ident,
-   tk ":",
-   tp ← lean.parser.pexpr 0,
-   tk ":=",
-   struct ← lean.parser.pexpr,
-   add_unfinished nm tp struct
+--@[user_command]
+--meta def unfinished_cmd (meta_info : decl_meta_info) (_ : parse $ tk "unfinished") : lean.parser unit :=
+--do nm ← ident,
+--   tk ":",
+--   tp ← lean.parser.pexpr 0,
+--   tk ":=",
+--   struct ← lean.parser.pexpr,
+--   add_unfinished nm tp struct
+
 
 end user_commands
