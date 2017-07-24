@@ -1,1 +1,1 @@
-lean/build/release/shell/lean --path
+lean/build/release/shell/lean meta_data.lean
