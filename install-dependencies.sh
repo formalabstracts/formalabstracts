@@ -1,9 +1,7 @@
 #!/bin/bash
 set -xev
-cd $TRAVIS_BUILD_DIR
-mkdir -p lean
-compile=$?
-if [[ $compile == 0 ]]; then
+if [[ ! -d lean ]]; then
+    mkdir lean
     cd lean
     git clone https://github.com/leanprover/lean.git .
     mkdir -p build/release
