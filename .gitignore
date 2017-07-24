@@ -2,7 +2,4 @@
 *.olean
 /_target
 /leanpkg.path
-lean-*
-venv
-*.pyc
-__pycache__
+lean
