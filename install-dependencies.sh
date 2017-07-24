@@ -3,7 +3,7 @@ mkdir lean
 compile=$?
 if [[ $compile == 0 ]]; then
     cd lean
-    apt-get install git libgmp-dev cmake
+    sudo apt-get install git libgmp-dev cmake
     git clone https://github.com/leanprover/lean.git .
     mkdir -p build/release
     cd build/release
