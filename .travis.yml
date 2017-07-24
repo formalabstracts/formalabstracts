@@ -1,6 +1,6 @@
 language: c
 addons:
   apt:
-    packages: libgmp-dev
+    packages: g++-4.9
 install: ./install-dependencies.sh
 script: ./verify-fabstracts.sh
