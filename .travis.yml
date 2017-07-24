@@ -1,6 +1,5 @@
 language: c
 cache:
-  - apt
   directories:
     - lean
 dist: trusty
