@@ -4,9 +4,16 @@ Here are some guidelines for contributing to the Formal abstracts project.
 
 ## Prerequisites
 
-* basic knowledge of and an installation of the [Lean prover](http://leanprover.github.io)
-* basic knowledge of and an installation of [git](https://git-scm.com)
-* a [GitHub](https://github.com) account
+### Git and GitHub
+
+We use [git](https://git-scm.com) for version control. For contributing to the project,
+you will need a [GitHub](https://github.com) account.
+
+### Development version of Lean
+
+We are experimenting with latest features of Lean, so you will have to compile the
+development version of Lean (the `master` branch at
+the [Lean repository](https://github.com/leanprover/lean)).
 
 ## Getting started
 
