@@ -1,4 +1,6 @@
 language: c
-sudo: required
+addons:
+  apt:
+    packages: libgmp-dev
 install: ./install-dependencies.sh
 script: ./verify-fabstracts.sh
