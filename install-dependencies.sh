@@ -1,7 +1,7 @@
 #!/bin/bash
 set -xev
 cd $TRAVIS_BUILD_DIR
-mkdir lean
+mkdir -p lean
 compile=$?
 if [[ $compile == 0 ]]; then
     cd lean
