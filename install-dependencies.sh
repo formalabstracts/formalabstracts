@@ -1,3 +1,4 @@
+#!/bin/bash
 set -xev
 mkdir lean
 compile=$?
