@@ -16,7 +16,7 @@ noncomputable theory
 namespace real_axiom
 
 open classical nat int list vector
-
+local attribute [instance] prop_decidable
 universe u
 
 -- TODO: This definition used to be universe-polymorphic, but it looks like unfinished
@@ -49,8 +49,7 @@ def is_least_upper_bound {α : Type u} [R : linear_ordered_ring α] (S : set α)
   (is_upper_bound S s ∧
   (∀ r, is_upper_bound S r → r ≤ s))
 
-
-class complete_ordered_field (α : Type u) extends linear_ordered_field α :=
+class complete_ordered_field (α : Type u) extends discrete_linear_ordered_field α :=
  (sup : (set α) → α)
  (dedekind_completeness : (∀ (S : set α), (S ≠ ∅) → has_upper_bound S →
   is_least_upper_bound S (sup S)))
@@ -60,11 +59,18 @@ unfinished real_dedekind_completeness :
     is_least_upper_bound S (sup S)) :=
 { description := "the real numbers are Dedekind complete" }
 
+unfinished real_zero_inv : linear_ordered_field.inv (0 : ℝ) = 0 :=
+{ description := "since all functions are total, we define 1/0=0"}
+
 instance real_complete_ordered_field : complete_ordered_field ℝ :=
 {
 real_axiom.real_ordered_field with
 sup := sup,
-dedekind_completeness := real_dedekind_completeness
+dedekind_completeness := real_dedekind_completeness,
+inv_zero := real_zero_inv,
+decidable_lt := by apply_instance,
+decidable_le := by apply_instance,
+decidable_eq := by apply_instance
 }
 
 unfinished real_archimedean :
@@ -106,5 +112,53 @@ unfinished pi_def :
         terms := list.map (λ k, (-1)^(k+1) / (2*k-1)) iota in
     (real_abs (pi/ 4 - list.sum terms)  < 1 / (2*n + 3))) :=
 { description := "alternating series for pi/4  = 1 - 1/3 + 1/5 -..." }
+
+inductive extended_real
+| of_real : ℝ → extended_real
+| inf : extended_real
+| neg_inf : extended_real
+
+notation `ℝ∞` := extended_real
+
+unfinished ext_reals_has_add : has_add ℝ∞ :=
+{ description := "extended reals have a + operator" }
+
+unfinished ext_reals_has_sub : has_sub ℝ∞ :=
+{ description := "extended reals have a - operator" }
+
+unfinished ext_reals_has_mul : has_mul ℝ∞ :=
+{ description := "extended reals have a * operator" }
+
+unfinished ext_reals_has_div : has_div ℝ∞ :=
+{ description := "extended reals have a / operator" }
+
+unfinished ext_reals_order : order_pair ℝ∞ :=
+{ description := "extended reals are ordered" }
+
+instance : has_zero ℝ∞ := ⟨extended_real.of_real 0⟩
+instance : has_one ℝ∞ := ⟨extended_real.of_real 1⟩
+
+attribute [instance] ext_reals_has_add ext_reals_has_sub ext_reals_has_mul ext_reals_has_div ext_reals_order
+
+def extended_real.sup (s : set extended_real) : extended_real :=
+if extended_real.inf ∈ s then extended_real.inf
+else let non_neg_inf := {r | ∃ r' ∈ s, r' = extended_real.of_real r} in
+extended_real.of_real (complete_ordered_field.sup non_neg_inf)
+
+
+def extended_real.partial_sum (f : ℕ → ℝ∞) (n : ℕ) : ℝ∞ :=
+((list.iota n).map f).foldr (+) 0
+
+open extended_real
+def extended_real.countable_sum (f : ℕ → ℝ∞) :=
+if h : (∃ r : ℝ, ∀ ε : ℝ, ε > 0 → ∃ n, of_real (-ε) < extended_real.partial_sum f n - of_real r ∧ extended_real.partial_sum f n - of_real r < of_real ε)
+then of_real (some h)
+else inf
+
+unfinished countable_sum_spec : ∀ f : ℕ → ℝ∞, ∀ h : (∀ n, f n ≥ 0),
+  (∀ ε : ℝ, ε > 0 → ∃ n, of_real (-ε) < extended_real.partial_sum f n - (extended_real.countable_sum f) ∧ 
+                         extended_real.partial_sum f n - (extended_real.countable_sum f) < of_real ε)
+  ∨ (∀ r : ℝ, ∃ n, extended_real.partial_sum f n > of_real r) :=
+{ description := "If f : ℕ → ℝ∞ is nonnegative, then it has a countable sum in ℝ∞, either a real or ∞" }
 
 end real_axiom
