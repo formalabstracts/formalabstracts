@@ -20,4 +20,4 @@ env:
     CMAKE_BUILD_TYPE=Release
 
 install: sudo ./install-dependencies.sh
-script: sudo ./verify-fabstracts.sh
+script: ./verify-fabstracts.sh
