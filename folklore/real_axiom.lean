@@ -140,6 +140,9 @@ instance : has_one ℝ∞ := ⟨extended_real.of_real 1⟩
 
 attribute [instance] ext_reals_has_add ext_reals_has_sub ext_reals_has_mul ext_reals_has_div ext_reals_order
 
+unfinished ext_reals_mul_spec : extended_real.inf * 0 = 0 :=
+{ description := "we specify that ∞ * 0 = 0" }
+
 def extended_real.sup (s : set extended_real) : extended_real :=
 if extended_real.inf ∈ s then extended_real.inf
 else let non_neg_inf := {r | ∃ r' ∈ s, r' = extended_real.of_real r} in

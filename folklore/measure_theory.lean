@@ -15,6 +15,7 @@ class sigma_algebra :=
 variable [sigma_algebra σ]
 
 -- alternatively, we could define μ using subtypes, as a function {s : set X // s ∈ σ} → ℝ∞.
+-- this complicates some things and simplifies others.
 class measure_space (μ : (set X) → ℝ∞) :=
 (measure_nonneg : ∀ s ∈ σ, μ s ≥ 0)
 (measure_empty : μ ∅ = 0)
@@ -46,6 +47,10 @@ def is_simple_function (ls : list (ℝ × (set X))) := ∀ p : ℝ × (set X), p
 def simple_function (ls : list (ℝ × (set X))) (x : X) : ℝ := 
 (ls.map (λ p : ℝ × (set X), p.1 * indicator_function p.2 x)).foldr (+) 0
 
+unfinished simple_function_pos : ∀ {X} (σ : set (set X)) (μ : set X → ℝ∞) [sigma_algebra σ] [measure_space σ μ],
+  ∀ (ls : list (ℝ × (set X))), (∀ p : ℝ × (set X), p ∈ ls → p.1 ≥ 0 ∧ p.2 ∈ σ) → ∀ x, simple_function ls x ≥ 0 :=
+{ description := "simple functions are nonnegative" }
+
 -- must use 0*∞ = 0
 -- this assumes is_simple_function ls
 def simple_function_integral (ls : list (ℝ × (set X))) : ℝ∞ :=
@@ -59,8 +64,7 @@ unfinished simple_function_integral_well_defined :
         (simple_function ls1 = simple_function ls2) → (simple_function_integral μ ls1 = simple_function_integral μ ls2) :=
 { description := "the integral of a simple function does not depend on the representation of that function" }
 
--- assumes for (h : ∀ x, f x ≥ 0)
--- wiki defines this with f : X → ℝ∞ . why?
+-- assumes (h : ∀ x, f x ≥ 0)
 def nonneg_function_integral (f : X → ℝ) : ℝ∞ :=
 extended_real.sup 
   (image (simple_function_integral μ) 
@@ -90,18 +94,20 @@ begin cases (em (f x < 0)), all_goals {unfold neg_part, simp *}, {apply le_of_lt
 unfinished pos_part_plus_neg_part : ∀ {X} (f : X → ℝ) (x : X), abs (f x) = pos_part f x + neg_part f x :=
 { description := "abs f decomposes into the sum of pos and neg parts" }
 
--- assumes nonneg_function_integral (pos_part f) < ∞ or nonneg_function_integral (neg_part f) < ∞
-
-def signed_integral_exists_condition (f : X → ℝ) := nonneg_function_integral σ μ (pos_part f) < inf ∨ nonneg_function_integral σ μ (neg_part f) < inf
+def signed_integral_exists_condition (f : X → ℝ) := 
+nonneg_function_integral σ μ (pos_part f) < inf ∨ nonneg_function_integral σ μ (neg_part f) < inf
 
 -- assumes signed_integral_exists_condition f
 def signed_function_integral (f : X → ℝ) : ℝ∞ :=
 nonneg_function_integral σ μ (pos_part f) + nonneg_function_integral σ μ (neg_part f)
 
 class lebesgue_integrable (f : X → ℝ) :=
-(r : ℝ) (f_integrable : signed_integral_exists_condition σ μ f) (integral_value : signed_function_integral σ μ f = of_real r)
+(r : ℝ) 
+(f_integrable : signed_integral_exists_condition σ μ f) 
+(integral_value : signed_function_integral σ μ f = of_real r)
 
-def lebesgue_integral (f : X → ℝ) [lebesgue_integrable σ μ f] : ℝ := @lebesgue_integrable.r X σ (by apply_instance) μ (by apply_instance) f (by apply_instance)
+def lebesgue_integral (f : X → ℝ) [lebesgue_integrable σ μ f] : ℝ :=
+ @lebesgue_integrable.r X σ (by apply_instance) μ (by apply_instance) f (by apply_instance)
 
 def almost_everywhere (P : X → Prop) := {x | ¬ P x} ∈ σ ∧ μ {x | ¬ P x} = 0
 
