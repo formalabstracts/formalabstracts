@@ -1,8 +1,8 @@
 #!/bin/bash
 set -xev
-if [[ ! -d lean ]]; then
-    mkdir lean
-    cd lean
+if [[ ! -d ../lean ]]; then
+    mkdir ../lean
+    cd ../lean
     git clone https://github.com/leanprover/lean.git .
     mkdir -p build/release
     cd build/release
