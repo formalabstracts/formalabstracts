@@ -7,18 +7,17 @@ addons:
   apt:
     sources: &apt_sources
       - ubuntu-toolchain-r-test
+      - sourceline: 'ppa:kalakris/cmake'
       - sourceline: 'ppa:adrozdoff/cmake' # cmake 3 for trusty
       - sourceline: 'ppa:h-rayflood/llvm'
       - sourceline: ppa:hvr/z3   # z3 for the smt interface package
     packages: &default_packages
       - libgmp-dev
-      - clang-3.4
-matrix:
-  include:
-   - os: linux
-     dist: precise
-     env:
-       CMAKE_CXX_COMPILER=clang-3.4
-       CMAKE_BUILD_TYPE=Release
+      - cmake
+      - g++-4.9
+env:
+    CMAKE_CXX_COMPILER=g++-4.9
+    CMAKE_BUILD_TYPE=Release
+
 install: sudo ./install-dependencies.sh
 script: sudo ./verify-fabstracts.sh
