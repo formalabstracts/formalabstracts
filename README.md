@@ -49,4 +49,4 @@ of [Thomas Hales](https://sites.google.com/site/thalespitt/).
 * [Floris van Doorn](http://florisvandoorn.com/) ([`@fpvandoorn`](https://github.com/fpvandoorn))
 * [Kuen-Bang Hou (Favonia)](http://favonia.org) ([`@favonia`](https//github.com/favonia))
 * [Adam Kurkiewicz](http://cv.adam.kurkiewicz.pl) ([`@picrin`](https://github.com/picrin))
-* [Rob Lewis](http://andrew.cmu.edu/user/rlewis1) ([`@rlewis1988`](https://github.com/rlewis1988))
+* [Robert Y. Lewis](http://andrew.cmu.edu/user/rlewis1) ([`@rlewis1988`](https://github.com/rlewis1988))
