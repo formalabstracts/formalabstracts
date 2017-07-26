@@ -15,8 +15,6 @@ unfinished PCA : Type :=
     references := [cite.URL "https://ncatlab.org/nlab/show/partial+combinatory+algebra"]
   }
 
--- TODO (@rlewis1988): fix binding power so that parens around the type aren't needed
--- missing construction of realizability topos
 unfinished RT : PCA → topos :=
   {
     description := "realizability topos",
