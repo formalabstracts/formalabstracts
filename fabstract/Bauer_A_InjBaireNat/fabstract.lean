@@ -2,8 +2,6 @@ import meta_data
        .toposes
        .realizability
 
-run_cmd tactic.skip -- temporary fix
-
 namespace Bauer_A_InjBaireNat
 
 noncomputable theory

@@ -2,8 +2,6 @@
 
 import meta_data
 
-run_cmd tactic.skip -- temporary fix
-
 structure category :=
     (obj : Type)
     (hom : obj → obj → Type)
