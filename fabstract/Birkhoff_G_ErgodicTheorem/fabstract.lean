@@ -45,8 +45,8 @@ unfinished Birkhoffs_ergodic_theorem :
 
 def fabstract : meta_data :=
 {description := "Birkhoff's ergodic theorem states that, under appropriate conditions, the space average of an integrable function f is equal to the time average of f wrt a measure preserting transformation T. This result was proved in a slightly different form by Birkhoff (1931), and stated and proved in this form by many others, including Halmos (1960) and Furstenberg (1981).",
-authors := [{name := "George Birkhoff"}],
-primary := cite.DOI "10.1073/pnas.17.2.656",
+authors := [{name := "Harry Furstenberg"}],
+primary := cite.DOI "10.1515/9781400855162.59",
 results := [result.Proof @Birkhoffs_ergodic_theorem]
 }
 
