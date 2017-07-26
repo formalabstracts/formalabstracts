@@ -1,8 +1,6 @@
 import meta_data
        ...folklore.real_axiom
 
-import data.list data.vector
-
 namespace Hales_T_et_al_Kepler_conj
 
 noncomputable theory
@@ -65,7 +63,7 @@ unfinished Kepler_conjecture :
 def fabstract : meta_data := {
   description := "This article announces the formal proof of the Kepler conjecture on dense sphere packings in a combination of the HOL Light and Isabelle/HOL proof assistants.  It represents the primary result of the now completed Flyspeck project.",
   authors := [
-    ({name := "Thomas Hales"} : author), -- TODO why do I have cast the type here but not in other fabstracts?
+    {name := "Thomas Hales"},
     {name := "Mark Adams"},
     {name := "Gertrud Bauer"},
     {name := "Tat Dat Dang"},
