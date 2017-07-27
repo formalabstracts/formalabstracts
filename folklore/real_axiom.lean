@@ -8,8 +8,7 @@ construction.
 T.Hales, July 15, 2017
 -/
 
-import meta_data
-import data.list data.vector
+import meta_data data.list
 
 noncomputable theory
 

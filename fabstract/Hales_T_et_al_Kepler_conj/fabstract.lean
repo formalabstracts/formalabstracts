@@ -50,7 +50,8 @@ def packing {n : ℕ} (V : set (vector ℝ n)) :=
 def open_ball {n : ℕ} (x0 : vector ℝ n) (r : ℝ) : (set (vector ℝ n)) :=
 { u | euclid_metric x0 u < r}
 
-def origin₃ : vector ℝ 3 := [0,0,0]
+-- this is a temporary workaround (https://github.com/leanprover/lean/commit/16e7976b1a7e2ce9624ad2df363c007b70d70096)
+def origin₃ : vector ℝ 3 := 0::0::0::nil--[0,0,0]
 
 -- TODO: provide the theorem number from the paper
 unfinished Kepler_conjecture :
