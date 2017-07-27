@@ -1,5 +1,7 @@
 # Formal abstracts
 
+[![Build Status](https://travis-ci.org/formalabstracts/formalabstracts.svg?branch=master)](https://travis-ci.org/formalabstracts/formalabstracts)
+
 This repository is part of the *Formal abstracts* projects initiated by [Thomas Hales](https://sites.google.com/site/thalespitt/). See his talk [Big conjectures](https://www.newton.ac.uk/seminar/20170710100011001) from the [Big Proof](https://www.newton.ac.uk/event/bpr) meeting in Cambridge.
 
 A **formal abstract**, or **fabstract** for short, is a formalization of the main results
