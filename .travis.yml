@@ -1,0 +1,23 @@
+language: c
+cache:
+  directories:
+    - /lean
+dist: trusty
+addons:
+  apt:
+    sources: &apt_sources
+      - ubuntu-toolchain-r-test
+      - sourceline: 'ppa:kalakris/cmake'
+      - sourceline: 'ppa:adrozdoff/cmake' # cmake 3 for trusty
+      - sourceline: 'ppa:h-rayflood/llvm'
+      - sourceline: ppa:hvr/z3   # z3 for the smt interface package
+    packages: &default_packages
+      - libgmp-dev
+      - cmake
+      - g++-4.9
+env:
+    CMAKE_CXX_COMPILER=g++-4.9
+    CMAKE_BUILD_TYPE=Release
+
+install: sudo ./install-dependencies.sh
+script: ./verify-fabstracts.sh
