@@ -50,7 +50,7 @@ inductive {u} result : Type (u+1)
    * URL "…" -- any Uniform Resource Locator
    * Reference "…" -- string description of an article, as done traditionally by journals
    * Ibidem -- use this if you refer to the primary fabstract source itself
-   * Item X E -- refer to entry Ein source X, for instance:
+   * Item X E -- refer to entry E in source X, for instance:
         * Item (Arxiv "1234.56789") "Theorem 3.4" -- theorem 3.4 in ArXiV 1234.56789
         * Item Ibidem "Definition 1.2" -- definition 1.2 in the primary fabstract source
 
@@ -76,7 +76,7 @@ inductive {u} result : Type (u+1)
 
 -/
 inductive cite
-  | DOI : string → cite -- write evertying starting from the DOI prefix (which is 10)
+  | DOI : string → cite -- write everthing starting from the DOI prefix (which is 10)
   | Arxiv : string → cite -- write these as Arxiv "1707.04448"
   | URL : string → cite
   | Reference : string → cite
