@@ -58,8 +58,7 @@ structure document :=
 (url : string := "")
 (source : string := "") -- journal or book title
 (year : option nat := none)
-(reference : string := "") -- reference formatted with title, volume, issue, pages, year, etc
-
+(reference : string := "")
 
 /- There will be many citations everywhere, so it is a good idea
    to introduce a datatype for them early on. Here are some typical

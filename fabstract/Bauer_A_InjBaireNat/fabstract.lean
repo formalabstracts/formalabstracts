@@ -1,6 +1,7 @@
 import meta_data
        .toposes
        .realizability
+       ...smart_cmd_test.scholar_info
 
 
 namespace Bauer_A_InjBaireNat
