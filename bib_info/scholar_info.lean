@@ -1,5 +1,18 @@
 import system.io data.buffer.parser meta_data
 
+meta def rb_map.find' {α β : Type} (m : rb_map α β) [inhabited β] (a : α) : β :=
+match m.find a with
+| some b := b
+| none := default β
+end
+
+def {u} list.filter_option {α : Type u} : list (option α) → list α
+| [] := []
+| (some h::t) := h::list.filter_option t
+| (none::t) := list.filter_option t
+
+namespace bib_import
+
 open io io.proc tactic
 
 meta def get_bib_string [io.interface] (s : string) (n : ℕ) : io string :=
@@ -11,19 +24,20 @@ do s ← tactic.run_io (λ i, @get_bib_string i st n),
    return s
 
 section parser
+
 meta def parse_bracket_block : parser string :=
 do parser.ch '{',
-   cs ← parser.many (parser.sat (λ c, ¬ c = '}')),
+   cs ← parser.many (parser.sat (λ c, c ≠ '}')),
    parser.ch '}',
    return cs.as_string
 
 meta def parse_comma_block : parser string :=
-do cs ← parser.many (parser.sat (λ c, ¬ c = ',')),
+do cs ← parser.many (parser.sat (λ c, c ≠ ',')),
    parser.ch ',',
    return cs.as_string
 
 meta def parse_until_char (c : char) : parser string :=
-do cs ← parser.many (parser.sat (λ c', ¬ c' = c)),
+do cs ← parser.many (parser.sat (λ c', c' ≠ c)),
    return cs.as_string
 
 meta def parse_eq_line : parser (string × string) :=
@@ -42,26 +56,6 @@ end
 meta def parse_rest : parser string :=
 do cs ← parser.many (parser.sat (λ t, true)),
    return cs.as_string
-
-meta def parse_bib_int' : parser (list string) :=
-do id ← parse_comma_block,
-   lns ← parser.many parse_comma_block,
-   lst ← parse_rest,
-   let lns := lns.append [lst],
-   return lns
-
-def {u} list.filter_option {α : Type u} : list (option α) → list α
-| [] := []
-| (some h::t) := h::list.filter_option t
-| (none::t) := list.filter_option t
-
-meta def parse_until_comma_or_close : parser string :=
-(do s ← parse_until_char ',',
-   parser.ch ',',
-   return s) <|>
-(do s ← parse_until_char '}',
-   parser.ch ',',
-   return s)
 
 def strip_trailing_comma (s : string) : string :=
 if s.back = ',' then s.pop_back else s
@@ -96,12 +90,6 @@ meta def split_string (delim inp : string) : list string :=
 (split_char_list delim.to_list inp.to_list).map (list.as_string)
 
 end parser
-
-meta def rb_map.find' {α β : Type} (m : rb_map α β) [inhabited β] (a : α) : β :=
-match m.find a with
-| some b := b
-| none := default β
-end
 
 meta def format_author_string (inp : string) : string :=
 let athrs  := split_string " and " inp,
@@ -184,3 +172,5 @@ meta def fill_document : hole_command :=
   | [s, n] := do n ← to_expr ``(%%n : ℕ) >>= eval_expr nat, fill_bib_data_aux format_document s n
   | _ := failed
   end }
+
+end bib_import
