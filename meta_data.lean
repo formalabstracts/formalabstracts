@@ -76,7 +76,7 @@ inductive {u} result : Type (u+1)
 
 -/
 inductive cite
-  | DOI : string → cite -- write everthing starting from the DOI prefix (which is 10)
+  | DOI : string → cite -- write everything starting from the DOI prefix (which is 10)
   | Arxiv : string → cite -- write these as Arxiv "1707.04448"
   | URL : string → cite
   | Reference : string → cite
