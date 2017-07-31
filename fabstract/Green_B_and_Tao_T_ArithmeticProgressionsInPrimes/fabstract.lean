@@ -6,7 +6,7 @@ def prime (n : nat) : Prop := n > 1 ∧ (∀ m < n, (m = 0) ∨ (m = 1) ∨ (n %
 
 -- A statement of Green & Tao's theorem about arithmetic progressions in primes
 axiom arithmetic_progressions_in_primes :
-∀ n k : nat, ∃ m r : nat, m ≥ n ∧ (∀ i < k, prime (m + i * r))
+∀ n k : nat, ∃ m ≥ n, ∃ r ≥ 1, ∀ i < k, prime (m + i * r)
 
 -- They also prove various stronger statements; this is an important and easy to state consequence.
 
