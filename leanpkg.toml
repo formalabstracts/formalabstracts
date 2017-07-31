@@ -3,4 +3,4 @@ name = "formalabstracts"
 version = "0.1"
 
 [dependencies]
-stdlib = {git = "https://github.com/leanprover/stdlib", rev = "b8ea20f7b0278ae5f8644641a6f3108f8baf51af"}
+stdlib = {git = "https://github.com/leanprover/stdlib", rev = "8f6549653e85b61b23d84a464299b79ce4308ee6"}
