@@ -7,7 +7,7 @@ run_cmd tactic.skip -- temporary fix
 
 unfinished nno_structure : category → Type :=
   { description := "natural numbers object in a category",
-    references := [cite.URL "https://ncatlab.org/nlab/show/natural+numbers+object"] }
+    sources     := [cite.Website "https://ncatlab.org/nlab/show/natural+numbers+object"] }
 
 structure natural_numbers (C : category) :=
     (underlying_object : C.obj)
@@ -15,7 +15,7 @@ structure natural_numbers (C : category) :=
 
 unfinished missing_topos_structure : Type :=
   { description := "the rest of the structure of an elementary topos",
-    references := [cite.URL "https://ncatlab.org/nlab/show/topos"] }
+    sources     := [cite.Website "https://ncatlab.org/nlab/show/topos"] }
 
 structure topos :=
     (underlying_category : category)

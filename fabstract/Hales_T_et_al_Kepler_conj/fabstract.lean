@@ -59,9 +59,14 @@ unfinished Kepler_conjecture :
   (∃ (c : ℝ), ∀ (r : ℝ), (r ≥ 1) ->
   (↑(card(V ∩ open_ball origin₃ r)) ≤ pi* r^3/real_sqrt(18) + c*r^2))) :=
 { description := "Proof of Kepler conjecture",
-  references := [cite.Item cite.Ibidem "Theorem X.Y"] }
+  primary := cite.Item cite.Ibidem "Theorem X.Y" }
 
-def fabstract : meta_data := {
+def Hales_T_et_al_Kepler_conj : fabstract :=
+{
+
+}
+
+/- {
   description := "This article announces the formal proof of the Kepler conjecture on dense sphere packings in a combination of the HOL Light and Isabelle/HOL proof assistants.  It represents the primary result of the now completed Flyspeck project.",
   authors := [
     {name := "Thomas Hales"},
@@ -87,8 +92,10 @@ def fabstract : meta_data := {
     {name := "Ky Vu"},
     {name := "Roland Zumkelle"}
   ],
-  primary := cite.DOI "/10.1017/fmp.2017.1",
+  primary := cite.Document { doi := "/10.1017/fmp.2017.1" },
   results := [result.Proof Kepler_conjecture]
-}
+}-/
+
+#print fabstract
 
 end Hales_T_et_al_Kepler_conj
