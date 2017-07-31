@@ -2,7 +2,7 @@ import meta_data
 
 namespace Green_B_and_Tao_T_ArithmeticProgressionsInPrimes
 
-def prime (n : nat) : Prop := ∀ m < n, (m = 0) ∨ (m = 1) ∨ (n % m ≠ 0)
+def prime (n : nat) : Prop := n > 1 ∧ (∀ m < n, (m = 0) ∨ (m = 1) ∨ (n % m ≠ 0))
 
 -- A statement of Green & Tao's theorem about arithmetic progressions in primes
 axiom arithmetic_progressions_in_primes :
