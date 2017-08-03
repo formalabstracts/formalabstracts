@@ -20,7 +20,13 @@ io.cmd {cmd := "python2", args := ["bib_info/scholar.py", "-c", to_string n, "-A
    
 meta def get_bib_string_tac (st : string) (n : ℕ) : tactic string :=
 do s ← tactic.run_io (λ i, @get_bib_string i st n),
-   trace s,
+   return s
+
+meta def get_bib_string_arxiv [io.interface] (s : string) (n : ℕ) : io string :=
+io.cmd {cmd := "python2", args := ["bib_info/arxiv_info.py", s, to_string n] }
+
+meta def get_bib_string_arxiv_tac (st : string) (n : ℕ) : tactic string :=
+do s ← tactic.run_io (λ i, @get_bib_string_arxiv i st n),
    return s
 
 section parser
@@ -59,6 +65,9 @@ do cs ← parser.many (parser.sat (λ t, true)),
 
 def strip_trailing_comma (s : string) : string :=
 if s.back = ',' then s.pop_back else s
+
+meta def strip_trailing_whitespace : string → string := λ s,
+if s.back = '\n' ∨ s.back = ' ' then strip_trailing_whitespace s.pop_back else s
 
 meta def parse_bib : parser (string × rb_map string string) :=
 do parser.ch '\n' >> parser.ch '@' <|> parser.ch '@',
@@ -117,6 +126,9 @@ let jn := dict.find' "title",
     pb := dict.find' "publisher" in
 (jn, jn ++ ". " ++ pb ++ (if yr ≠ "" then " (" ++ yr ++ ")" else ""))
 
+meta def print_if_not_empty (fmt : string → string) (s : string) :=
+if s = "" then s else fmt s
+
 -- returns (source, reference)
 meta def format_citation (bibtype : string) (dict : rb_map string string) : string × string :=
 if (bibtype = "article") && (dict.contains "journal") then format_citation_journal dict
@@ -125,21 +137,37 @@ else if (bibtype = "book") && (dict.contains "title") then format_citation_book 
 else ("", "")
 
 meta def format_document (bibtype : string) (dict : rb_map string string) : string :=
+let (src, ref) := format_citation bibtype dict,
+    yr := dict.find' "year",
+    au := format_author_string (dict.find' "author"),
+    ti := dict.find' "title",
+    doi := dict.find' "doi",
+    url := dict.find' "url" in
+"{ authors   := [" ++ au ++ "]"
+ ++ print_if_not_empty (λ t, ",\n  title     := \"" ++ t ++ "\"") ti
+ ++ print_if_not_empty (λ t, ",\n  doi       := \"" ++ t ++ "\"") doi
+ ++ print_if_not_empty (λ t, ",\n  source    := \"" ++ t ++ "\"") src
+ ++ print_if_not_empty (λ t, ",\n  year      := " ++ t) (if yr ≠ "" then "↑"++yr else "none")
+ ++ print_if_not_empty (λ t, ",\n  url       := \"" ++ t ++ "\"") url
+ ++ print_if_not_empty (λ t, ",\n  reference := \"" ++ t ++ "\"") ref
+ ++ " }" 
+
+/-meta def format_document (bibtype : string) (dict : rb_map string string) : string :=
 let ((src, ref), yr) := (format_citation bibtype dict, dict.find' "year") in
-"             { title     := \"" ++ dict.find' "title" ++ "\",
-               authors   := [" ++ format_author_string (dict.find' "author") ++ "],
-               doi       := \"" ++ dict.find' "doi" ++ "\",
-               source    := \"" ++ src ++ "\",
-               year      := " ++ (if yr ≠ "" then "↑"++yr else "none") ++ ",
-               arxiv     := \"\",
-               url       := \"" ++ dict.find' "url" ++ "\", 
-               reference := \"" ++ ref ++ "\" }" 
+"{ authors   := [" ++ format_author_string (dict.find' "author") ++ "],
+ title     := \"" ++ dict.find' "title" ++ "\",
+ doi       := \"" ++ dict.find' "doi" ++ "\",
+ source    := \"" ++ src ++ "\",
+ year      := " ++ (if yr ≠ "" then "↑"++yr else "none") ++ ",
+ arxiv     := \"\",
+ url       := \"" ++ dict.find' "url" ++ "\", 
+ reference := \"" ++ ref ++ "\" }" -/
 
-
+/-
 meta def format_meta_data (bibtype : string) (dict : rb_map string string) : string :=
 "{ description := \"\",
   contributors := [" ++ format_author_string (dict.find' "author") ++ "],
-  sources      := [cite.Document\n" ++ format_document bibtype dict ++ "] }"
+  sources      := [cite.Document\n" ++ format_document bibtype dict ++ "] }"-/
 
 meta def parse_bib_tac (search : string) (n : ℕ) : tactic (list (string × rb_map string string)) :=
 do s ← get_bib_string_tac search n,
@@ -153,7 +181,14 @@ meta def fill_bib_data_aux (formatter : string → rb_map string string → stri
     ls ← parse_bib_tac s' n,
     return $ ls.map (λ p, (formatter p.1 p.2, p.2.find' "title"))
 
-@[hole_command]
+meta def fill_arxiv_data (s : pexpr) (n : ℕ) : tactic (list (string × string)) :=
+do s' ← to_expr ``(%%s : string) >>= eval_expr string,
+   ls ← get_bib_string_arxiv_tac s' n,
+   let ls := split_string "\n---\n" (strip_trailing_whitespace ls),
+   return $ ls.zip ((list.iota (ls.length)).map to_string)
+
+
+/-@[hole_command]
 meta def fill_meta_data : hole_command := 
 { name   := "Fill meta data",
   descr  := "Try to find citation data from Google Scholar, and populate a meta_data object",
@@ -161,7 +196,7 @@ meta def fill_meta_data : hole_command :=
   | [s] := fill_bib_data_aux format_meta_data s 3
   | [s, n] := do n ← to_expr ``(%%n : ℕ) >>= eval_expr nat, fill_bib_data_aux format_meta_data s n
   | _ := failed
-  end }
+  end }-/
 
 @[hole_command]
 meta def fill_document : hole_command := 
@@ -169,8 +204,41 @@ meta def fill_document : hole_command :=
   descr  := "Try to find citation data from Google Scholar, and populate a document object",
   action := λ ps, match ps with
   | [s] := fill_bib_data_aux format_document s 3
-  | [s, n] := do n ← to_expr ``(%%n : ℕ) >>= eval_expr nat, fill_bib_data_aux format_document s n
+  | [s, n] := to_expr ``(%%n : ℕ) >>= eval_expr nat >>= fill_bib_data_aux format_document s
+  | _ := failed
+  end }
+
+@[hole_command]
+meta def fill_document_from_arxiv : hole_command := 
+{ name   := "Fill document from arxiv",
+  descr  := "Try to find citation data from arxiv, and populate a document object",
+  action := λ ps, match ps with
+  | [s] := fill_arxiv_data s 3
+  | [s, n] := to_expr ``(%%n : ℕ) >>= eval_expr nat >>= fill_arxiv_data s 
   | _ := failed
   end }
 
 end bib_import
+
+example : document :=
+{ authors := [{ name := "Jeremy Avigad" }, { name := "Robert Y. Lewis" }, { name := "Cody Roux" }], 
+  title := "A heuristic prover for real inequalities", 
+  arxiv := "http://arxiv.org/abs/1404.4410v2" }
+
+example : document :=
+{ authors   := [{name := "Avigad, Jeremy"}, {name := "Lewis, Robert Y"}, {name := "Roux, Cody"}],
+ title     := "A heuristic prover for real inequalities",
+ doi       := "",
+ source    := "International Conference on Interactive Theorem Proving",
+ year      := ↑2014,
+ arxiv     := "",
+ url       := "", 
+ reference := "International Conference on Interactive Theorem Proving, 61--76 (2014)" }
+
+
+example : document :=
+{ authors   := [{name := "Avigad, Jeremy"}, {name := "Lewis, Robert Y"}, {name := "Roux, Cody"}],
+  title     := "A heuristic prover for real inequalities",
+  source    := "Journal of Automated Reasoning",
+  year      := ↑2016,
+  reference := "Journal of Automated Reasoning 56:3, 367--386 (2016)" }
