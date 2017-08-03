@@ -58,7 +58,7 @@ structure document :=
 (url : string := "")
 (source : string := "") -- journal or book title
 (year : option nat := none)
-(reference : string := "")
+(reference : string := "") -- reference formatted with title, volume, issue, pages, year, etc
 
 
 /- There will be many citations everywhere, so it is a good idea
