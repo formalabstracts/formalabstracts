@@ -131,7 +131,7 @@ unfinished ext_reals_has_mul : has_mul ℝ∞ :=
 unfinished ext_reals_has_div : has_div ℝ∞ :=
 { description := "extended reals have a / operator" }
 
-unfinished ext_reals_order : order_pair ℝ∞ :=
+unfinished ext_reals_order : linear_order ℝ∞ :=
 { description := "extended reals are ordered" }
 
 instance : has_zero ℝ∞ := ⟨extended_real.of_real 0⟩
