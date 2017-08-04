@@ -6,11 +6,6 @@ match m.find a with
 | none := default β
 end
 
-def {u} list.filter_option {α : Type u} : list (option α) → list α
-| [] := []
-| (some h::t) := h::list.filter_option t
-| (none::t) := list.filter_option t
-
 namespace bib_import
 
 open io io.proc tactic
@@ -73,10 +68,10 @@ meta def parse_bib : parser (string × rb_map string string) :=
 do parser.ch '\n' >> parser.ch '@' <|> parser.ch '@',
    tp ← parse_until_char '{',
    parser.ch '{',
-   id ← parse_comma_block,
+   parse_comma_block,
    eqs ← parser.sep_by (parser.ch '\n') (parse_until_char '\n'),
    let lns' := eqs.tail.map (parse_eq_line' ∘ strip_trailing_comma),
-   return (tp, rb_map.of_list lns'.filter_option)
+   return (tp, rb_map.of_list $ lns'.filter_map id)
 
 
 meta def split_char_list_single (delim : list char) : list char → list char → (list char × list char)
@@ -152,17 +147,6 @@ let (src, ref) := format_citation bibtype dict,
  ++ print_if_not_empty (λ t, ",\n  reference := \"" ++ t ++ "\"") ref
  ++ " }" 
 
-/-meta def format_document (bibtype : string) (dict : rb_map string string) : string :=
-let ((src, ref), yr) := (format_citation bibtype dict, dict.find' "year") in
-"{ authors   := [" ++ format_author_string (dict.find' "author") ++ "],
- title     := \"" ++ dict.find' "title" ++ "\",
- doi       := \"" ++ dict.find' "doi" ++ "\",
- source    := \"" ++ src ++ "\",
- year      := " ++ (if yr ≠ "" then "↑"++yr else "none") ++ ",
- arxiv     := \"\",
- url       := \"" ++ dict.find' "url" ++ "\", 
- reference := \"" ++ ref ++ "\" }" -/
-
 /-
 meta def format_meta_data (bibtype : string) (dict : rb_map string string) : string :=
 "{ description := \"\",
@@ -174,7 +158,6 @@ do s ← get_bib_string_tac search n,
    let ls := (split_string "\n\n" s).erase "\n",
    ls ← ls.mmap (λ s, do sum.inr (t, map) ← return $ parser.run_string parse_bib s, return (t, map)), 
    return ls
-
 
 meta def fill_bib_data_aux (formatter : string → rb_map string string → string) (s : pexpr) (n : ℕ) : tactic (list (string × string)) :=
  do s' ← to_expr ``(%%s : string) >>= eval_expr string,
@@ -219,26 +202,3 @@ meta def fill_document_from_arxiv : hole_command :=
   end }
 
 end bib_import
-
-example : document :=
-{ authors := [{ name := "Jeremy Avigad" }, { name := "Robert Y. Lewis" }, { name := "Cody Roux" }], 
-  title := "A heuristic prover for real inequalities", 
-  arxiv := "http://arxiv.org/abs/1404.4410v2" }
-
-example : document :=
-{ authors   := [{name := "Avigad, Jeremy"}, {name := "Lewis, Robert Y"}, {name := "Roux, Cody"}],
- title     := "A heuristic prover for real inequalities",
- doi       := "",
- source    := "International Conference on Interactive Theorem Proving",
- year      := ↑2014,
- arxiv     := "",
- url       := "", 
- reference := "International Conference on Interactive Theorem Proving, 61--76 (2014)" }
-
-
-example : document :=
-{ authors   := [{name := "Avigad, Jeremy"}, {name := "Lewis, Robert Y"}, {name := "Roux, Cody"}],
-  title     := "A heuristic prover for real inequalities",
-  source    := "Journal of Automated Reasoning",
-  year      := ↑2016,
-  reference := "Journal of Automated Reasoning 56:3, 367--386 (2016)" }

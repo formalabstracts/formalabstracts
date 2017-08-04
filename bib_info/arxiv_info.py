@@ -25,7 +25,6 @@ def parse_author(author):
     if af is not None:
         rv["institution"] = af.text
     return rv
-#    return '{ name := "' + nm + '"' + (', institution := "' + af + '"' if af else "") + ' }'
     
 
 def parse_dict_from_entry(entry):
@@ -49,12 +48,6 @@ def parse_dict_from_entry(entry):
         rv["arxiv"] = link.text
     return rv
 
-#    s = '{ title := "' + title + '''",
-#''' + \
-#        '  authors := [' + ','.join(ats) + '] }'
-#    return s
-
-
 def parse_entries(feed):
     entries = [format_document(parse_dict_from_entry(e)) for e in feed.findall('{http://www.w3.org/2005/Atom}entry')]
     entries = "\n---\n".join(entries)
@@ -67,22 +60,3 @@ if __name__ == '__main__':
     data = urllib.urlopen(quer).read()
     root = ET.fromstring(data)
     parse_entries(root)
-    
-#url = 'http://export.arxiv.org/api/query?search_query=all:lewis avigad heuristic&start=0&max_results=3'
-#data = urllib.urlopen(url).read()
-#root = ET.fromstring(data)
-
-#parse_entries(root)
-
-#print '---------------------'
-
-#for child in root:
-#    print child.tag, child.attrib, child.text
-
-
-#for e in root.findall('{http://www.w3.org/2005/Atom}entry'):
-#    print "got entry"
-#    for e2 in e.findall('{http://www.w3.org/2005/Atom}summary'):
-#        print "hi"
-#        print e2.text
-

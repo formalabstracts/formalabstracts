@@ -1,8 +1,7 @@
 import meta_data
        .toposes
        .realizability
-       ...smart_cmd_test.scholar_info
-
+       bib_info.scholar_info
 
 namespace Bauer_A_InjBaireNat
 
@@ -10,12 +9,11 @@ noncomputable theory
 
 def Bauer_A_InjBaireNat_paper : cite :=
 cite.Document
- { title     := "An injection from the Baire space to natural numbers",
-   authors   := [{name := "Bauer, Andrej"}],
-   doi       := "10.1017/S0960129513000406",
-   source    := "Mathematical Structures in Computer Science",
-   year      := ↑2015,
-   reference := "Mathematical Structures in Computer Science 25:7, 1484--1489 (2015)" }
+{ authors   := [{name := "Bauer, Andrej"}],
+  title     := "An injection from the Baire space to natural numbers",
+  source    := "Mathematical Structures in Computer Science",
+  year      := ↑2015,
+  reference := "Mathematical Structures in Computer Science 25:7, 1484--1489 (2015)" }
 
 -- we construct a partial combinatory algebra based on
 -- infinite-time Turing machines
@@ -23,14 +21,11 @@ unfinished J : PCA :=
 { description := "a partial-combinatory algebra constructured from infinite time turing machine",
   sources     := [cite.Item Bauer_A_InjBaireNat_paper "Section 3",
                   cite.Document 
-                  { title     := "Infinite time Turing machines",
-                    authors   := [{name := "Hamkins, Joel David"}],
-                    doi       := "10.1023/A:1021180801870",
+                  { authors   := [{name := "Hamkins, Joel David"}],
+                    title     := "Infinite time Turing machines",
                     source    := "Minds and Machines",
                     year      := ↑2002,
-                    arxiv     := "math/9808093",
-                    url       := "", 
-                    reference := "Minds and Machines 12:4, 521--539 (2002)" } ] }
+                    reference := "Minds and Machines 12:4, 521--539 (2002)" }] }
 
 definition RT_J := RT J
 
@@ -52,7 +47,7 @@ def fabstract : fabstract :=
   sources      := [Bauer_A_InjBaireNat_paper,
                    cite.Website "http://math.andrej.com/2011/06/15/constructive-gem-an-injection-from-baire-space-to-natural-numbers/", -- blog
                    cite.Website "https://vimeo.com/30368682" -- video of a talk about the paper
-  ],
+                  ],
   results      := [result.Construction J,
                    result.Construction Baire_to_N,
                    result.Proof Baire_to_N_is_mono] }
