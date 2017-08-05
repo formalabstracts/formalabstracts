@@ -1,8 +1,8 @@
 import meta_data
 
-namespace Szemeredi_Lemma
+open function
 
-def injective { α β : Type } ( f : α → β ) : Prop := ∀ x y : α, (f x = f y) → (x = y)
+namespace Szemeredi_Lemma
 
 private def subset_of_0_until_N_with_at_least_m_elements ( N m : ℕ ) ( P : fin N → Prop ) : Prop :=
 ∃ f : fin m → { x // P x }, injective f
