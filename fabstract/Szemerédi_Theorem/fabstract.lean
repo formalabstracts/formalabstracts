@@ -8,7 +8,7 @@ private def subset_of_0_until_N_with_at_least_m_elements ( N m : ℕ ) ( P : fin
 ∃ f : fin m → { x // P x }, injective f
 
 private def contains_arithmetic_progression_of_length' ( P : ℕ → Prop ) ( k : ℕ ) : Prop :=
-∃ n : ℕ, ∃ r > 1, ∀ i < k, P(n + i * r)
+∃ n : ℕ, ∃ r ≥ 1, ∀ i < k, P(n + i * r)
 
 private def contains_arithmetic_progression_of_length { N : ℕ } ( P : fin N → Prop ) ( k : ℕ ) : Prop :=
 contains_arithmetic_progression_of_length' (λ n, dite (n < N) (λ w, P ⟨ n, w ⟩ ) (λ w, false) ) k
@@ -25,6 +25,6 @@ definition fabstract : meta_data :=
     {name := "Endre Szemerédi"}
   ],
   primary := cite.URL "https://zbmath.org/?q=an:0303.10056",
-  results := [result.Proof Szemeredi_Lemma] }
+  results := [result.Proof Szemeredi_Theorem] }
 
 end Szemeredi_Theorem
