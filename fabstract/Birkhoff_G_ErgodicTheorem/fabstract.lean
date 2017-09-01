@@ -43,12 +43,17 @@ unfinished Birkhoffs_ergodic_theorem :
          almost_everywhere σ μ (λ x : X, time_average_exists σ μ T f x ∧ time_average σ μ T f x = space_average σ μ f) :=
 {description := "Birkhoff's ergodic theorem."}
 
-def fabstract : meta_data :=
-{description := "Birkhoff's ergodic theorem states that, under appropriate conditions, the space average of an integrable function f is equal to the time average of f wrt a measure preserting transformation T. This result was proved in a slightly different form by Birkhoff (1931), and stated and proved in this form by many others, including Halmos (1960) and Furstenberg (1981).",
-authors := [{name := "Harry Furstenberg"}],
-primary := cite.DOI "10.1515/9781400855162.59",
-results := [result.Proof @Birkhoffs_ergodic_theorem]
-}
+def furstenberg_source : document :=
+{ authors := [{name := "Harry Furstenberg"}],
+  title   := "Recurrence in Ergodic Theory",
+  year    := ↑1981,
+  doi     := "10.1515/9781400855162.59"}
+
+def fabstract : fabstract := 
+{ description  := "Birkhoff's ergodic theorem states that, under appropriate conditions, the space average of an integrable function f is equal to the time average of f wrt a measure preserting transformation T. This result was proved in a slightly different form by Birkhoff (1931), and stated and proved in this form by many others, including Halmos (1960) and Furstenberg (1981).",
+  contributors := [{name := "Robert Y. Lewis", homepage := "https://andrew.cmu.edu/user/rlewis1"}],
+  sources      := [cite.Document furstenberg_source],
+  results      := [result.Proof @Birkhoffs_ergodic_theorem] }
 
 
 end  Birkhoff_G_ErgodicTheorem

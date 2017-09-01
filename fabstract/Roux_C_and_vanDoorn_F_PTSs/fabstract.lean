@@ -4,6 +4,11 @@ import meta_data
 namespace Roux_C_and_vanDoorn_F_PTSs
 open pure_type_system sum
 
+def paper : document :=
+{ authors := [ {name := "Cody Roux"}, {name := "Floris van Doorn"} ],
+  title := "The structural theory of pure type systems",
+  doi := "10.1007/978-3-319-08918-8_25" }
+
 -- noncomputable theory
 
 /- We investigate combinations and extensions of Pure Type Systems
@@ -20,7 +25,7 @@ definition morphism (P Q : pure_type_system) : Type :=
 unfinished is_weakly_normalizing_domain :
 (Π P Q (f : morphism P Q) (HQ : is_weakly_normalizing Q),  is_weakly_normalizing P) :=
 { description := "It is easy to see that the domain of a morphism is weakly normalizing if the codomain is",
-  references := [cite.Ibidem] }
+  sources := [cite.Document paper] }
 
 /- The direct sum of PTSs -/
 definition direct_sum (P Q : pure_type_system) : pure_type_system :=
@@ -41,7 +46,7 @@ unfinished is_weakly_normalizing_direct_sum  :
   (Π P Q(HP : is_weakly_normalizing P) (HQ : is_weakly_normalizing Q),
     is_weakly_normalizing (direct_sum P Q)) :=
 { description := "It is normalizing if the original ones were",
-  references := [cite.Ibidem] }
+  sources := [cite.Document paper] }
 
 /- The direct sum with quantification over sorts in P added. This can be interpreted as the
   Q-logic of P-terms -/
@@ -64,7 +69,7 @@ unfinished is_weakly_normalizing_forall :
   (Π P Q (HP : is_weakly_normalizing P) (HQ : is_weakly_normalizing Q),
      is_weakly_normalizing (forall_PTS P Q)) :=
 { description := "It is normalizing if the original ones were",
-  references := [cite.Ibidem] }
+  sources := [cite.Document paper] }
 
 /- The predicative polymorphic extension of P -/
 definition poly (P : pure_type_system) : pure_type_system :=
@@ -84,16 +89,12 @@ definition poly (P : pure_type_system) : pure_type_system :=
 unfinished is_weakly_normalizing_poly :
   (Π P (HP : is_weakly_normalizing P), is_weakly_normalizing (poly P)) :=
 { description := "It is normalizing if the original ones was",
-  references := [cite.Ibidem] }
+  sources := [cite.Document paper] }
 
-def fabstract : meta_data := {
+def fabstract : fabstract := {
   description := "We investigate possible extensions of arbitrary given Pure Type Systems with additional sorts and rules which preserve the normalization property.",
-  authors := [
-    {name := "Cody Roux"},
-    {name := "Floris van Doorn"}
-  ],
-  primary := cite.DOI "10.1007/978-3-319-08918-8_25",
-  secondary := [],
+  contributors := [{name := "Floris van Doorn"}],
+  sources := [cite.Document paper],
   results := [result.Proof is_weakly_normalizing_domain,
               result.Proof is_weakly_normalizing_direct_sum,
               result.Proof is_weakly_normalizing_forall,

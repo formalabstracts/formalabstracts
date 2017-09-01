@@ -1,11 +1,12 @@
 import meta_data
        ...folklore.real_axiom
+       data.vector
 
 namespace Hales_T_et_al_Kepler_conj
 
 noncomputable theory
 
-open classical nat set list vector real_axiom
+open classical nat set list real_axiom vector
 
 -- cardinality of finite sets.
 -- Surely this must exist somewhere. But where?
@@ -53,22 +54,8 @@ def open_ball {n : ℕ} (x0 : vector ℝ n) (r : ℝ) : (set (vector ℝ n)) :=
 -- this is a temporary workaround (https://github.com/leanprover/lean/commit/16e7976b1a7e2ce9624ad2df363c007b70d70096)
 def origin₃ : vector ℝ 3 := 0::0::0::nil--[0,0,0]
 
--- TODO: provide the theorem number from the paper
-unfinished Kepler_conjecture :
-(∀ (V : set (vector ℝ 3)), packing V →
-  (∃ (c : ℝ), ∀ (r : ℝ), (r ≥ 1) ->
-  (↑(card(V ∩ open_ball origin₃ r)) ≤ pi* r^3/real_sqrt(18) + c*r^2))) :=
-{ description := "Proof of Kepler conjecture",
-  primary := cite.Item cite.Ibidem "Theorem X.Y" }
-
-def Hales_T_et_al_Kepler_conj : fabstract :=
-{
-
-}
-
-/- {
-  description := "This article announces the formal proof of the Kepler conjecture on dense sphere packings in a combination of the HOL Light and Isabelle/HOL proof assistants.  It represents the primary result of the now completed Flyspeck project.",
-  authors := [
+def hales_et_al_paper : document :=
+{ authors := [
     {name := "Thomas Hales"},
     {name := "Mark Adams"},
     {name := "Gertrud Bauer"},
@@ -92,10 +79,21 @@ def Hales_T_et_al_Kepler_conj : fabstract :=
     {name := "Ky Vu"},
     {name := "Roland Zumkelle"}
   ],
-  primary := cite.Document { doi := "/10.1017/fmp.2017.1" },
-  results := [result.Proof Kepler_conjecture]
-}-/
+ title := "A formal proof of the Kepler Conjecture",
+ doi := "/10.1017/fmp.2017.1" }
 
-#print fabstract
+-- TODO: provide the theorem number from the paper
+unfinished Kepler_conjecture :
+(∀ (V : set (vector ℝ 3)), packing V →
+  (∃ (c : ℝ), ∀ (r : ℝ), (r ≥ 1) ->
+  (↑(card(V ∩ open_ball origin₃ r)) ≤ pi* r^3/real_sqrt(18) + c*r^2))) :=
+{ description := "Proof of Kepler conjecture",
+  sources := [cite.Item (cite.Document hales_et_al_paper) "Theorem X.Y"] }
+
+def Hales_T_et_al_Kepler_conj : fabstract :=
+{ contributors := [{name := "Thomas Hales"}],
+  description := "This article announces the formal proof of the Kepler conjecture on dense sphere packings in a combination of the HOL Light and Isabelle/HOL proof assistants.  It represents the primary result of the now completed Flyspeck project.",
+  results := [result.Proof Kepler_conjecture]
+}
 
 end Hales_T_et_al_Kepler_conj
