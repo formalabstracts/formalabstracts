@@ -132,17 +132,6 @@ meta instance : has_to_format meta_data :=
 structure {u} fabstract extends meta_data :=
 (results : list (result.{u}))
 
-/-
-Users will want to assume that a certain objects exist,
-without constructing them. These objects could be types (e.g. the
-real numbers) or inhabitants of types (e.g. pi : ℝ). When we add
-constants like this, we tag them with informal descriptions
-(of what the structure is, or how the construction goes)
-and references to the literature.
--/
-/-structure unfinished_meta_data :=
-(description : string)
-(references : list cite := [])-/
 
 section user_commands
 open lean.parser tactic interactive
@@ -155,9 +144,6 @@ open lean.parser tactic interactive
     do mdp ← meta_data_tag.get_param n,
        to_expr ``(%%mdp : meta_data) >> return ()) }
 
-@[meta_data_tag {description := "this is meta_data", contributors := [{name := "Robert Lewis"}]}]
-def foo : ℕ := 2
-
 meta def get_meta_data (n : name) : tactic meta_data :=
 do mdp ← meta_data_tag.get_param n,
    to_expr ``(%%mdp : meta_data) >>= eval_expr meta_data
@@ -168,14 +154,10 @@ do mdp ← meta_data_tag.get_param n,
 
 meta def add_unfinished (nm : name) (tp data : expr ff) : command :=
 do eltp ← to_expr tp,
-   --eldt ← to_expr ``(%%data : meta_data),
    let axm := declaration.ax nm [] eltp,
    add_decl axm,
    unfinished_attr.set_param nm () tt,
    meta_data_tag.set_param nm data tt
-/-   let meta_data_name := nm.append `_meta_data,
-   add_decl $ mk_definition meta_data_name []
-                  `(meta_data) eldt-/
 
 @[user_command]
 meta def unfinished_cmd (meta_info : decl_meta_info) (_ : parse $ tk "unfinished") : lean.parser unit :=
@@ -187,26 +169,10 @@ do nm ← ident,
    add_unfinished nm tp struct
 
 
-#check @user_attribute
-#check meta_data
-#check lean.parser.pexpr
-
-/-meta def meta_data_cache_aux (f : name → tactic pexpr) : user_attribute_cache_cfg (rb_map name meta_data) :=
-{ mk_cache := λ l, rb_map.of_list <$> l.mmap (λ n, do mdp ← f n, md ← to_expr mdp >>= eval_expr meta_data, return (n, md)),
-  dependencies := [] }-/
-
-
-
 meta def print_all_unfinished : command :=
 do ns ← attribute.get_instances `unfinished,
    ns.mmap (λ n, do trace n, get_meta_data n >>= trace),
    return ()
-
-
-open expr
-
-/-meta def print_unfinished_dependencies_aux : expr → command
-| (const nm _) := (has_attribute `unfinished nm >> (do trace nm, get_meta_data nm >>= trace)) <|> -/
 
 
 end user_commands
