@@ -50,10 +50,12 @@ structure author :=
 (homepage : string := "")
 (email : string := "")
 
+meta instance : has_to_format author := ⟨λ a, a.name⟩
+
 structure document :=
 (title : string)
 (authors : list author)
-(doi : string := "") -- write evertying starting from the DOI prefix (which is 10)
+(doi : string := "") -- write everything starting from the DOI prefix (which is 10)
 (arxiv : string := "") -- write these as Arxiv "1707.04448"
 (url : string := "")
 (source : string := "") -- journal or book title
@@ -101,6 +103,14 @@ inductive cite
 | Folklore : cite
 | Item : cite → string → cite -- refer to specific item in a source
 
+private meta def cite_to_format : cite → format
+| (cite.Document d) := "Document"
+| (cite.Website s) := s
+| (cite.Folklore) := "Folklore"
+| (cite.Item c s) := "(" ++ cite_to_format c ++ ") item " ++ s
+
+meta instance : has_to_format cite := ⟨cite_to_format⟩
+
 /-
 TODO: This definition forces all the results in a particular fabstract
 to lie in the same universe.
@@ -115,6 +125,9 @@ structure meta_data :=
 (description : string) -- short description of the contents
 (contributors : list author := []) -- list of contributors
 (sources : list cite := [])
+
+meta instance : has_to_format meta_data :=
+⟨λ md, "{ description : " ++ md.description ++ "\n  contributors : " ++ to_fmt md.contributors ++ "\n  sources : " ++ to_fmt md.sources ++ " }"⟩
 
 structure {u} fabstract extends meta_data :=
 (results : list (result.{u}))
@@ -134,14 +147,35 @@ and references to the literature.
 section user_commands
 open lean.parser tactic interactive
 
+@[user_attribute] meta def meta_data_tag : user_attribute unit pexpr :=
+{ name := `meta_data_tag,
+  descr := "",
+  parser := types.texpr,--lean.parser.pexpr,
+  after_set := some (λ n _ _,
+    do mdp ← meta_data_tag.get_param n,
+       to_expr ``(%%mdp : meta_data) >> return ()) }
+
+@[meta_data_tag {description := "this is meta_data", contributors := [{name := "Robert Lewis"}]}]
+def foo : ℕ := 2
+
+meta def get_meta_data (n : name) : tactic meta_data :=
+do mdp ← meta_data_tag.get_param n,
+   to_expr ``(%%mdp : meta_data) >>= eval_expr meta_data
+
+@[user_attribute] meta def unfinished_attr : user_attribute unit unit :=
+{ name := `unfinished,
+  descr := "This declaration is missing a definition" }
+
 meta def add_unfinished (nm : name) (tp data : expr ff) : command :=
 do eltp ← to_expr tp,
-   eldt ← to_expr ``(%%data : meta_data),
+   --eldt ← to_expr ``(%%data : meta_data),
    let axm := declaration.ax nm [] eltp,
    add_decl axm,
-   let meta_data_name := nm.append `_meta_data,
+   unfinished_attr.set_param nm () tt,
+   meta_data_tag.set_param nm data tt
+/-   let meta_data_name := nm.append `_meta_data,
    add_decl $ mk_definition meta_data_name []
-                  `(meta_data) eldt
+                  `(meta_data) eldt-/
 
 @[user_command]
 meta def unfinished_cmd (meta_info : decl_meta_info) (_ : parse $ tk "unfinished") : lean.parser unit :=
@@ -151,5 +185,28 @@ do nm ← ident,
    tk ":=",
    struct ← lean.parser.pexpr,
    add_unfinished nm tp struct
+
+
+#check @user_attribute
+#check meta_data
+#check lean.parser.pexpr
+
+/-meta def meta_data_cache_aux (f : name → tactic pexpr) : user_attribute_cache_cfg (rb_map name meta_data) :=
+{ mk_cache := λ l, rb_map.of_list <$> l.mmap (λ n, do mdp ← f n, md ← to_expr mdp >>= eval_expr meta_data, return (n, md)),
+  dependencies := [] }-/
+
+
+
+meta def print_all_unfinished : command :=
+do ns ← attribute.get_instances `unfinished,
+   ns.mmap (λ n, do trace n, get_meta_data n >>= trace),
+   return ()
+
+
+open expr
+
+/-meta def print_unfinished_dependencies_aux : expr → command
+| (const nm _) := (has_attribute `unfinished nm >> (do trace nm, get_meta_data nm >>= trace)) <|> -/
+
 
 end user_commands
