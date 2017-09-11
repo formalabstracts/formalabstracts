@@ -6,6 +6,7 @@ namespace Birkhoff_G_ErgodicTheorem
 
 variables {X : Type} (σ : set (set X)) [sigma_algebra σ] (μ : set X → ℝ∞) [hms : measure_space σ μ]
 
+@[meta_data {description := "A transformation is measure preserving if the measure of the image of every set is equal to the measure of the set."}]
 def measure_preserving (T : X → X) := ∀ s ∈ σ, μ (image T s) = μ s
 
 def {u} function.pow {α : Type u} (f : α → α) : ℕ → (α → α)
@@ -18,6 +19,7 @@ def {u} nth_preimage {α : Type u} (f : α → α) : ℕ → (set α → set α)
 
 variable (T : X → X)
 
+@[meta_data {description := "A transformation is ergodic if the only sets that map to themselves are null or conull."}]
 def ergodic [finite_measure_space σ μ] := ∀ E ∈ σ, nth_preimage T 1 E = E → μ E = 0 ∨ μ E = of_real (univ_measure σ μ)
 
 variables (f : X → ℝ) [lebesgue_integrable σ μ f]
@@ -29,10 +31,12 @@ def time_average_partial (x : X) : ℕ → ℝ :=
 def time_average_exists (x : X) : Prop :=
 nat_limit_at_infinity_exists (time_average_partial σ μ T f x)
 
+@[meta_data {description := "The time average of f under T at x is the limit of (1/n)*Σ{k=1...n} f(T^k(x)) as n→∞"}]
 def time_average (x : X) : ℝ := 
 nat_limit_at_infinity (time_average_partial σ μ T f x)
 omit hms
 
+@[meta_data {description := "The space average of f is (1/μ(univ))*∫f dμ"}]
 def space_average [finite_measure_space σ μ] [lebesgue_integrable σ μ f] := (1/univ_measure σ μ)*lebesgue_integral σ μ f
 
 
