@@ -137,7 +137,7 @@ section user_commands
 open lean.parser tactic interactive
 
 @[user_attribute] meta def meta_data_tag : user_attribute unit pexpr :=
-{ name := `meta_data_tag,
+{ name := `meta_data,
   descr := "",
   parser := types.texpr,--lean.parser.pexpr,
   after_set := some (λ n _ _,
@@ -173,6 +173,5 @@ meta def print_all_unfinished : command :=
 do ns ← attribute.get_instances `unfinished,
    ns.mmap (λ n, do trace n, get_meta_data n >>= trace),
    return ()
-
 
 end user_commands
