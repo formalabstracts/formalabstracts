@@ -25,8 +25,7 @@ structure terminal_object {C : category} :=
 
 -- exponentials in a category
 unfinished missing_exponential_structure : Type :=
-{ description := "remaining properties of exponentials",
-  references := []
+{ description := "remaining properties of exponentials"
 }
 
 structure exponential {C : category} (A B : C.obj) :=

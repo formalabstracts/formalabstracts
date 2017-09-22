@@ -61,7 +61,7 @@ def SAT : set (list bool) :=
 /- SAT is in NP -/
 unfinished SAT_NP : SAT ∈ NP :=
 { description := "SAT is an NP-problem",
-  references := [cite.Item cite.Ibidem "TODO"] }
+  sources := [cite.Website "TODO(@digama0)"] }
 
 def P_reducible (L₁ L₂ : set (list bool)) : Prop :=
 ∃ f, P_computable f ∧ L₁ = {x | f x ∈ L₂}
@@ -69,13 +69,12 @@ def P_reducible (L₁ L₂ : set (list bool)) : Prop :=
 /- Any problem in NP can be polynomial-time reduced to SAT -/
 unfinished SAT_reducibility : ∀ L ∈ NP, P_reducible L SAT :=
 { description := "Any problem in NP can be polynomial-time reduced to SAT",
-  references := [cite.Item cite.Ibidem "TODO"] }
+  sources := [cite.Website "TODO(@digama0)"] }
 
-def fabstract : meta_data :=
+def fabstract : fabstract :=
 { description := "A conjecture that the complexity classes P and NP are unequal.",
-  authors := [{name := "Stephen A. Cook"}],
-  primary := cite.DOI "10.1145/800157.805047",
-  secondary := [],
+  contributors := [{name := "Mario Carneiro"}],
+  sources :=[cite.Document {title := "The Complexity of theorem-proving procedures", authors := [{name := "Stephen Cook"}], doi := "10.1145/800157.805047"}],
   results := [result.Proof SAT_NP,
               result.Proof SAT_reducibility,
               result.Conjecture (P ≠ NP)] }

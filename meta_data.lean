@@ -37,9 +37,31 @@
        }
 -/
 inductive {u} result : Type (u+1)
-  | Proof : Π {P : Prop}, P → result
-  | Construction : Π {A : Type u}, A → result
-  | Conjecture : Prop → result
+| Proof : Π {P : Prop}, P → result
+| Construction : Π {A : Type u}, A → result
+| Conjecture : Prop → result
+
+
+/- A datatype describing a person, normally an author. You may leave out
+   most fields, but name has to be there. -/
+structure author :=
+(name : string)
+(institution : string := "")
+(homepage : string := "")
+(email : string := "")
+
+meta instance : has_to_format author := ⟨λ a, a.name⟩
+
+structure document :=
+(title : string)
+(authors : list author)
+(doi : string := "") -- write everything starting from the DOI prefix (which is 10)
+(arxiv : string := "") -- write these as Arxiv "1707.04448"
+(url : string := "")
+(source : string := "") -- journal or book title
+(year : option nat := none)
+(reference : string := "") -- reference formatted with title, volume, issue, pages, year, etc
+
 
 /- There will be many citations everywhere, so it is a good idea
    to introduce a datatype for them early on. Here are some typical
@@ -76,20 +98,18 @@ inductive {u} result : Type (u+1)
 
 -/
 inductive cite
-  | DOI : string → cite -- write everything starting from the DOI prefix (which is 10)
-  | Arxiv : string → cite -- write these as Arxiv "1707.04448"
-  | URL : string → cite
-  | Reference : string → cite
-  | Ibidem : cite -- refer to the primary source of a fabstract
-  | Item : cite → string → cite -- refer to specific item in a source
+| Document : document → cite
+| Website : string → cite
+| Folklore : cite
+| Item : cite → string → cite -- refer to specific item in a source
 
-/- A datatype describing a person, normally an author. You may leave out
-   most fields, but name has to be there. -/
-structure author :=
-    (name : string)
-    (institution : string := "")
-    (homepage : string := "")
-    (email : string := "")
+private meta def cite_to_format : cite → format
+| (cite.Document d) := "Document"
+| (cite.Website s) := s
+| (cite.Folklore) := "Folklore"
+| (cite.Item c s) := "(" ++ cite_to_format c ++ ") item " ++ s
+
+meta instance : has_to_format cite := ⟨cite_to_format⟩
 
 /-
 TODO: This definition forces all the results in a particular fabstract
@@ -101,36 +121,43 @@ giving multiple equivalent sources (say a journal paper and the ArXiv version)
 makes it impossible to resolve conflicts when they arise. The primary source
 is always to be taken as the official one.
 -/
-structure {u} meta_data : Type (u+1) :=
-    (description : string) -- short description of the contents
-    (authors : list author) -- list of authors
-    (primary : cite) -- primary source (the most official one)
-    (secondary : list cite := []) -- auxiliary and alternative sources (such as ArXiv equivalent)
-    (results : list (result.{u})) -- the list of results
+structure meta_data :=
+(description : string) -- short description of the contents
+(contributors : list author := []) -- list of contributors
+(sources : list cite := [])
 
-/-
-Users will want to assume that a certain objects exist,
-without constructing them. These objects could be types (e.g. the
-real numbers) or inhabitants of types (e.g. pi : ℝ). When we add
-constants like this, we tag them with informal descriptions
-(of what the structure is, or how the construction goes)
-and references to the literature.
--/
-structure unfinished_meta_data :=
-    (description : string)
-    (references : list cite := [])
+meta instance : has_to_format meta_data :=
+⟨λ md, "{ description : " ++ md.description ++ "\n  contributors : " ++ to_fmt md.contributors ++ "\n  sources : " ++ to_fmt md.sources ++ " }"⟩
+
+structure {u} fabstract extends meta_data :=
+(results : list (result.{u}))
+
 
 section user_commands
 open lean.parser tactic interactive
 
+@[user_attribute] meta def meta_data_tag : user_attribute unit pexpr :=
+{ name := `meta_data,
+  descr := "",
+  parser := types.texpr,--lean.parser.pexpr,
+  after_set := some (λ n _ _,
+    do mdp ← meta_data_tag.get_param n,
+       to_expr ``(%%mdp : meta_data) >> return ()) }
+
+meta def get_meta_data (n : name) : tactic meta_data :=
+do mdp ← meta_data_tag.get_param n,
+   to_expr ``(%%mdp : meta_data) >>= eval_expr meta_data
+
+@[user_attribute] meta def unfinished_attr : user_attribute unit unit :=
+{ name := `unfinished,
+  descr := "This declaration is missing a definition" }
+
 meta def add_unfinished (nm : name) (tp data : expr ff) : command :=
 do eltp ← to_expr tp,
-   eldt ← to_expr ``(%%data : unfinished_meta_data),
    let axm := declaration.ax nm [] eltp,
    add_decl axm,
-   let meta_data_name := nm.append `_meta_data,
-   add_decl $ mk_definition meta_data_name []
-                  `(unfinished_meta_data) eldt
+   unfinished_attr.set_param nm () tt,
+   meta_data_tag.set_param nm data tt
 
 @[user_command]
 meta def unfinished_cmd (meta_info : decl_meta_info) (_ : parse $ tk "unfinished") : lean.parser unit :=
@@ -140,5 +167,11 @@ do nm ← ident,
    tk ":=",
    struct ← lean.parser.pexpr,
    add_unfinished nm tp struct
+
+
+meta def print_all_unfinished : command :=
+do ns ← attribute.get_instances `unfinished,
+   ns.mmap (λ n, do trace n, get_meta_data n >>= trace),
+   return ()
 
 end user_commands

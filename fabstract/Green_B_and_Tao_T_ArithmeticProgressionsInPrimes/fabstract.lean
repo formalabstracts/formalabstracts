@@ -10,13 +10,15 @@ axiom arithmetic_progressions_in_primes :
 
 -- They also prove various stronger statements; this is an important and easy to state consequence.
 
-definition fabstract : meta_data :=
+definition green_tao_doc : document :=
+{ authors := [{name := "Ben Green"}, {name := "Terry Tao"}],
+  title := "The primes contain arbitrarily long arithmetic progressions",
+  doi := "10.4007/annals.2008.167.481" }
+
+def fabstract : fabstract :=
 { description := "The primes contain arbitrarily long arithmetic progressions",
-  authors := [
-    {name := "Ben Green"},
-    {name := "Terry Tao"}
-  ],
-  primary := cite.DOI "10.4007/annals.2008.167.481",
-  results := [result.Proof arithmetic_progressions_in_primes] }
+  contributors := [{name := "Scott Morrison"}],
+  results := [result.Proof arithmetic_progressions_in_primes],
+  sources := [cite.Document green_tao_doc] }
 
 end Green_B_and_Tao_T_ArithmeticProgressionsInPrimes

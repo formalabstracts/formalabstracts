@@ -109,7 +109,7 @@ local notation Γ ` ⊢ ` t ` : ` T := typ Γ t T
 -- where "Γ ⊢ t : T" := (typ Γ t T) : UT_scope.
 
 definition is_well_typed (t : term) : Prop :=
-∃(Γ : context) (A : term), Γ ⊢ t : A
+∃(Γ : context) (A : term), typ Γ t A -- Γ ⊢ t : A
 
 parameter (PTS)
 

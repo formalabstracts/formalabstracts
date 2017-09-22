@@ -14,7 +14,7 @@ noncomputable theory
 
 namespace real_axiom
 
-open classical nat int list vector
+open classical nat int list
 local attribute [instance] prop_decidable
 universe u
 

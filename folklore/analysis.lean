@@ -7,7 +7,7 @@ noncomputable theory
 -- In Lean 2, limits were defined much more generally using filters.
 
 def real_approaches_at (f : ℝ → ℝ) (a b : ℝ) : Prop :=
-∀ ε > 0, ∃ δ, ∀ x, 0 < abs (x - δ) → abs (f x - a) < ε
+∀ ε > 0, ∃ δ, ∀ x, 0 < abs (x - a) → abs (x - a) < δ → abs (f x - b) < ε
 
 def real_approaches_at_infinity (f : ℝ → ℝ) (b : ℝ) : Prop :=
 ∀ ε > 0, ∃ N, ∀ x > N, abs (f x - b) < ε

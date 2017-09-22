@@ -1,6 +1,7 @@
 [package]
 name = "formalabstracts"
 version = "0.1"
+lean_version = "master"
 
 [dependencies]
-stdlib = {git = "https://github.com/leanprover/stdlib", rev = "64b61515b750c85ccb4f9871a6508bdc16e9dddc"}
+mathlib = {git = "https://github.com/leanprover/mathlib.git", rev = "b8904250df6dc6fa9127cb114a9a0cf316a14a4d"}

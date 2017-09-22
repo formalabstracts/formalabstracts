@@ -62,7 +62,7 @@ begin
     ginduction TM cur head with e,
     { intro e, injection e },
     { cases a with s' a, cases a with v d,
-      simp [next], intro i, injection i, subst h,
+      simp [next], intro i, injection i with h, subst h,
       exact ⟨to_bool_true e⟩ } },
   { intro h, induction h,
     simp [next],

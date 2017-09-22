@@ -12,11 +12,12 @@ run_cmd tactic.skip -- temporary fix
 unfinished PCA : Type :=
   {
     description := "partial combinatory algebra",
-    references := [cite.URL "https://ncatlab.org/nlab/show/partial+combinatory+algebra"]
+    sources     := [cite.Website "https://ncatlab.org/nlab/show/partial+combinatory+algebra"]
   }
 
-unfinished RT : PCA → topos :=
+
+unfinished RT : (PCA → topos) :=
   {
     description := "realizability topos",
-    references := [cite.URL "https://ncatlab.org/nlab/show/realizability+topos"]
+    sources     := [cite.Website "https://ncatlab.org/nlab/show/realizability+topos"]
   }
