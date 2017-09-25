@@ -1,7 +1,6 @@
 /-
 Convexity and polytopes following HOL Light
-
-Only done for R^n here.
+generalized to a general vector space over ℝ
 -/
 
 import order.filter data.set meta_data data.list data.vector

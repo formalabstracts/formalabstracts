@@ -1,27 +1,38 @@
 /-
 Metric Spaces following HOL Light.
 A topology and metric encompass the full type, not a subset.
+
+Some overlap with mathlib metric_space.lean and topological_space.lean
+HOL Light fields have been renamed to make merging easy, 
+once those files are stable.
+Here we use .real_axiom rather than reals from mathlib.
+
 -/
 
-import data.set meta_data data.list data.vector .real_axiom
+import order.filter data.set meta_data data.list data.vector
+       .real_axiom .measure_theory 
+
 
 noncomputable theory
 
 namespace metric
 
-open set classical nat int list vector real_axiom
+open set filter classical nat int list vector real_axiom 
 
 local attribute [instance] prop_decidable
 
 universes u v w
 
-variables {α : Type} { β : Type}
+variables {α : Type u} { β : Type u}
 
-def preimage (f : α → β) (s : set β) :=
-{ x | f x ∈ s}
+--def preimage (f : α → β) (s : set β) :=
+--{ x | f x ∈ s}
 
--- perhaps this should be a default coercion
-instance coe_set {α : Type} {β : Type} [has_coe α β] : has_coe (set α) (set β) := 
+--def sInter (s : set (set α)) : set α := {t ∈ ⋃₀ s | ∀ a ∈ s, t ∈ a}
+--prefix `∩₀`:110 := sInter
+
+
+instance coe_set {α : Type u} {β : Type u} [has_coe α β] : has_coe (set α) (set β) := 
 ⟨ (λ S : set α, λ b : β, ∃ a ∈ S, has_coe.coe β a = b) ⟩
 
 -- topology 
@@ -29,7 +40,6 @@ instance coe_set {α : Type} {β : Type} [has_coe α β] : has_coe (set α) (set
 structure topological_space (α : Type u) : Type u :=
 (is_open : set(set α))
 (is_open_univ : univ ∈ is_open)
-(is_open_empty : ∅ ∈ is_open)
 (is_open_inter : ∀ s ∈ is_open, ∀ t ∈ is_open, s ∩ t ∈ is_open)
 (is_open_sUnion : ∀ k ⊆ is_open, ⋃₀ k ∈ is_open)
 
@@ -37,98 +47,108 @@ attribute [class] topological_space
 
 variables (X : topological_space α) (Y : topological_space β) (S : set α)
 
-def open_in := S ∈ X.is_open
+def is_open := S ∈ X.is_open
 
-def closed_in := (- S) ∈ X.is_open
+def is_closed := (- S) ∈ X.is_open
 
-unfinished discrete_topological_space_exists : 
-Π (α : Type), (∃ X : topological_space α, X.is_open = (λ ( x : set α), true)) :=
-{ description := "on each type there exists a unique discrete topological_space" }
+-- unfinished does not allow universes, see comments in real_axiom.lean:
 
-def discrete_topological_space {α : Type} : topological_space α :=
+axiom  discrete_topological_space_exists :
+Π (α : Type u), (∃! X : topological_space α, X.is_open = (λ ( x : set α), true)) 
+
+-- { description := "on each type there exists a unique discrete topological_space" }
+
+def discrete_topological_space {α : Type u} : topological_space α :=
 classical.some (discrete_topological_space_exists α)
 
-unfinished subtopological_space_exists : 
-Π {α : Type} (X : topological_space α) (u : set α), 
-(∃ (Y : topological_space (subtype u)), { Uy | ∃ Ux ∈ X.is_open, Ux ∩ u = Uy } = Y.is_open) :=
-{ description := "for each topological_space and subset, there exists a unique induced subtopological_space" }
+axiom subtopological_space_exists : 
+Π {α : Type u} (X : topological_space α) (u : set α), 
+(∃! (Y : topological_space (subtype u)), { Uy | ∃ Ux ∈ X.is_open, Ux ∩ u = Uy } = Y.is_open) 
+-- :=
+-- { description := "for each topological_space and subset, there exists a unique induced subtopological_space" }
 
 def subtopological_space : topological_space (subtype S) := 
 classical.some (subtopological_space_exists X S)
 
-def closure_of : set α :=
-{ x | ∀ t,  x ∈ t ∧ open_in X t → ∃ y ∈ S, y ∈ t }
+def closure : set α :=
+{ x | ∀ t,  x ∈ t ∧ is_open X t → ∃ y ∈ S, y ∈ t }
 
-def interior_of : set α :=
+def interior : set α :=
 { x | ∃ t ∈ X.is_open, x ∈ t ∧ t ⊆ S }
 
-def frontier_of : set α :=
-closure_of X S \ interior_of X S
+def frontier : set α :=
+closure X S \ interior X S
 
--- skipping material on nets, do it with filters instead...
+def nbds (a : α) : filter α := (⨅ s ∈ {s : set α | a ∈ s ∧ is_open X s}, principal s)
 
-structure metric_space (α : Type) : Type :=
-(d : α → α → ℝ)
-(non_negative : ∀ x y, 0 ≤ d x y)
-(zero : ∀ x y, d x y = 0 → (x = y))
-(symmetry : ∀ x y, d x y = d y x)
-(triangle_ineq : ∀ x y z, d x z ≤ d x y + d y z)
+-- skipping material on nets, do it with filters instead 
+-- as in Isabelle, Coq, etc.
 
-variable (m : metric_space α)
+structure metric_space (α : Type u) : Type u :=
+(dist : α → α → ℝ)
+(non_negative : ∀ x y, 0 ≤ dist x y)
+(zero : ∀ x y, dist x y = 0 → (x = y))
+(dist_comm : ∀ x y, dist x y = dist y x)
+(triangle_ineq : ∀ x y z, dist x z ≤ dist x y + dist y z)
 
--- open metric_space ball % todo mball -> ball
-def mball (x : α) (r : ℝ) : (set α) :=
-{y : α | m.d x y < r}
+attribute [class] metric_space
 
-unfinished submetric_exists :
-Π {α : Type} (m: metric_space α) (s: set α),
-(∃ (X : metric_space (subtype s)), ∀ x y, X.d x y = m.d x y) :=
-{ description := "a metric uniquely restricts to a metric on each subset" }
+def open_ball (m: metric_space α) (x : α) (r : ℝ) : (set α) :=
+{y : α | m.dist x y < r}
 
-def submetric (s : set α) : (metric_space (subtype s)) :=
+
+
+axiom submetric_exists :
+Π {α : Type u} (m: metric_space α) (s: set α),
+(∃! (X : metric_space (subtype s)), ∀ x y, X.dist x y = m.dist x y) 
+-- { description := "a metric uniquely restricts to a metric on each subset" }
+
+def submetric (m : metric_space α) (s : set α) : (metric_space (subtype s)) :=
 classical.some (submetric_exists m s)
 
-unfinished mtopological_space_exists :
-Π {α : Type} (m : metric_space α),
-(∃ (X : topological_space α), X.is_open = {u | ∀ x ∈ u, ∃ r > 0, mball m x r ⊆ u}) :=
-{ description := "every metric determines a unique topological_space" }
+axiom mtopological_space_exists :
+Π {α : Type u} (m : metric_space α),
+(∃! (X : topological_space α), X.is_open = {u | ∀ x ∈ u, ∃ r > 0, open_ball m x r ⊆ u}) 
+-- { description := "every metric determines a unique topological_space" }
 
-def mtopological_space : (topological_space α) :=
+def mtopological_space (m : metric_space α) : (topological_space α) :=
 classical.some (mtopological_space_exists m)
 
--- closed metric_space ball
-def mcball (x : α) (r : ℝ) : (set α) :=
-{y : α | m.d x y ≤ r}
+instance : has_coe (metric_space α) (topological_space α) :=
+⟨ mtopological_space ⟩
 
-unfinished discrete_metric_exists :
-Π (α : Type),
-(∃ (X : metric_space α), ∀ x y, X.d x y = if x=y then 0 else 1) :=
-{ description := "the discrete metric is a metric" }
+def closed_ball (m : metric_space α) (x : α) (r : ℝ) : (set α) :=
+{y : α | m.dist x y ≤ r}
 
-def discrete_metric (α : Type) : (metric_space α) :=
+axiom discrete_metric_exists :
+Π (α : Type u),
+(∃! (X : metric_space α), ∀ x y, X.dist x y = if x=y then 0 else 1) 
+-- { description := "the discrete metric is a metric" }
+
+def discrete_metric (α : Type u) : (metric_space α) :=
 classical.some (discrete_metric_exists α)
 
-def msphere (x : α) (r : ℝ) : (set α) :=
-{y : α | m.d x y = r}
+def sphere (m : metric_space α) (x : α) (r : ℝ) : (set α) :=
+{y : α | m.dist x y = r}
 
-def mbounded :=
-(∃ x r, S ⊆ mcball m x r)
+def bounded (m : metric_space α) :=
+(∃ x r, S ⊆ closed_ball m x r)
 
 def compact_in :=
-(∀ U, (∀ u ∈ U, open_in X u) ∧ (S ⊆ ⋃₀ U) → (∃ V, finite V ∧ V ⊆ U ∧ S ⊆ ⋃₀ V))
+(∀ U, (∀ u ∈ U, is_open X u) ∧ (S ⊆ ⋃₀ U) → (∃ V, finite V ∧ V ⊆ U ∧ S ⊆ ⋃₀ V))
 
 def compact_space :=
 compact_in X univ
 
 def connected_space :=
-(¬(∃ e1 e2, open_in X e1 ∧ open_in X e2 ∧ e1 ∪ e2 = univ  ∧ e1 ∩ e2 = ∅ 
+(¬(∃ e1 e2, is_open X e1 ∧ is_open X e2 ∧ e1 ∪ e2 = univ  ∧ e1 ∩ e2 = ∅ 
   ∧ ¬(e1 = ∅) ∧ ¬(e2 = ∅)))
 
 def connected_in :=
 connected_space (subtopological_space X S)
 
 def neighbourhood_base_at (x : α) (P : set (set α)) (X : topological_space α) : Prop :=
-(∀ w, open_in X w ∧ x ∈ w → ∃ u v, open_in X u ∧ v ∈ P ∧ x ∈ u ∧ u ⊆ v ∧ v ⊆ w) 
+(∀ w, is_open X w ∧ x ∈ w → ∃ u v, is_open X u ∧ v ∈ P ∧ x ∈ u ∧ u ⊆ v ∧ v ⊆ w) 
 
 def neighbourhood_base_of (P : set(set α)) (X : topological_space α) : Prop :=
 (∀ x, neighbourhood_base_at x P X)
@@ -136,26 +156,60 @@ def neighbourhood_base_of (P : set(set α)) (X : topological_space α) : Prop :=
 def metrizable_space :=
 (∃ m, X = mtopological_space m)
 
+-- redo as classes extending top spaces?
 -- T1 spaces
 def t1_space :=
-(∀ x y, ¬(x=y) → ∃ u, open_in X u ∧ x ∈ u ∧ ¬(y ∈ u))
+(∀ x y, ¬(x=y) → ∃ u, is_open X u ∧ x ∈ u ∧ ¬(y ∈ u))
 
 def hausdorff_space :=
-(∀ x y, ¬(x=y) → ∃ u v, open_in X u ∧ open_in X v ∧ x ∈ u ∧ x ∈ v ∧ disjoint u v)
+(∀ x y, ¬(x=y) → ∃ u v, is_open X u ∧ is_open X v ∧ x ∈ u ∧ x ∈ v ∧ disjoint u v)
 
 def regular_space :=
-(∀ c a, closed_in X c ∧ ¬(a ∈ c) → ∃ u v, open_in X u ∧ open_in X v ∧ a ∈ u ∧ c ⊆ v ∧ disjoint u v)
+(∀ c a, is_closed X c ∧ ¬(a ∈ c) → ∃ u v, is_open X u ∧ is_open X v ∧ a ∈ u ∧ c ⊆ v ∧ disjoint u v)
 
 def locally_compact_space :=
-(∀ x, ∃ u k, open_in X u ∧ compact_in X k ∧ x ∈ u ∧ u ⊆ k)
+(∀ x, ∃ u k, is_open X u ∧ compact_in X k ∧ x ∈ u ∧ u ⊆ k)
 
 def normal_space :=
-(∀ s t, closed_in X s ∧ closed_in X t ∧ disjoint s t →
-(∃ u v, open_in X u ∧ open_in X v ∧ s ⊆ u ∧ t ⊆ v ∧ disjoint u v))
+(∀ s t, is_closed X s ∧ is_closed X t ∧ disjoint s t →
+(∃ u v, is_open X u ∧ is_open X v ∧ s ⊆ u ∧ t ⊆ v ∧ disjoint u v))
+
+-- cauchy
+
+variable (f : α → β)
+
+def cauchy_in (m : metric_space α) (s : ℕ → α) :=
+(∀ e > 0, ∃ N, ∀ n n', N ≤ n ∧ N ≤ n' → m.dist (s n) (s n') < e)
+
+def totally_bounded_in (m : metric_space α) :=
+(∀ e > 0, ∃ k, finite k ∧ k ⊆ S ∧ S ⊆ ⋃₀ { b | ∃ x ∈ k, b = open_ball m x e })
+
+def continuous_at (x : α) :=
+(∀ v, is_open Y v ∧ f x ∈ v → ∃ u, is_open X u ∧ x ∈ u ∧ (∀ y ∈ u, f y ∈ v))
+
+def continuous_map :=
+(∀ u, is_open Y u → is_open X (preimage f u))
+
+def open_map :=
+(∀ u, is_open X u → is_open Y (image f u))
+
+def closed_map :=
+(∀ u, is_closed X u → is_closed Y (image f u))
+
+def lipschitz_continuous_map (m1 : metric_space α) (m2 : metric_space β) (f : α → β) :=
+(∃ b, ∀ x y, m2.dist (f x) (f y) ≤ b * m1.dist x y)
+
+def uniformly_continuous_map (m1 : metric_space α) (m2 : metric_space β) (f : α → β) :=
+(∀ e > 0, ∃ d > 0, ∀ x x', m1.dist x' x < d → m2.dist (f x') (f x) < e)
+
+def cauchy_continuous_map (m1 : metric_space α) (m2 : metric_space β) (f : α → β) :=
+(∀ x, cauchy_in m1 x → cauchy_in m2 (f ∘ x))
 
 
 -- metric on ℝ
+-- We have the usual need for a coercion ℝ to ℝ¹.
 
+/-
 def real_open (s : set ℝ) :=
 (∀ x ∈ s, ∃ e > 0, ∀ x', real_abs(x' - x) < e → x' ∈ s)
 
@@ -170,10 +224,10 @@ def euclideanreal : topological_space ℝ :=
 classical.some euclideanreal_exists
 
 unfinished real_euclidean_metric_exists :
-(∃ m : metric_space ℝ, ∀ x y, m.d x y = real_abs(x - y)) :=
+(∃ m : metric_space ℝ, ∀ x y, m.dist x y = real_abs(x - y)) :=
 { description := "the Euclidean metric exists" }
 
-def real_euclidean_metric : metric_space ℝ :=
+def real_euclidean_metric1 : metric_space ℝ :=
 classical.some real_euclidean_metric_exists
 
 def real_bounded (s : set ℝ) : Prop :=
@@ -181,37 +235,56 @@ def real_bounded (s : set ℝ) : Prop :=
 
 def real_compact (s : set ℝ) : Prop :=
 compact_in euclideanreal s
+-/
 
--- cauchy
+-- Euclidean metric space
 
-variable (f : α → β)
+-- duplicates Kepler conjecture
+local infix `^` := real_pow
 
-def cauchy_in (s : ℕ → α) :=
-(∀ e > 0, ∃ N, ∀ n n', N ≤ n ∧ N ≤ n' → m.d (s n) (s n') < e)
+-- duplicates Kepler conjecture
+def real_euclidean_metric {n : ℕ} 
+(u : vector ℝ n) (v : vector ℝ n) : ℝ :=
+let subsquare (x : ℝ) (y : ℝ) : ℝ := (x-y)^2,
+    sqs := to_list (map₂ subsquare u v) in real_sqrt (list.sum sqs)
 
-def totally_bounded_in :=
-(∀ e > 0, ∃ k, finite k ∧ k ⊆ S ∧ S ⊆ ⋃₀ { b | ∃ x ∈ k, b = mball m x e })
+variable {n : ℕ}
 
-def continuous_at (x : α) :=
-(∀ v, open_in Y v ∧ f x ∈ v → ∃ u, open_in X u ∧ x ∈ u ∧ (∀ y ∈ u, f y ∈ v))
+axiom real_euclidean_metric_exists :
+(∃! m : metric_space (vector ℝ n), ∀ x y, m.dist x y = real_euclidean_metric x y)
 
-def continuous_map :=
-(∀ u, open_in Y u → open_in X (preimage f u))
+instance : metric_space (vector ℝ n) :=
+classical.some real_euclidean_metric_exists
 
-def open_map :=
-(∀ u, open_in X u → open_in Y (image f u))
+-- issue #54: intersection of sig-algebras
 
-def closed_map :=
-(∀ u, closed_in X u → closed_in Y (image f u))
 
-def lipschitz_continuous_map (m1 : metric_space α) (m2 : metric_space β) (f : α → β) :=
-(∃ b, ∀ x y, m2.d (f x) (f y) ≤ b * m1.d x y)
 
-def uniformly_continuous_map (m1 : metric_space α) (m2 : metric_space β) (f : α → β) :=
-(∀ e > 0, ∃ d > 0, ∀ x x', m1.d x' x < d → m2.d (f x') (f x) < e)
+def sigma_algebra_closure (A : set (set α)) :=
+⋂₀ {σ : set (set α) | nonempty(sigma_algebra σ) ∧ A ⊆ σ}
 
-def cauchy_continuous_map (m1 : metric_space α) (m2 : metric_space β) (f : α → β) :=
-(∀ x, cauchy_in m1 x → cauchy_in m2 (f ∘ x))
+axiom sigma_algebra_closure_is_sigma_algebra (A : set(set α)) :
+nonempty (sigma_algebra (sigma_algebra_closure A))
+
+def borel_algebra ( Y : topological_space α)  := 
+choice (sigma_algebra_closure_is_sigma_algebra (Y.is_open))
+
+def borel_algebra_Rn (n:ℕ) [Y : topological_space (vector ℝ n)] := 
+borel_algebra Y
+
+-- for ℝ
+
+def is_realinterval (s : set ℝ) :=
+(∀ a b c, a ∈ s ∧ b ∈ s ∧ a ≤ c ∧ c ≤ b → c ∈ s)
+
+def open_real_interval a b :=
+{ x : ℝ | a < x ∧ x < b }
+
+def closed_real_interval a b :=
+{ x : ℝ | a ≤ x ∧ x ≤  b }
+
+
+
 
 
 end metric
