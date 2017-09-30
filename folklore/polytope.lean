@@ -78,7 +78,7 @@ variables [X : topological_space β]
 
 def relative_interior (s : set β) :=
 { x : β | 
-  ∃ t, is_open (subtopological_space X ((hull affine s) : set β)) t ∧
+  ∃ t, is_open (induced_space X ((hull affine s) : set β)) t ∧
   x ∈ (t : set β) ∧ (t : set β) ⊆ s }
 
 def relative_frontier (s : set β) :=
