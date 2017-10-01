@@ -100,14 +100,7 @@ instance : has_one ℂ := ⟨of_rat 1⟩
 
 instance inhabited_ℂ : inhabited ℂ := ⟨0⟩
 
-end complex
-
-namespace complex
-
 open nat complex
-
---unfinished complex_topology : topological_space ℂ :=
---{ description := "the standard topology on ℂ" }
 
 constant complex_topology : topological_space ℂ
 
@@ -214,7 +207,7 @@ def has_complex_derivative_at
 (z : ℂ) : Prop :=
 let error_term (h : ℂ) : ℝ := 
     abs((f (z + h) - (f z + f'z * h))/h) in
-(tendsto error_term (nhds z) (nhds 0))
+(tendsto error_term (nhds 0) (nhds 0))
 
 -- This must be already defined somewhere. But where?
 def to_subtype {α : Type*} (p : α → Prop) (x : α) (h : p x) :
