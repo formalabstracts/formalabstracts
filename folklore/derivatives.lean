@@ -4,14 +4,14 @@ Frechet derivatives on Banach space
 -/
 
 import order.filter data.set meta_data data.list data.vector
-       .real_axiom algebra.module data.finset.basic .metric
+       topology.real algebra.module data.finset.basic  -- .metric
        .complex
 
 noncomputable theory
 
 namespace derivatives
 
-open set filter classical nat int list vector real_axiom metric finset complex
+open set filter classical nat int list vector real finset complex
 
 local attribute [instance] prop_decidable
 

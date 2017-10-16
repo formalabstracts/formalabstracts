@@ -13,14 +13,14 @@ Here we use .real_axiom rather than reals from mathlib.
 -/
 
 import order.filter data.set meta_data data.list data.vector
-       .real_axiom .measure_theory 
+       topology.real .complex -- .measure_theory 
 
 
 noncomputable theory
 
 namespace metric
 
-open set filter classical nat int list vector real_axiom 
+open set filter classical nat int list vector real complex
 
 local attribute [instance] prop_decidable
 
