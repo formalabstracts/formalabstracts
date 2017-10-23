@@ -3,17 +3,12 @@ Metric Spaces.
 The starting point was the HOL Light library, but many changes 
 and additions have been made.
 
-A topology and metric encompass the full type, not a subset.
-
-Some overlap with mathlib metric_space.lean and topological_space.lean
-HOL Light fields have been renamed to make merging with mathlib easy, 
-once those files are stable.
-Here we use .real_axiom rather than reals from mathlib.
 
 -/
 
 import order.filter data.set meta_data data.list data.vector
-       topology.real .complex -- .measure_theory 
+       topology.topological_space topology.real 
+       .complex -- .measure_theory 
 
 
 noncomputable theory
@@ -27,13 +22,6 @@ local attribute [instance] prop_decidable
 universes u v w
 
 variables {α : Type u} { β : Type v}
-
---def preimage (f : α → β) (s : set β) :=
---{ x | f x ∈ s}
-
---def sInter (s : set (set α)) : set α := {t ∈ ⋃₀ s | ∀ a ∈ s, t ∈ a}
---prefix `∩₀`:110 := sInter
-
 
 instance coe_set {α : Type u} {β : Type u} [has_coe α β] : has_coe (set α) (set β) := 
 ⟨ (λ S : set α, λ b : β, ∃ a ∈ S, has_coe.coe β a = b) ⟩
@@ -266,13 +254,13 @@ compact_in euclideanreal s
 -- Euclidean metric space
 
 -- duplicates Kepler conjecture
-local infix `^` := real_pow
+local infix `^` := real.pow
 
 -- duplicates Kepler conjecture
 def real_euclidean_metric {n : ℕ} 
 (u : vector ℝ n) (v : vector ℝ n) : ℝ :=
 let subsquare (x : ℝ) (y : ℝ) : ℝ := (x-y)^2,
-    sqs := to_list (map₂ subsquare u v) in real_sqrt (list.sum sqs)
+    sqs := to_list (map₂ subsquare u v) in real.sqrt (list.sum sqs)
 
 variable {n : ℕ}
 

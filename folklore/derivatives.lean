@@ -1,71 +1,85 @@
 /- 
 Frechet derivatives on Banach space
-
 -/
 
 import order.filter data.set meta_data data.list data.vector
-       topology.real algebra.module data.finset.basic  -- .metric
-       .complex
+       topology.real topology.continuity topology.metric_space
+       algebra.module data.finset.basic  -- .metric
+       .banach
 
 noncomputable theory
 
-namespace derivatives
-
-open set filter classical nat int list vector real finset complex
+open set filter classical
 
 local attribute [instance] prop_decidable
 
-universes u v w
+universes u v
 
--- could do normed rings, non-multiplicative norms,  as well.
+section
 
 
--- variables { α :Type u} {β : Type v} ( x : α ) (y : β) [ring α] [topological_space α]
--- #check induced_space _ { x : α | x ≠ 0 }
+variables (α : Type u) [topological_space α ]
+variables (β : Type v) [topological_space β ]
 
--- #check product_topology
+class topological_field [field α] extends topological_ring α  :=
+(inv_cont : continuous (λ (x : { x // (x : α) ≠ 0 }), (x : α)⁻¹))
 
--- this must be somewhere already...
+class topological_module [ring α] [module α  β] [topological_ring α] extends topological_add_group β  :=
+(continuous_mul : continuous (λp:α×β, p.1 • p.2))
 
-/-
-def uncurry {α : Type u} {β : Type v} {γ : Type w} (f : α → β → γ ) (xy : α × β) :=
-let (x,y) := xy in f x y
+end
 
-def curry {α : Type u} {β : Type v} {γ : Type w} (f : α × β → γ ) (x  : α) (y : β) := f (x,y)
--/
+variables (α : Type*) (β : Type*) [topological_space α] [ring α] [topological_ring α]
+  [topological_space β] [module α β]
+variable (t : topological_module α β)
 
-class topological_ring (α : Type u) [rngtop : topological_space α] extends ring α :=
-(minus_cont : continuous_map product_topology rngtop (λxy, xy.fst - xy.snd))
-(time_cont : continuous_map product_topology rngtop (λxy, xy.fst * xy.snd))
+--set_option trace.class_instances true
+--set_option class.instance_max_depth 100
 
-class topological_field (α : Type u) [field α] [top : topological_space α] extends topological_ring α  :=
+section
+variables {α : Type u} (β : Type v) [field α]
 
-(inv_cont : continuous_map (induced_space top { x : α | x ≠ 0 }) top (λx, x⁻¹))
+-- valuation on a field.
+-- see Berkovich, page 2, http://www.wisdom.weizmann.ac.il/~vova/Trieste_2009.pdf
+class valuation extends metric_space α :=
+(val : α → ℝ)
+(nonneg : ∀ x, val x ≥ 0)
+(multiplicative : ∀ x y, val (x * y) = val x * val y)
+(triangle: ∀ x y, val (x + y) ≤ val x + val y)
 
-variables {α : Type u} {β : Type v} (xy : α × β)
--- #check let (x,y) := xy in (x : α)
 
-class multiplicative_normed_field (α : Type u) extends field α, metric_space α :=
+
+
+
+
+end
+
+section
+
+variables (α : Type u) (β : Type v) 
+
+class has_norm (α : Type u) := 
 (norm : α → ℝ)
-(multiplicative : ∀ x y, norm(x*y) = norm x * norm y)
-(norm_dist : ∀ x y, dist x y = norm (x - y))
---follows from metric
---(positivity : ∀ x, norm x ≥ 0)
---(norm0 : ∀ x, norm x = 0 ↔ x = 0)
---(triangle_inequality : ∀ x y, norm(x + y) ≤ norm x + norm y)
 
+class multiplicative_norm (α : Type u) [has_norm α] [monoid α] :=
+(mult : ∀ (x y : α), has_norm.norm (x * y) = has_norm.norm x * has_norm.norm y)
 
+class normed_ring (α : Type u) extends ring α, metric_space α, has_norm α :=
+(submult : ∀ x y, norm(x * y) ≤ norm x * norm y)
+(norm_dist : ∀ (x y : α), dist x y = norm (x - y))
 
-class topological_vector_space (α : Type u) (β : Type v) [field α] [X:topological_space β] extends vector_space α β :=
-(closed_points : ∀ (x : β), is_closed X {x})
+class multiplicative_normed_ring extends normed_ring α, multiplicative_norm α
 
+variables [ring α] [normed_ring α] [topological_space α] [topological_ring α]
+variables [module α β]
 
-
-
-class normed_space (α : Type u) (β : Type v) [multiplicative_normed_field α] extends vector_space α β, metric_space β :=
-(norm  : β → ℝ := λ (v:β), dist v 0 )
-(homogeneity : ∀ (c : α) (v : β), norm(c  • v) = multiplicative_normed_field.norm c * norm v)
+class normed_module extends metric_space β, topological_module α β, has_norm β :=
+(homogeneity : ∀ (c : α) (v : β), norm(c • v) = has_norm.norm c * norm v)
 (norm_dist : ∀ v w, dist v w = norm (v - w))
+
+end
+
+#check complete_space
 
 axiom exists_real_multiplicative_normed_field :
 (∃!p : multiplicative_normed_field ℝ, p.norm = real_abs)
@@ -118,4 +132,4 @@ class  complex_normed_space (β : Type u) extends complex_vector_space β :=
 
 
 
-end derivatives
+end derivative

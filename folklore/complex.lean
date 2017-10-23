@@ -4,7 +4,9 @@
 -- transcendental functions following HOL-Light,
 -- up to the statement of the Riemann hypothesis.
 
-import data.set meta_data data.list data.vector topology.real algebra.group_power topology.infinite_sum
+import data.set meta_data data.list data.vector 
+       topology.real algebra.group_power topology.infinite_sum
+       
 
 noncomputable theory
 
@@ -38,13 +40,13 @@ def inf (S : set ℝ) : ℝ :=
 def sqrt (x : ℝ) : ℝ :=
    sup { t | (t = 0) ∨ t*t = x }
 
-def real.abs (x : ℝ) : ℝ :=
+def abs (x : ℝ) : ℝ :=
   sup { t | t = x ∨ t = -x }
 
-def real.max (x : ℝ) y : ℝ :=
+def max (x y : ℝ) : ℝ :=
   sup { t | t = x ∨ t = y }
 
-def real.min (x : ℝ) y : ℝ :=
+def min (x y : ℝ) :=
   inf { t | t = x ∨ t = y }
 
 end real
@@ -139,7 +141,7 @@ def real.tan (x : ℝ) : ℝ := re (complex.tan x)
 open real
 
 -- log extended by 0 on non-positive reals
-def real.log (y : ℝ) := 
+def real.log (y : ℝ) : ℝ := 
 sup { x | (real.exp x = y) ∨ (x = 0 ∧ y ≤ 0) }
 
 -- π is the smallest positive root of sin
