@@ -2,14 +2,13 @@
 Frechet derivatives on Banach space
 -/
 
-import order.filter data.set meta_data data.list data.vector
-       topology.real topology.continuity topology.metric_space
-       algebra.module data.finset.basic  -- .metric
+import topology.metric_space
+       algebra.module 
        .complex
 
 noncomputable theory
 
-open set filter classical
+open classical
 
 local attribute [instance] prop_decidable
 
@@ -30,7 +29,7 @@ class topological_module
 (continuous_mul : continuous (λp:α×β, p.1 • p.2))
 
 class t1_topological_vector_space 
-[field α] [topological_field α] [t1_space β] [module α β] 
+[field α] [topological_field α] [t1_space β] [vector_space α β] 
 extends topological_module α β : Prop
 
 class has_norm (α : Type u) := 
@@ -39,7 +38,16 @@ class has_norm (α : Type u) :=
 class multiplicative_norm (α : Type u) [has_norm α] [monoid α] : Prop :=
 (mult : ∀ (x y : α), has_norm.norm (x * y) = has_norm.norm x * has_norm.norm y)
 
+#print fields t1_topological_vector_space
+
+--def topological_vector_space.to_vector_space [field α] [topological_field α] [t1_space β] [m : module α β] 
+--(tvs : t1_topological_vector_space α β) : vector_space α β := m
+
+
+
 end topology
+
+
 
 
 section normed_ring
@@ -64,7 +72,7 @@ attribute [instance] normed_ring.to_topological_field
 section
 
 variables [field α] [metric_space α] [has_norm α] [normed_ring α] 
-[module α β] [has_norm β] [metric_space β] [t1_topological_vector_space α β]
+[vector_space α β] [has_norm β] [metric_space β] [t1_topological_vector_space α β]
 
 class normed_space : Prop :=
 (scalar_norm : ∀ (x : α) (y : β), has_norm.norm (x • y) = has_norm.norm x * has_norm.norm y)

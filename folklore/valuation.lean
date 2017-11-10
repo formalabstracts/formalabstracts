@@ -59,3 +59,22 @@ class subring
 axiom ring_of_integers_exists : 
 (∃! h, h : ring (sub
 def ring_of_integers := 
+
+
+
+
+axiom exists_real_multiplicative_normed_field :
+(∃!p : multiplicative_normed_field ℝ, p.norm = real_abs)
+
+instance real_multiplicative_normed_field :=
+classical.some exists_real_multiplicative_normed_field
+
+axiom exists_complex_multiplicative_normed_field :
+(∃!p : multiplicative_normed_field ℂ, p.norm = complex.norm)
+
+instance complex_multiplicative_normed_field :=
+classical.some exists_complex_multiplicative_normed_field
+
+class banach_space (α : Type u) (β : Type v) [multiplicative_normed_field α] extends normed_space α β, complete_metric_space β
+
+class real_banach_space (β : Type v) extends banach_space ℝ β
