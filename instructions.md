@@ -17,7 +17,7 @@ the [Lean repository](https://github.com/leanprover/lean)).
 
 ## Getting started
 
-We recommend that you browse through the [`fabstracts`](./fabstracts) folder and get a
+We recommend that you browse through the [`fabstract`](./fabstract) folder and get a
 feel for what a typical fabstract looks like. The [`folklore`](./folklore) folder contains
 common definitions, have a look at it as well.
 
