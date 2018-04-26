@@ -107,7 +107,14 @@ class_infix `has_ssubset.ssubset `(⊂)
 class_infix `has_sdiff.sdiff `(\)
 class_infix `has_equiv.equiv `(≈)
 
+/-
+Here we tie α to the carrier type.
+But we might want to include into differently named carriers.
 
+class something :=
+(β : Type)
+(has_sub (α = β))
+-/
 class has_sub  :=    (α : Type) ((-) : α → α → α)
 class has_div  :=    (α : Type) ((/) : α → α → α)
 class has_dvd  :=    (α : Type) ((|) : α → α → Prop)
@@ -138,6 +145,8 @@ class has_mem := (α : Type) (β : Type) ((∈) : α → β → Prop)
 
 notation a ∉ s := ¬ has_mem.mem a s
 
+/- repetition of earlier declaration, adding derived fields 
+    Might use += notation.  -/
 class has_mem :=
 (has_mem)
 (has_subset (renaming α → β))
@@ -381,13 +390,15 @@ structure field :=
 class_infixl `scalar ` • `:73 
 
 class has_scalar := 
-(α : Type)
-(β : Type)
-( ( • ) : α → β → β)
+(scalar : Type)
+(car : Type)
+( ( • ) : scalar → car → car)
 
 /-
 We pull the ring out as a parameter because mathematicians
 do when they write "R-module".
+
+α := R.α creates definitional equality.
 -/
 
 class module (R : ring) :=
