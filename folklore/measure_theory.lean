@@ -3,10 +3,12 @@ open set classical real_axiom real_axiom.extended_real
 local attribute [instance] prop_decidable
 noncomputable theory
 
-def countable_union {X : Type} (f : ℕ → set X) : set X := 
+universe u
+
+def countable_union {X : Type u} (f : ℕ → set X) : set X := 
 {x | ∃ n, x ∈ f n}
 
-variables {X : Type} (σ : set (set X))
+variables {X : Type u} (σ : set (set X))
 class sigma_algebra :=
 (univ_mem : univ ∈ σ)
 (closed_under_comp : ∀ s, s ∈ σ → univ \ s ∈ σ)
