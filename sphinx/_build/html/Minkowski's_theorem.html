@@ -1,0 +1,116 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Mikowski’s Theorem &#8212; popular 0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Stone-Weierstrass theorem" href="Stone-Weierstrass_theorem.html" />
+    <link rel="prev" title="Chebotarev’s density theorem" href="Chebotarev&#39;s_density_theorem.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mikowski-s-theorem">
+<h1>Mikowski’s Theorem<a class="headerlink" href="#mikowski-s-theorem" title="Permalink to this headline">¶</a></h1>
+<p>This article gives a formal statement of Minkowski’s theorem.  For Wikipedia’s
+description, see <a class="reference external" href="https://en.wikipedia.org/wiki/Minkowski%27s_theorem">Mikowski’s theorem</a></p>
+<dl class="docutils">
+<dt>informally ::</dt>
+<dd>Suppose that L is a lattice of determinant d(L)
+in the n-dimensional real vector space ℝn and
+S is a convex subset of ℝn that is symmetric with respect to the origin,
+meaning that if x is in S then −x is also in S.
+If the volume of S is strictly greater than 2n d(L),
+then S must contain at least one lattice point other than the origin.</dd>
+</dl>
+<p>preformally:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>notation:
+(L : lattice, subset ℝⁿ)
+(S : convex, centrally symmetric, subset ℝⁿ)
+(d := lattice_determinant L)
+(vol := Lebesgue_measure S)
+
+theorem Minkowki&#39;s :=
+(vol &gt; 2^n * d → (L ∩ S ≠ {0}))
+</pre></div>
+</div>
+<p>Note: A convex subset of Rn is Lebesgue <a class="reference external" href="https://math.stackexchange.com/questions/207609/the-measurability-of-convex-sets">measurable</a>.  (This should be added to wiki somewhere, either in Minkowski’s theorem or convex sets.)</p>
+<p>The appropriate notion of symmetry here is centrally symmetric with respect to the origin.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Chebotarev&#39;s_density_theorem.html" title="previous chapter">Chebotarev’s density theorem</a></li>
+      <li>Next: <a href="Stone-Weierstrass_theorem.html" title="next chapter">Stone-Weierstrass theorem</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Minkowski&#39;s_theorem.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Hales.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/Minkowski&#39;s_theorem.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Chebotarev’s density theorem &#8212; popular 0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Stone-Weierstrass theorem" href="Stone-Weierstrass_theorem.html" />
+    <link rel="prev" title="Brouwer fixed-point theorem" href="Brouwer_fixed-point_theorem.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="chebotarev-s-density-theorem">
+<h1>Chebotarev’s density theorem<a class="headerlink" href="#chebotarev-s-density-theorem" title="Permalink to this headline">¶</a></h1>
+<p>This article gives a formal statement of the Chebotarev density theorem.  For Wikipedia’s
+description, see
+<a class="reference external" href="https://en.wikipedia.org/wiki/Chebotarev%27s_density_theorem">Chebotarev density theorem</a>.</p>
+<p>informally</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Let</span> <span class="n">L</span> <span class="n">be</span> <span class="n">a</span> <span class="n">finite</span> <span class="n">Galois</span> <span class="n">extension</span> <span class="n">of</span> <span class="n">a</span> <span class="n">number</span> <span class="n">field</span> <span class="n">K</span>
+<span class="k">with</span> <span class="n">Galois</span> <span class="n">group</span> <span class="n">G</span><span class="o">.</span>
+<span class="n">Let</span> <span class="n">C</span> <span class="n">be</span> <span class="n">a</span> <span class="n">conjugacy</span> <span class="k">class</span> <span class="nc">in</span> <span class="n">G</span><span class="o">.</span>
+<span class="n">The</span> <span class="nb">set</span> <span class="n">of</span> <span class="n">primes</span> <span class="n">v</span> <span class="n">of</span> <span class="n">K</span> <span class="n">that</span> <span class="n">are</span> <span class="n">unramified</span> <span class="ow">in</span> <span class="n">L</span> <span class="ow">and</span>
+<span class="n">whose</span> <span class="n">associated</span> <span class="n">Frobenius</span> <span class="n">conjugacy</span> <span class="k">class</span> <span class="nc">Fv</span>
+<span class="ow">is</span> <span class="n">C</span> <span class="n">has</span> <span class="n">density</span>
+<span class="c1"># C / # G .</span>
+</pre></div>
+</div>
+<p>preformally</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>notation:
+(K : number field)
+(L : extension K, number field)
+(_ : Galois_field_extension K L)
+(G := Galois_group K L)
+(C : conjugacy_class, subset G)
+
+theorem_Chebotarev_density_theorem:=
+
+dirichlet_density { v : prime K | unramified v L K ∧ Frobenius v L K = C }
+= card C / card G.
+</pre></div>
+</div>
+<div class="section" id="definition-links">
+<h2>Definition Links<a class="headerlink" href="#definition-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Number field means algebraic number field.</li>
+<li>Wiki is stated for a finite union of conjugacy, but by the finite additivity of both sides,
+the Wiki version follows for the version here, which is a single conjugacy class.</li>
+<li>The Frobenius refers to <a class="reference external" href="https://en.wikipedia.org/wiki/Frobenius_endomorphism">Frobenius for global fields</a>.  It is a
+conjugacy class in the Galois group, but many writers identify it with
+an arbitrary choice in that conjugacy class.</li>
+<li>prime means a prime ideal in the ring of integers of K.</li>
+<li>The density refers to <a class="reference external" href="https://en.wikipedia.org/wiki/Dirichlet_density">Dirichlet density</a> with respect to
+the <a class="reference external" href="https://en.wikipedia.org/wiki/Dedekind_zeta_function">Dedekind zeta function</a>.  Unfortunately,
+the definition in wiki only gives the density for sets of rational
+primes.  The wiki article needs to be extended to number fields.
+A suitable reference is
+<a class="reference external" href="http://websites.math.leidenuniv.nl/algebra/Lenstra-Chebotarev.pdf">Lenstra’s note</a>.</li>
+<li>The
+Dirichlet density is a non-negative real number.  The right-hand
+side of the theorem is a rational number.</li>
+<li>Ramification refers to <a class="reference external" href="https://en.wikipedia.org/wiki/Ramification_(mathematics)">ramification in algebraic number theory</a>.  Note
+that ramification is a relative notion that refers to both L and K.
+It is easier to test ramification in terms of the <a class="reference external" href="https://en.wikipedia.org/wiki/Discriminant_of_an_algebraic_number_field">relative discriminant of L/K</a>,
+as explained in Lenstra’s notes, but the notion of divisibility of primes is needed.
+In some sense this is all irrelevant, because there are only finitely many primes,
+and the density is insensitive to finite sets.</li>
+</ul>
+<p><strong>Application.</strong></p>
+<p>Let f(x) = x^n + a x^{n-1} + …
+be an irreducible polynomial of degree n with integer coefficients.
+Suppose that the Galois group of the splitting field of f is the symmetric group on n letters.</p>
+<p>For every prime number p, we can factor f(x) modulo into irreducible factors
+f_1 (x) f_2(x) …. f_n(x).  Each f_i(x) is a polynomial with coefficients in the finite field Z/pZ.
+The factorization of f determines a partition of n,
+given by the the degrees n_i of the factors f_i.   This procedure assigns a partition
+of n to each prime p. The Chebotarev density theorem implies that the partition lambda
+is obtained for a set of primes of density #C_λ/n!, where #C_λ is the number of permutations
+with cycle type lambda.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Chebotarev’s density theorem</a><ul>
+<li><a class="reference internal" href="#definition-links">Definition Links</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Brouwer_fixed-point_theorem.html" title="previous chapter">Brouwer fixed-point theorem</a></li>
+      <li>Next: <a href="Stone-Weierstrass_theorem.html" title="next chapter">Stone-Weierstrass theorem</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Chebotarev&#39;s_density_theorem.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Hales.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/Chebotarev&#39;s_density_theorem.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
