@@ -4,7 +4,7 @@ Minkowski's Theorem
 This article gives a formal statement of Minkowski's theorem.  For Wikipedia's
 description, see `Mikowski's theorem <https://en.wikipedia.org/wiki/Minkowski%27s_theorem>`_
 
-informally ::
+informally 
    Suppose that L is a lattice of determinant d(L)
    in the n-dimensional real vector space ℝn and
    S is a convex subset of ℝn that is symmetric with respect to the origin,

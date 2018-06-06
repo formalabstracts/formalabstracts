@@ -3,17 +3,32 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to popular's documentation!
-===================================
+Welcome to 100-theorem abstracts documentation!
+===============================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: Master Theorem List:
 
-   overflow_shortsort.rst
+   popular_theorem_list.rst
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Theorems:
+
+
    Baire_category_theorem.rst
    Brouwer_fixed-point_theorem.rst
+   Chebotarev's_density_theorem.rst
+   Dirichlet's_unit_theorem.rst
+   Minkowski's_theorem.rst
    Stone-Weierstrass_theorem.rst
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Definitions:
+
+   unit_group.rst	     
 
 
 Indices and tables

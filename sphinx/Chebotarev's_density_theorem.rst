@@ -5,24 +5,31 @@ This article gives a formal statement of the Chebotarev density theorem.  For Wi
 description, see
 `Chebotarev density theorem <https://en.wikipedia.org/wiki/Chebotarev%27s_density_theorem>`_.
 
-informally ::
+informally 
 
-  Let L be a finite Galois extension of a number field K with Galois group G.
-  Let X be a subset of G that is stable under conjugation.
-  The set of primes v of K that are unramified in L and whose associated Frobenius conjugacy class Fv
-  is contained in X has density
-    # X / # G . 
+  Let L be a finite Galois extension of a number field K
+  with Galois group G.
+  Let C be a conjugacy class in G.
+  The set of primes v of K that do not divide the relative discriminant of K/L and
+  whose associated Frobenius conjugacy class Fv
+  is C has density
+  # C / # G . 
 
 preformally ::
 
   notation:
   (K : number field)
-  (L : finite , number field)
-  (G : Galois K L)
+  (L : extension K, number field)
+  (_ : Galois_field_extension K L)
+  (G := Galois_group K L)
   (C : conjugacy_class, subset G)
 
   theorem_Chebotarev_density_theorem:=
-  dirichlet_density { v : prime K | unramified v L K ∧ Frobenius v L K = C } = card C / card G.
+
+  dirichlet_density
+  { v : prime K | not (divide v (relative_discriminant L K)) ∧
+  Frobenius v L K = C }
+  = card C / card G.
 
 
 Definition Links
