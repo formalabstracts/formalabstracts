@@ -19,8 +19,10 @@ Welcome to 100-theorem abstracts documentation!
 
    Baire_category_theorem.rst
    Brouwer_fixed-point_theorem.rst
+   Cauchy's_theorem_(group_theory).rst
    Chebotarev's_density_theorem.rst
    Dirichlet's_unit_theorem.rst
+   Green-Tao_theorem.rst
    Minkowski's_theorem.rst
    Stone-Weierstrass_theorem.rst
 

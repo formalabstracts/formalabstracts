@@ -9,7 +9,6 @@ There are several versions of this theorem.
 
 informally
 
-   Theorem Weierstrass_approximation_theorem :=
    Suppose  (f:[a,b]→ ℝ)  is a [continuous] function.
    For every ε > 0, there exists a univariate polynomial p
    such that for all x in [a, b], we have | f (x) − p(x)| < ε.
@@ -27,7 +26,7 @@ preformally ::
 
 informally
 
-  Theorem Stone–Weierstrass Theorem (complex numbers).
+  **Theorem Stone–Weierstrass Theorem (complex numbers).**
   Let X be a compact Hausdorff space and let A be a star subalgebra of 
   of C(X, C) which is unital, closed, and separates points. Then
   A is dense in C(X, C).
