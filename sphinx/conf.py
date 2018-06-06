@@ -19,14 +19,14 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'popular'
+project = 'Formal Abstracts'
 copyright = '2018, Hales'
 author = 'Hales'
 
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.0'
+release = ''
 
 
 # -- General configuration ---------------------------------------------------
@@ -80,7 +80,7 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'pyramid' #sphinxdoc' #'scrolls' # 'classic' # 'agogo' # 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
