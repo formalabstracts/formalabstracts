@@ -6,7 +6,6 @@ description, see `Brouwer fixed-point theorem <https://en.wikipedia.org/wiki/Bro
 
 informally 
    
-   Theorem Brouwer fixed-point theorem :=
    Let K be a topological space that is homeomorphic
    to a closed ball in Euclidean space.
    Then every [continuous] [function] f from K to itself
