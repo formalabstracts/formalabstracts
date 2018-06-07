@@ -11,7 +11,7 @@ informally
 
     lim sup N → ∞ card( A ∩ [ 1 , N ] ) / π ( N ) > 0,
 
-    then for all positive integers k, the set A contains infinitely many arithmetic progressions of length k.
+    then for all positive integers k, the set A contains infinitely many increasing arithmetic progressions of length k.
 
 preformally ::
 
@@ -24,3 +24,6 @@ preformally ::
   theorem Green-Tao :=
   infinite (increasing, arithmetic_progression, length k, list (subtype A) )
   
+Notes
+=====
+
