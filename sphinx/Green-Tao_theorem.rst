@@ -20,7 +20,8 @@ preformally ::
   (A : subset (prime, ℕ))
   (positive_density : limsup N ∞ (card (A ∩ [1,N]) / π (N)) > 0)
   (k : positive, ℕ)
+  (length k X := card X = k)
 
   theorem Green-Tao :=
-  infinite (arithmetic_progression, length k, subtype A)
+  WRONG! infinite (arithmetic_progression, length k, subtype A)
   
