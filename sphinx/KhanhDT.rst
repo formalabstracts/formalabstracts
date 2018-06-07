@@ -1,2 +1,2 @@
--- Hello Prof
---This is a excercise to HaNoi summer course
+--Hello Prof
+--This is a excercise HaNoi summer course (new)
