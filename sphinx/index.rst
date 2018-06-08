@@ -6,11 +6,13 @@
 Welcome to 100-theorem abstracts documentation!
 ===============================================
 
+
 .. toctree::
    :maxdepth: 1
    :caption: Master Theorem List:
 
    popular_theorem_list.rst
+   Wikipedia_popular.rst
 
 .. toctree::
    :maxdepth: 1
@@ -18,6 +20,7 @@ Welcome to 100-theorem abstracts documentation!
 
 
    Baire_category_theorem.rst
+   Borsuk-Ulam_theorem.rst
    Brouwer_fixed-point_theorem.rst
    Cauchy's_theorem_(group_theory).rst
    Chebotarev's_density_theorem.rst

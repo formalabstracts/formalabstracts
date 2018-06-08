@@ -10,10 +10,13 @@ informal **Baire category theorem (BCT1-a)**
 
    Every [complete] [metric space] is a [Baire] [topological space].
 
-preformal :: 
+preformal ::
+
+  notation:
+  (X : complete, metric space)
   
   theorem Baire_category_theorem_BCT1_a :=
-  ∀ (X : complete, metric space), Baire X. 
+  Baire X. 
 
 informal **Baire category theorem (BCT1-b)**  
   
@@ -21,30 +24,31 @@ informal **Baire category theorem (BCT1-b)**
    [complete] [pseudometric space] is a [Baire] [topological space].
 
 preformal    ::
+
+  notation:
+  (X : topological space)
+  (S : pseudometric space)
+  (U : open, subset S)
+  (_ : homeomorphic X U)
   
    theorem Baire_category_theorem_BCT1_b :=
-   ∀ (X : topological space), (∃ (S : pseudometric space), ∃ U,
-   open S U ∧ homeomorphic X U) → Baire X.
+   Baire X.
 
 informal **Baire category theorem BCT2**   
   
    Every [locally compact] [Hausdorff] [topological space] is a [Baire] [topological space]. 
 
 preformal    ::
-  
-   ∀ (X : locally compact, Hausdorff, topological space), Baire X.
 
-informal **Baire category theorem BCT3** 
-  
-   A [non-empty] [complete] [metric space] is not the [countable union] of [nowhere-dense] [closed sets].
+  notation:
+  (X : locally compact, Hausdorff, topological space)
 
-preformal      ::
-  
-   ∀ (X : nonempty, complete, metric space), ¬∃ F,
-   countable F ∧ every nowhere-dense F ∧ every closed F ∧ X = ⋃ F.
-
+  theorem Baire_category_BCT2 :=
+  Baire X.
 
 notes
 =====
 
 * A topological space is Baire if every countable intersection of open dense sets is dense.
+* The definitions of `Cauchy and completeness <https://www.math.wustl.edu/~freiwald/ch4.pdf>`_
+  apply to both metric and pseudometric spaces.  Wikipedia only discusses completeness for metric spaces.
