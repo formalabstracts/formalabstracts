@@ -22,3 +22,7 @@ Formal statement
 ----------------
 
 - formal statement (in Lean source)
+
+.. code-block:: lean
+
+--lean code goes here
