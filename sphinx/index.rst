@@ -3,16 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to 100-theorem abstracts documentation!
-===============================================
+Formal Abstracts in Mathematics (Main Page)
+===========================================
 
 
 .. toctree::
    :maxdepth: 1
-   :caption: Master Theorem List:
+   :caption: Master Theorem Lists:
 
    popular_theorem_list.rst
    Wikipedia_popular.rst
+   freek_100.rst
 
 .. toctree::
    :maxdepth: 1
@@ -27,6 +28,7 @@ Welcome to 100-theorem abstracts documentation!
    Dirichlet's_unit_theorem.rst
    Green-Tao_theorem.rst
    Minkowski's_theorem.rst
+   Seifert_van-Kampen_theorem.rst
    Stone-Weierstrass_theorem.rst
 
 .. toctree::
