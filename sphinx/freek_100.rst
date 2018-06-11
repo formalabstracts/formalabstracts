@@ -44,7 +44,7 @@ Here is his list with wikipedia links.
 
   19.  `Lagrange's Four Squares Theorem <https://en.wikipedia.org/wiki/Lagrange%27s_four-square_theorem>`_
 
-  20.  `All Primes (1 mod 4) Equal the Sum of Two Squares (Fermat's two square theorem) <https://en.wikipedia.org/wiki/Fermat%27s_theorem_on_sums_of_two_squares>`_  (Needs attention.)
+  20.  `All Primes (1 mod 4) Equal the Sum of Two Squares (Fermat's two square theorem) <https://en.wikipedia.org/wiki/Fermat%27s_theorem_on_sums_of_two_squares>`_.
 
   21.  `Green's Theorem <https://en.wikipedia.org/wiki/Green%27s_theorem>`_
 
@@ -135,18 +135,14 @@ Here is his list with wikipedia links.
 
   57.  `Heron's Formula <https://en.wikipedia.org/wiki/Heron%27s_formula>`_
 
-
   58.  `Formula for the Number of Combinations <https://en.wikipedia.org/wiki/Combination>`_
-
 
   59.  `The Laws of Large Numbers <https://en.wikipedia.org/wiki/Law_of_large_numbers>`_
 
-
-  60.  `Bezout's Theorem <https://en.wikipedia.org/wiki/B%C3%A9zout%27s_theorem>`_
-
+  60.  `Bezout's Theorem <https://en.wikipedia.org/wiki/B%C3%A9zout%27s_theorem>`_.  The formalizations reported
+       are (incorrectly) for `Bezout's identity <https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity>`_, which is *not* Bezout's theorem.
 
   61.  `Theorem of Ceva <https://en.wikipedia.org/wiki/Ceva%27s_theorem>`_
-
 
   62.  Fair games: `Existence of Nash equilibirum <https://en.wikipedia.org/wiki/Nash_equilibrium>`_. 
 
