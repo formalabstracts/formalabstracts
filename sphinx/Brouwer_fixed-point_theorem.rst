@@ -32,5 +32,6 @@ Notes.
   Lefschetz fixed-point theorem can be found in `Belk's stack exchange
   comment <https://math.stackexchange.com/a/423304>`_.
 
-
+* This theorem (for compact convex sets)
+  has been `formalized in HOL Light <http://www.cl.cam.ac.uk/~jrh13/papers/neworleans.pdf>`_.
 
