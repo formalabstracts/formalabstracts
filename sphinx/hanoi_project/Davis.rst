@@ -77,7 +77,7 @@ Formal statement
 
 .. code-block:: lean 
 
- def Polignac :Prop := ∀ n m :ℕ ,∃ p :ℕ,isPrime m → (m = p ∨ m = (p + 2*n))
+ def Polignac :Prop := ∀ n, ∃p > n, ∀ m, isPrime m → (m = p ∨ m = (p + 2*n))
 
 The Opperman Conjecture
 =======================
