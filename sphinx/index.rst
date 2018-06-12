@@ -19,7 +19,6 @@ Formal Abstracts in Mathematics (Main Page)
    :maxdepth: 1
    :caption: Theorems:
 
-
    Baire_category_theorem.rst
    Borsuk-Ulam_theorem.rst
    Brouwer_fixed-point_theorem.rst
@@ -30,7 +29,7 @@ Formal Abstracts in Mathematics (Main Page)
    Minkowski's_theorem.rst
    Seifert_van-Kampen_theorem.rst
    Stone-Weierstrass_theorem.rst
-
+   Twin_prime_conjecture.rst
 .. toctree::
    :maxdepth: 1
    :caption: Definitions:

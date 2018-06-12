@@ -4,7 +4,7 @@ Minkowski's Theorem
 This article gives a formal statement of Minkowski's theorem.  For Wikipedia's
 description, see `Mikowski's theorem <https://en.wikipedia.org/wiki/Minkowski%27s_theorem>`_
 
-informally 
+Informal statement
    Suppose that L is a lattice of determinant d(L)
    in the n-dimensional real vector space ℝn and
    S is a convex subset of ℝn that is symmetric with respect to the origin,
@@ -12,7 +12,7 @@ informally
    If the volume of S is strictly greater than 2n d(L),
    then S must contain at least one lattice point other than the origin. 
 
-preformally: ::
+.. code-block:: text
 
   notation:
   (L : lattice, subset ℝⁿ)

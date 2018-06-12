@@ -4,7 +4,7 @@ Dirichlet's unit theorem
 This article gives a formal statement of Dirichlet's unit theorem.  For Wikipedia's
 description, see `Dirichlet's unit theorem <https://en.wikipedia.org/wiki/Dirichlet%27s_unit_theorem>`_.
 
-informally 
+Informal statement
 
   Let K be an algebraic number field with ring OK of algebraic integers.
   The group of units in the ring OK of is finitely generated and has rank 
@@ -12,7 +12,7 @@ informally
   where r1 is the number of real embeddings and r2 the number of
   conjugate pairs of complex embeddings of K.
 
-preformally: ::
+.. code-block:: text
 
   notation:
   (K : number field)

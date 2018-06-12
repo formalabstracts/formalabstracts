@@ -5,11 +5,11 @@ This article gives a formal statement of the Cauchy's theorem in group theory.  
 description, see
 `Cauchy's theorem <https://en.wikipedia.org/wiki/Cauchy%27s_theorem_(group_theory)>`_.
 
-informally
+Informal statement
 
    Let G be a finite group and p be a prime. If p divides the order of G, then G has an element of order p.
 
-preformally ::
+.. code-block:: text
 
   notation:
   (G : finite, group)

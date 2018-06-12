@@ -1,3 +1,5 @@
+.. highlight:: lean
+
 Baire Category Theorem.
 -----------------------
 
@@ -10,41 +12,44 @@ informal **Baire category theorem (BCT1-a)**
 
    Every [complete] [metric space] is a [Baire] [topological space].
 
-preformal ::
+.. code-block:: text
+		
+     notation:
+     (X : complete, metric space)
 
-  notation:
-  (X : complete, metric space)
-  
-  theorem Baire_category_theorem_BCT1_a :=
-  Baire X. 
+     theorem Baire_category_theorem_BCT1_a :=
+     Baire X.
+     
 
 informal **Baire category theorem (BCT1-b)**  
   
    Every [topological space] which is [homeomorphic] to an [open] subset of a
    [complete] [pseudometric space] is a [Baire] [topological space].
 
-preformal    ::
+..
+   preformal    ::
 
-  notation:
-  (X : topological space)
-  (S : pseudometric space)
-  (U : open, subset S)
-  (_ : homeomorphic X U)
-  
-   theorem Baire_category_theorem_BCT1_b :=
-   Baire X.
+     notation:
+     (X : topological space)
+     (S : pseudometric space)
+     (U : open, subset S)
+     (_ : homeomorphic X U)
+
+      theorem Baire_category_theorem_BCT1_b :=
+      Baire X.
 
 informal **Baire category theorem BCT2**   
   
    Every [locally compact] [Hausdorff] [topological space] is a [Baire] [topological space]. 
 
-preformal    ::
+..
+   preformal    ::
 
-  notation:
-  (X : locally compact, Hausdorff, topological space)
+     notation:
+     (X : locally compact, Hausdorff, topological space)
 
-  theorem Baire_category_BCT2 :=
-  Baire X.
+     theorem Baire_category_BCT2 :=
+     Baire X.
 
 notes
 =====

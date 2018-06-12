@@ -5,7 +5,7 @@ This article gives a formal statement of the Green-Tao theorem.  For Wikipedia's
 description, see
 `Green-Tao theorem <https://en.wikipedia.org/wiki/Green%E2%80%93Tao_theorem>`_.
 
-informally
+Informal statement
 
     Let π ( N ) denote the number of primes less than or equal to N. If A is a subset of the prime numbers such that
 
@@ -13,7 +13,7 @@ informally
 
     then for all positive integers k, the set A contains infinitely many increasing arithmetic progressions of length k.
 
-preformally ::
+.. code-block:: text
 
   notation:
   (π (N) := card { p : prime, ℕ | p ≤ N})

@@ -5,7 +5,7 @@ This article gives a formal statement of the Seifert van-Kampen theorem.  For Wi
 description, see `Seifert van-Kampen theorem`_. There a more general theorem for
 groupoids is also describd.
 
-informally 
+Informal statement
    
    Let X be a topological space which is the union of two open and
    path connected subspaces U₁, U₂. Suppose U₁ ∩ U₂ is path connected
@@ -17,7 +17,7 @@ informally
    fundamental group of X is the free amalgamated product of the
    fundamental groups of U₁ and U₂ over π₁ (U₁ ∩ U₂ , x₀ ).
 
-preformally: ::
+.. code-block:: text
   
   notation:
   (X : topological_space)

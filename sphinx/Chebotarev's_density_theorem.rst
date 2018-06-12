@@ -5,7 +5,7 @@ This article gives a formal statement of the Chebotarev density theorem.  For Wi
 description, see
 `Chebotarev density theorem <https://en.wikipedia.org/wiki/Chebotarev%27s_density_theorem>`_.
 
-informally 
+Informal statement
 
   Let L be a finite Galois extension of a number field K
   with Galois group G.
@@ -15,7 +15,7 @@ informally
   is C has density
   # C / # G . 
 
-preformally ::
+.. code-block:: text
 
   notation:
   (K : number field)
