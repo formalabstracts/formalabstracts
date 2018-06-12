@@ -39,7 +39,13 @@ release = ''
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [ 
-'sphinx.ext.mathjax', 'sphinx.ext.githubpages', 'lean_sphinx'
+'sphinx.ext.githubpages',
+'sphinx.ext.autodoc',
+'sphinx.ext.todo',
+'sphinx.ext.mathjax',
+'sphinx.ext.ifconfig',
+'sphinx.ext.viewcode',
+'lean_sphinx'    
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -159,4 +165,11 @@ texinfo_documents = [
 ]
 
 
-# -- Extension configuration -------------------------------------------------
+# -- Extension configuration ----------------
+# -- Options for todo extension 
+#----------------------------------------------
+
+# If true, `todo` and `todoList` produce output, else they 
+#produce nothing.
+
+todo_include_todos = True 
