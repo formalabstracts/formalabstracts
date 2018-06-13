@@ -6,13 +6,13 @@ For Wikipedia's description, see
 `Borsuk-Ulam theorem <https://en.wikipedia.org/wiki/Borsuk-Ulam_theorem>`_.
 
 
-informally
+Informal statement
 
 if f : S^n → R^n is continuous then there exists an
 x ∈ S^n  such that: f ( − x ) = f ( x ).
 
 
-preformally ::
+.. code-block:: text
 
   notation:
   (n : ℕ)

@@ -12,16 +12,20 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+# import os
+# import sys
+# sys.path.insert(0, os.path.abspath('.'))
+
+
 import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'Formal Abstracts'
-copyright = '2018, Thomas C. Hales'
-author = 'Thomas C. Hales'
+copyright = '2018, Hales'
+author = 'Hales'
 
 # The short X.Y version
 version = ''
@@ -38,14 +42,14 @@ release = ''
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [ 
-'sphinx.ext.githubpages',
-'sphinx.ext.autodoc',
-'sphinx.ext.todo',
-'sphinx.ext.mathjax',
-'sphinx.ext.ifconfig',
-'sphinx.ext.viewcode',
-'lean_sphinx'    
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.todo',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.githubpages',
+    'lean_sphinx'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -70,13 +74,10 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path .
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.venv']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
-
-# use numbering for section references with :numref:, e.g. 'Section 3.2'.
-numfig = True
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -84,7 +85,7 @@ numfig = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'pyramid'
+html_theme = 'pyramid' #sphinxdoc' #'scrolls' # 'classic' # 'agogo' # 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -95,7 +96,8 @@ html_theme = 'pyramid'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+
+# html_static_path = ['_static']
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -111,7 +113,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'FormalAbstractsdoc'
+htmlhelp_basename = 'populardoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -138,8 +140,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'FormalAbstracts.tex', 'Formal Abstracts Documentation',
-     'Thomas C. Hales', 'manual'),
+    (master_doc, 'popular.tex', 'popular Documentation',
+     'Hales', 'manual'),
 ]
 
 
@@ -148,7 +150,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'formalabstracts', 'Formal Abstracts Documentation',
+    (master_doc, 'popular', 'popular Documentation',
      [author], 1)
 ]
 
@@ -159,17 +161,36 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'FormalAbstracts', 'Formal Abstracts Documentation',
-     author, 'FormalAbstracts', 'One line description of project.',
+    (master_doc, 'popular', 'popular Documentation',
+     author, 'popular', 'One line description of project.',
      'Miscellaneous'),
 ]
 
 
-# -- Extension configuration ----------------
-# -- Options for todo extension 
-#----------------------------------------------
+# -- Options for Epub output -------------------------------------------------
 
-# If true, `todo` and `todoList` produce output, else they 
-#produce nothing.
+# Bibliographic Dublin Core info.
+epub_title = project
+epub_author = author
+epub_publisher = author
+epub_copyright = copyright
 
-todo_include_todos = True 
+# The unique identifier of the text. This can be a ISBN number
+# or the project homepage.
+#
+# epub_identifier = ''
+
+# A unique identification for the text.
+#
+# epub_uid = ''
+
+# A list of files that should not be packed into the epub file.
+epub_exclude_files = ['search.html']
+
+
+# -- Extension configuration -------------------------------------------------
+
+# -- Options for todo extension ----------------------------------------------
+
+# If true, `todo` and `todoList` produce output, else they produce nothing.
+todo_include_todos = True

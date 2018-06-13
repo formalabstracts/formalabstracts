@@ -4,9 +4,19 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = popular
+SPHINXPROJ    = FormalAbstracts
 SOURCEDIR     = .
 BUILDDIR      = _build
+
+VENVDIR := .venv
+export PATH := $(VENVDIR)/bin:$(PATH)
+
+install-deps:
+	test -f $(VENVDIR)/bin/pip || python3 -m venv $(VENVDIR)
+	pip install https://bitbucket.org/gebner/pygments-main/get/default.tar.gz#egg=Pygments
+	pip install 'wheel>=0.29' # needed for old ubuntu versions, https://github.com/pallets/markupsafe/issues/59
+	pip install sphinx
+
 
 # Put it first so that "make" without argument is like "make help".
 help:

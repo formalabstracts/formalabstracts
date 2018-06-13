@@ -1,16 +1,16 @@
 .. Rudimentary article template
 
 The Twin Prime Conjecture
-=====================
+=========================
 Introduction
------------
+------------
     **Twin prime conjecture**, also known as Polignac's conjecture, in number theory, assertion that there are infinitely many twin primes, or pairs of primes that differ by 2. [#twin]_
     
     For example, 3 and 5, 5 and 7, 11 and 13, and 17 and 19 are twin primes.
 Informal statement
 ------------------
 
-preformally: ::
+.. code-block:: text
 
  There are infinitely many pairs of primes p and p+2.
 
@@ -30,45 +30,47 @@ Introduction
     
     **Goldbach's conjecture** is one of the oldest unsolved problems in number theory and in all of mathematics. [#Goldbach]_
 
-:math::
 
- 4 = 2 + 2
+.. math:: 
 
- 6 = 3 + 3
+   4 = 2 + 2
 
- 8 = 3 + 5
+   6 = 3 + 3
 
- 10 = 3 + 7 = 5 + 5
+   8 = 3 + 5
 
- 12 = 5 + 7
+   10 = 3 + 7 = 5 + 5
 
- 14 = 3 + 11 = 7 + 7 etc.
+   12 = 5 + 7
+
+   14 = 3 + 11 = 7 + 7
  
 Informal statement
 ------------------
 
-preformally: ::
+.. code-block:: text
 
- Every even positive integer greater than 2 can be written as the sum of two primes
+    Every even positive integer greater than 2 can be written as the sum of two primes
 
 Formal statement
 ----------------
 
 .. code-block:: lean 
 
- def Goldbach : Prop := ∀ n > 2, isEven n → ∃ p q, isPrime p ∧ isPrime q ∧ n = p + q
+   def Goldbach : Prop := ∀ n > 2, isEven n → ∃ p q, isPrime p ∧ isPrime q ∧ n = p + q
 
 The Polignac Conjecture
 =======================
 Introduction
 -----------
     In number theory, **Polignac's conjecture** was made by Alphonse de Polignac in 1849 and states:
-     For any positive even number n, there are infinitely many prime gaps of size n. In other words: There are infinitely many cases of two consecutive prime numbers with difference n. [#polignac]_
+
+        For any positive even number n, there are infinitely many prime gaps of size n. In other words: There are infinitely many cases of two consecutive prime numbers with difference n. [#polignac]_
     
 Informal statement
 ------------------
 
-preformally: ::
+.. code-block:: text
 
  For every even number 2n, there are infinitely many pairs of consecutive primes which differ by 2n.
 
@@ -77,7 +79,7 @@ Formal statement
 
 .. code-block:: lean 
 
- def Polignac :Prop := ∀ n, ∃p > n, ∀ m, isPrime m → (m = p ∨ m = (p + 2*n))
+   def Polignac :Prop := ∀ n, ∃p > n, ∀ m, isPrime m → (m = p ∨ m = (p + 2*n))
 
 The Opperman Conjecture
 =======================
@@ -89,16 +91,16 @@ Introduction
 Informal statement
 ------------------
 
-preformally: ::
+.. code-block:: text
 
- There always a prime between n^2 and (n+1)^2.
+   There always a prime between n^2 and (n+1)^2.
 
 Formal statement
 ----------------
 
 .. code-block:: lean 
  
- def Opperman :Prop := ∀ m :ℕ, isPrime m → ∃ n, m ≥ n^2 ∧ m ≤ (n+1)^2
+   def Opperman :Prop := ∀ m :ℕ, isPrime m → ∃ n, m ≥ n^2 ∧ m ≤ (n+1)^2
  
 
 .. [#twin] https://www.britannica.com/science/twin-prime-conjecture

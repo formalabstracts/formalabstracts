@@ -4,14 +4,14 @@ Brouwer fixed-point theorem
 This article gives a formal statement of the Brouwer fixed-point theorem.  For Wikipedia's
 description, see `Brouwer fixed-point theorem <https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem>`_
 
-informally 
+Informal statement
    
    Let K be a topological space that is homeomorphic
    to a closed ball in Euclidean space.
    Then every [continuous] [function] f from K to itself
    has a fixed point.
 
-preformally: ::
+.. code-block:: text
   
   notation:
   (K : topological space)

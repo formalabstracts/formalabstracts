@@ -1,28 +1,32 @@
 .. Rudimentary article template
 
-TITLE
-=====
+Article title goes here
+=======================
 
 Introduction
 ------------
-- Description goes here
 
-- Link to a source
+This article gives a formal statement of `theorem-goes-here`.
+For Wikipedia's description, see `link-text <linkURL>`_.
 
 Informal statement
 ------------------
-  
-- informal statement
 
-preformally: ::
+Given a gadget :math:`\mathbb{G}` viewed as a quantum semi-symplectic paramonoid of Rice-Paddy type, we can conclude that :math:`\mathbb{G} = \mathbb{G}^{\#}`.
 
-- preformal statement
+Preformal statement (temporary)
++++++++++++++++++++++++++++++++
+
+.. code-block:: text
+    
+    Make sure there is a newline separating the code-block declaration
+    above and the body text of your code!
 
 Formal statement
 ----------------
 
-- formal statement (in Lean source)
-
 .. code-block:: lean
 
---lean code goes here
+    -- formal abstract goes here
+    theorem Theorem_Name : statement_of_theorem
+    := _
