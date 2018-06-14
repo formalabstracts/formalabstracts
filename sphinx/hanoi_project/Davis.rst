@@ -23,9 +23,9 @@ Formal statement
 
 
 The Goldbach’s Conjecture
-=====================
+=========================
 Introduction
------------
+------------
     **The Goldbach Conjecture** is a yet unproven conjecture stating that every even integer greater than two is the sum of two prime numbers. The conjecture has been tested up to 400,000,000,000,000. 
     
     **Goldbach's conjecture** is one of the oldest unsolved problems in number theory and in all of mathematics. [#Goldbach]_
@@ -62,7 +62,7 @@ Formal statement
 The Polignac Conjecture
 =======================
 Introduction
------------
+------------
     In number theory, **Polignac's conjecture** was made by Alphonse de Polignac in 1849 and states:
 
         For any positive even number n, there are infinitely many prime gaps of size n. In other words: There are infinitely many cases of two consecutive prime numbers with difference n. [#polignac]_
