@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Configuration file for the Sphinx documentation builder.
@@ -114,7 +115,11 @@ html_static_path = ['_static']
 htmlhelp_basename = 'FormalAbstractsdoc'
 
 
-# -- Options for LaTeX output ------------------------------------------------
+# -- Options for LaTeX output ---------------------------------------------
+
+latex_engine = 'xelatex'
+
+latex_additional_files = ['unixode.sty']
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
@@ -126,8 +131,11 @@ latex_elements = {
     # 'pointsize': '10pt',
 
     # Additional stuff for the LaTeX preamble.
-    #
-    # 'preamble': '',
+    # load packages and make box around code lighter
+    'preamble': r'''
+\usepackage{unixode}
+\definecolor{VerbatimBorderColor}{rgb}{0.7,0.7,0.7}
+''',
 
     # Latex figure (float) alignment
     #

@@ -60,3 +60,5 @@ Notes
 * A topological space is Baire if every countable intersection of open dense sets is dense.
 * The definitions of `Cauchy and completeness <https://www.math.wustl.edu/~freiwald/ch4.pdf>`_
   apply to both metric and pseudometric spaces.  Wikipedia only discusses completeness for metric spaces.
+ 
+ 

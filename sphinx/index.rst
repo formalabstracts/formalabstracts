@@ -30,11 +30,13 @@ Formal Abstracts in Mathematics (Main Page)
    Seifert_van-Kampen_theorem.rst
    Stone-Weierstrass_theorem.rst
    Twin_prime_conjecture.rst
+
 .. toctree::
    :maxdepth: 1
    :caption: Definitions:
 
-   unit_group.rst	     
+   unit_group.rst
+   
 
 
 Indices and tables
