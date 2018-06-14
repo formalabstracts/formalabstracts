@@ -35,7 +35,8 @@ Formal Abstracts in Mathematics (Main Page)
    :maxdepth: 1
    :caption: Definitions:
 
-   unit_group.rst	     
+   unit_group.rst
+   
 
 
 Indices and tables

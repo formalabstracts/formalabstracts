@@ -28,5 +28,7 @@ Formal statement
 .. code-block:: lean
 
     -- formal abstract goes here
-    theorem Theorem_Name : statement_of_theorem
-    := _
+    constant p : ℕ → Prop
+
+    theorem Theorem_Name : ∃ x : ℕ, p x
+    := sorry
