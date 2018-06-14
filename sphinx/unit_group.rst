@@ -28,5 +28,3 @@ Notes
 
   * The unit group of a ring is the unit group of the underlying multiplicative monoid.
     
-(browse-url "/home/pv/org/projects/notes/hanoifabs/formalabstracts/sphinx/_build/html/unit_group.html")
-
