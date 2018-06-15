@@ -17,9 +17,12 @@ Informal statement
 Formal statement
 ----------------
 
-.. code-block:: lean 
+.. code-block:: lean
 
- def twin_primes : Prop := ∀ n, ∃ p > n, isPrime p ∧ isPrime (p + 2)
+    import data.nat.prime
+    --BEGIN
+
+    def twin_primes : Prop := ∀ n, ∃ p > n, nat.prime p ∧ nat.prime (p + 2)
 
 
 The Goldbach’s Conjecture
@@ -55,9 +58,13 @@ Informal statement
 Formal statement
 ----------------
 
-.. code-block:: lean 
+.. code-block:: lean
 
-   def Goldbach : Prop := ∀ n > 2, isEven n → ∃ p q, isPrime p ∧ isPrime q ∧ n = p + q
+   import data.nat.prime
+
+--BEGIN
+
+   def Goldbach : Prop := ∀ n > 2, isEven n → ∃ p q, nat.prime p ∧ nat.prime q ∧ n = p + q
 
 The Polignac Conjecture
 =======================
@@ -77,9 +84,12 @@ Informal statement
 Formal statement
 ----------------
 
-.. code-block:: lean 
+.. code-block:: lean
+   
+   import data.nat.prime
+   --BEGIN
 
-   def Polignac :Prop := ∀ n, ∃p > n, ∀ m, isPrime m → (m = p ∨ m = (p + 2*n))
+   def Polignac :Prop := ∀ n, ∃p > n, ∀ m, nat.prime m → (m = p ∨ m = (p + 2*n))
 
 The Opperman Conjecture
 =======================
@@ -98,9 +108,12 @@ Informal statement
 Formal statement
 ----------------
 
-.. code-block:: lean 
- 
-   def Opperman :Prop := ∀ m :ℕ, isPrime m → ∃ n, m ≥ n^2 ∧ m ≤ (n+1)^2
+.. code-block:: lean
+		
+    import data.nat.prime
+    --BEGIN
+    
+    def Opperman :Prop := ∀ m :ℕ, nat.prime m → ∃ n, m ≥ n^2 ∧ m ≤ (n+1)^2
  
 
 .. [#twin] https://www.britannica.com/science/twin-prime-conjecture

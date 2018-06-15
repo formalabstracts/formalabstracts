@@ -9,3 +9,4 @@ sphinx/_build/**
 sphinx/.vscode/**
 sphinx/.venv/**
 sphinx/__pycache__/**
+sphinx/_test/
