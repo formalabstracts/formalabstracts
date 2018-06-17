@@ -32,3 +32,4 @@ Formal statement
 
     theorem Theorem_Name : ∃ x : ℕ, p x
     := sorry
+
