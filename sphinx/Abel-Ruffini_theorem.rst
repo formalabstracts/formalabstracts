@@ -10,12 +10,25 @@ the formal abstract.*
 
 informally
 
-  (INSERT)
+  For every `n ≥ 5` there exists a polynomial of degree n with
+  rational coefficients whose splitting field is not a solvable extension
+  of ℚ
 
 preformally ::
 
-  (INSERT)
-
+  
+  (n : ℕ)
+  (_ : n ≥ 5)
+  
+  ∃ p ∈ ℚ[x], ∃ K, splitting_field p K ℚ ∧ degree p = n ∧
+  ¬ (solvable_field_extension K ℚ).
+  
 formally ::
 
   (INSERT)
+
+Note:
+=====
+
+* The splitting field is only defined up to isomorphism over `K`.
+

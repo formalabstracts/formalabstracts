@@ -10,7 +10,7 @@ the formal abstract.*
 
 informally
 
-  (INSERT)
+  The area of a circle is :math:`pi r^2`
 
 preformally ::
 

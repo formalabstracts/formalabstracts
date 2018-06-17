@@ -1,9 +1,9 @@
-THMX
-----
+Dirichlet's Theorem
+-------------------
 
-This article gives a formal statement of THMX.  For Wikipedia's
+This article gives a formal statement of Dirichlet's Theorem.  For Wikipedia's
 description, see
-`THMX URL`_.
+`Dirichlet's Theorem <https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions>`_.
 
 *This article is a stub. You can improve it by completing
 the formal abstract.*
