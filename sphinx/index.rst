@@ -5,7 +5,7 @@
 
 Formal Abstracts in Mathematics (Main Page)
 ===========================================
-
+.. highlight:: python
 
 .. toctree::
    :maxdepth: 1
@@ -232,6 +232,8 @@ Formal Abstracts in Mathematics (Main Page)
 
    Trisecting_the_Angle.rst
 
+   Twin_prime_conjecture.rst
+
    Undecidability_of_the_Continuum_Hypothesis.rst
 
    Wikipedia_popular.rst
@@ -240,7 +242,7 @@ Formal Abstracts in Mathematics (Main Page)
 
    e_is_Transcendental.rst
 
-   twin_prime_conjecture.rst
+
 
 .. toctree::
    :maxdepth: 1

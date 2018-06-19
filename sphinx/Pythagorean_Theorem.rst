@@ -7,9 +7,11 @@ description, see
 
 informally
 
-  (INSERT)
+  --INSERT
 
-preformally ::
+preformally
 
-  (INSERT)
+.. code-block:: text
+
+  --INSERT
 

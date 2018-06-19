@@ -7,9 +7,9 @@ Square Root of 2.  For Wikipedia's description, see `Square root of 2
 
 informal
 
-  (INSERT)
+  --INSERT
 
 formal
 
-  (INSERT)
+  --INSERT
 

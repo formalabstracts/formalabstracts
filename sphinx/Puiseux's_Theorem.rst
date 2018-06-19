@@ -11,7 +11,9 @@ Let ``K`` be an algebraically closed field of characteristic zero.
 The field of Puiseux series over ``K`` is an algebraic closure of the
 field of formal Laurent series over ``K``.
 
-preformally ::
+preformally
+
+.. code-block:: text
 
   notation:
   (K : characteristic 0, algebraically_closed, field)
