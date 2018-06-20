@@ -17,5 +17,5 @@ Formal statement
 
 		import data.nat.prime
 
-		theorem Twin_prime_conjecture : set.infinite {p : ℕ | (nat.prime p) ∧ (nat.prime (p+2))}
+		theorem Twin_prime_conjecture : set.infinite {p : ℕ | (nat.prime p) ∧ (nat.prime (p+2))} := sorry
 	

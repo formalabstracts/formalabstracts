@@ -18,22 +18,20 @@ The Derangements Formula counts the number of derangements on a finite set. Give
 .. math::
 
        n! \sum_{k = 0}^n \dfrac{(-1)^k}{k!}.
-       
-
-
-Preformal statement (temporary)
-+++++++++++++++++++++++++++++++
-
-.. code-block:: text
-    
-		preformal statement goes here
 
 Formal statement
 ----------------
 
 .. code-block:: lean
 
-    -- formal abstract goes here
-    constant p : ℕ → Prop
+    import data.fintype
 
-    theorem Theorem_Name : ∃ x : ℕ, p x := sorry
+    def symm_group (α : Type) := { f : α → α | function.bijective f}
+
+    def derangement (α : Type) : symm_group α → Prop
+    := (λ f , (∀ x : α, (subtype.val f) x ≠ x))
+
+    instance (α : Type) : fintype ({f : symm_group α // derangement α f}) := sorry
+
+    theorem derangements_formula (α : Type) [fintype α]: ∀ n : ℕ, fintype.card α = n → (fintype.card {f : symm_group α // derangement α f} : int)
+    = (nat.fact n) * ((list.range (n+1)).map (λ k : ℕ, (-(1 : int) ^ k)/(nat.fact k))).sum := sorry
