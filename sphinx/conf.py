@@ -46,7 +46,7 @@ extensions = [
 'sphinx.ext.mathjax',
 'sphinx.ext.ifconfig',
 'sphinx.ext.viewcode',
-'lean_sphinx'    
+'lean_sphinx'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

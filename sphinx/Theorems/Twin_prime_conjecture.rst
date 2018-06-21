@@ -13,12 +13,9 @@ Formal statement
 
 .. code-block:: lean
 
-		definition isInfinite (s : set ℕ) : Prop
-		:= ∀ k : ℕ, ∃ k' ∈ s, k' > k
+		import data.set.finite
 
-		definition isPrime (p : ℕ) : Prop
-		:= p ≥ 2 ∧ (∀ k, k ∣ p → (k = 1 ∨ k = p))
+		import data.nat.prime
 
-		theorem twin_primes_conjecture : isInfinite {p : ℕ | (isPrime p) ∧ (isPrime (p+2))}
-		:= sorry
-
+		theorem Twin_prime_conjecture : set.infinite {p : ℕ | (nat.prime p) ∧ (nat.prime (p+2))} := sorry
+	
