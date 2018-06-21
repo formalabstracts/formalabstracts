@@ -14,21 +14,27 @@ informally
   rational coefficients whose splitting field is not a solvable extension
   of ℚ
 
-preformally ::
+preformally
 
+.. code-block:: none
   
   (n : ℕ)
   (_ : n ≥ 5)
   
   ∃ p ∈ ℚ[x], ∃ K, splitting_field p K ℚ ∧ degree p = n ∧
-  ¬ (solvable_field_extension K ℚ).
+  ¬ (solvable, field_extension K ℚ).
   
-formally ::
+formally
 
-  (INSERT)
+.. code-block:: lean
+
+  --INSERT
 
 Note:
 =====
 
 * The splitting field is only defined up to isomorphism over `K`.
+
+* The precise meaning of 'solvable in radicals' is captured by the solvability
+  of `K/ℚ`.
 

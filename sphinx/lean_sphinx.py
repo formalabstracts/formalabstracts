@@ -27,7 +27,8 @@ def mk_try_it_uri(code):
 
 def process_lean_nodes(app, doctree, fromdocname):
     for node in doctree.traverse(nodes.literal_block):
-        if node['language'] != 'lean': continue
+        if node['language'] != 'lean': continue #throws error on unlabeled code-blocks
+        #continue
 
         new_node = lean_code_goodies()
         new_node['full_code'] = node.rawsource

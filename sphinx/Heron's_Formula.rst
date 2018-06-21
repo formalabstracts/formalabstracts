@@ -10,12 +10,16 @@ the formal abstract.*
 
 informally
 
-  (INSERT)
+  --INSERT
 
-preformally ::
+preformally
 
-  (INSERT)
+.. code-block:: text
 
-formally ::
+  --INSERT
 
-  (INSERT)
+formally
+
+.. code-block:: lean
+
+  --INSERT

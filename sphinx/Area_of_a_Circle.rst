@@ -10,12 +10,16 @@ the formal abstract.*
 
 informally
 
-  The area of a circle is :math:`pi r^2`
+  The area of a circle is :math:`π r^2`
 
-preformally ::
+preformally 
 
-  (INSERT)
+.. code-block:: text
 
-formally ::
+  (OPTIONAL INSERT)
 
-  (INSERT)
+formally 
+
+.. code-block:: lean
+
+  --INSERT
