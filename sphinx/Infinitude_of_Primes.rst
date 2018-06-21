@@ -8,7 +8,7 @@ description, see
 Informally statement
 --------------------
 
-  There are infinitely many :ref:`prime` numbers.
+  The theorem states that there are infinitely many :ref:`prime` numbers.
 
 
 Preformally
