@@ -1,3 +1,12 @@
 *.olean
 /_target
 /leanpkg.path
+*~
+.DS_Store
+/**/build/**
+_build/**
+sphinx/_build/**
+sphinx/.vscode/**
+sphinx/.venv/**
+sphinx/__pycache__/**
+sphinx/_test/
