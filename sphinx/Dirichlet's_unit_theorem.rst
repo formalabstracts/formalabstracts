@@ -14,16 +14,18 @@ Informal statement
 
 .. code-block:: text
 
-  notation:
+  Notation
+  
   (K : number field)
   (OK := algebraic_integer K)
-  (U := (unit_group OK : abelian, group))
+  (U := unit_group OK)
   (n := degree K ℚ)
-  (r₁ := card(real_field_embedding K, function K ℝ))
+  (r₁ := card (field_embedding, K → ℝ))
 
   theorem Dirichlet's_unit_theorem :=
-  (finitely_generated U) ∧
-  (rank U = (n + r₁)/2 - 1)
+  finitely_generated U ∧
+  rank U = (n + r₁)/2 - 1
+
 
 Notes
 =====

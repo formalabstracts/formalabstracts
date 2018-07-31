@@ -29,6 +29,8 @@ Formal Abstracts in Mathematics (Main Page)
 
    Ballot_Problem.rst
 
+   barvinok.rst
+
    Basel_problem.rst
 
    Bertrand's_Postulate.rst
