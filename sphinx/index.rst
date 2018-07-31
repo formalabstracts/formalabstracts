@@ -19,230 +19,227 @@ Formal Abstracts in Mathematics (Main Page)
    :maxdepth: 1
    :caption: Theorems:
 
-   Abel-Ruffini_theorem.rst
+   Theorems/Abel-Ruffini_theorem.rst
 
-   Area_of_a_Circle.rst
+   Theorems/Area_of_a_Circle.rst
 
-   Arithmetic_Mean_and_Geometric_Mean.rst
+   Theorems/Arithmetic_Mean_and_Geometric_Mean.rst
 
-   Baire_category_theorem.rst
+   Theorems/Baire_category_theorem.rst
 
-   Ballot_Problem.rst
+   Theorems/Ballot_Problem.rst
 
-   barvinok.rst
+   Theorems/Basel_problem.rst
 
-   Basel_problem.rst
+   Theorems/Bertrand's_Postulate.rst
 
-   Bertrand's_Postulate.rst
+   Theorems/Bezout's_Theorem.rst
 
-   Bezout's_Theorem.rst
+   Theorems/Binomial_Theorem.rst
 
-   Binomial_Theorem.rst
+   Theorems/Birthday_Problem.rst
 
-   Birthday_Problem.rst
+   Theorems/Borsuk-Ulam_theorem.rst
 
-   Borsuk-Ulam_theorem.rst
+   Theorems/Brouwer_fixed-point_theorem.rst
 
-   Brouwer_fixed-point_theorem.rst
+   Theorems/Buffon_Needle_Problem.rst
 
-   Buffon_Needle_Problem.rst
+   Theorems/Cantor's_Theorem.rst
 
-   Cantor's_Theorem.rst
+   Theorems/Cauchy's_theorem_(group_theory).rst
 
-   Cauchy's_theorem_(group_theory).rst
+   Theorems/Cauchy-Schwarz_Inequality.rst
 
-   Cauchy-Schwarz_Inequality.rst
+   Theorems/Cayley-Hamilton_Theorem.rst
 
-   Cayley-Hamilton_Theorem.rst
+   Theorems/Central_Limit_Theorem.rst
 
-   Central_Limit_Theorem.rst
+   Theorems/Chebotarev's_density_theorem.rst
 
-   Chebotarev's_density_theorem.rst
+   Theorems/Cramer's_Rule.rst
 
-   Cramer's_Rule.rst
+   Theorems/De_Moivre's_Theorem.rst
 
-   De_Moivre's_Theorem.rst
+   Theorems/Denumerability_of_the_Rational_Numbers.rst
 
-   Denumerability_of_the_Rational_Numbers.rst
+   Theorems/Derangements_Formula.rst
 
-   Derangements_Formula.rst
+   Theorems/Desargues's_Theorem.rst
 
-   Desargues's_Theorem.rst
+   Theorems/Descartes_Rule_of_Signs.rst
 
-   Descartes_Rule_of_Signs.rst
+   Theorems/Dirichlet's_Theorem.rst
 
-   Dirichlet's_Theorem.rst
+   Theorems/Dirichlet's_unit_theorem.rst
 
-   Dirichlet's_unit_theorem.rst
+   Theorems/Dissection_of_Cubes.rst
 
-   Dissection_of_Cubes.rst
+   Theorems/Divergence_of_the_Harmonic_Series.rst
 
-   Divergence_of_the_Harmonic_Series.rst
+   Theorems/Divergence_of_the_Prime_Reciprocal_Series.rst
 
-   Divergence_of_the_Prime_Reciprocal_Series.rst
+   Theorems/Divisibility_by_3_Rule.rst
 
-   Divisibility_by_3_Rule.rst
+   Theorems/Doubling_the_Cube.rst
 
-   Doubling_the_Cube.rst
+   Theorems/Erdos-Szekeres_theorem.rst
 
-   Erdos-Szekeres_theorem.rst
+   Theorems/Euler's_Generalization_of_Fermat's_Little_Theorem.rst
 
-   Euler's_Generalization_of_Fermat's_Little_Theorem.rst
+   Theorems/Euler's_Partition_Theorem.rst
 
-   Euler's_Partition_Theorem.rst
+   Theorems/Existence_of_Nash_equilibirum.rst
 
-   Existence_of_Nash_equilibirum.rst
+   Theorems/Factor_and_Remainder_Theorems_(Little_Bezout).rst
 
-   Factor_and_Remainder_Theorems_(Little_Bezout).rst
+   Theorems/Faulhaber's_formula.rst
 
-   Faulhaber's_formula.rst
+   Theorems/Fejer's_theorem.rst
 
-   Fejer's_theorem.rst
+   Theorems/Fermat's_Last_Theorem.rst
 
-   Fermat's_Last_Theorem.rst
+   Theorems/Fermat's_two_square_theorem.rst
 
-   Fermat's_two_square_theorem.rst
+   Theorems/Feuerbach's_Theorem.rst
 
-   Feuerbach's_Theorem.rst
+   Theorems/Formula_for_Pythagorean_Triples.rst
 
-   Formula_for_Pythagorean_Triples.rst
+   Theorems/Formula_for_the_Number_of_Combinations.rst
 
-   Formula_for_the_Number_of_Combinations.rst
+   Theorems/Four_Color_Problem.rst
 
-   Four_Color_Problem.rst
+   Theorems/Friendship_Theorem.rst
 
-   Friendship_Theorem.rst
+   Theorems/Fundamental_Theorem_of_Algebra.rst
 
-   Fundamental_Theorem_of_Algebra.rst
+   Theorems/Fundamental_Theorem_of_Arithmetic.rst
 
-   Fundamental_Theorem_of_Arithmetic.rst
+   Theorems/Fundamental_Theorem_of_Integral_Calculus.rst
 
-   Fundamental_Theorem_of_Integral_Calculus.rst
+   Theorems/Godel's_Incompleteness_Theorem.rst
 
-   Godel's_Incompleteness_Theorem.rst
+   Theorems/Greatest_Common_Divisor_Algorithm.rst
 
-   Greatest_Common_Divisor_Algorithm.rst
+   Theorems/Green's_Theorem.rst
 
-   Green's_Theorem.rst
+   Theorems/Green-Tao_theorem.rst
 
-   Green-Tao_theorem.rst
+   Theorems/Heron's_Formula.rst
 
-   Heron's_Formula.rst
+   Theorems/Independence_of_the_Parallel_Postulate.rst
 
-   Independence_of_the_Parallel_Postulate.rst
+   Theorems/Infinitude_of_Primes.rst
 
-   Infinitude_of_Primes.rst
+   Theorems/Intermediate_Value_Theorem.rst
 
-   Intermediate_Value_Theorem.rst
+   Theorems/Irrationality_of_the_Square_Root_of_2.rst
 
-   Irrationality_of_the_Square_Root_of_2.rst
+   Theorems/Isoperimetric_Theorem.rst
 
-   Isoperimetric_Theorem.rst
+   Theorems/Isosceles_Triangle_Theorem_(Pons_asinorum).rst
 
-   Isosceles_Triangle_Theorem_(Pons_asinorum).rst
+   Theorems/Konigsberg_Bridges_Problem.rst
 
-   Konigsberg_Bridges_Problem.rst
+   Theorems/L'Hopital's_Rule.rst
 
-   L'Hopital's_Rule.rst
+   Theorems/Lagrange's_Four_Squares_Theorem.rst
 
-   Lagrange's_Four_Squares_Theorem.rst
+   Theorems/Law_of_Cosines.rst
 
-   Law_of_Cosines.rst
+   Theorems/Law_of_Quadratic_Reciprocity.rst
 
-   Law_of_Quadratic_Reciprocity.rst
+   Theorems/Laws_of_Large_Numbers.rst
 
-   Laws_of_Large_Numbers.rst
+   Theorems/Lebesgue_Measure_and_Integration.rst
 
-   Lebesgue_Measure_and_Integration.rst
+   Theorems/Leibniz's_Series_for_Pi.rst
 
-   Leibniz's_Series_for_Pi.rst
+   Theorems/Lindemann-Weierstrass_theorem.rst
 
-   Lindemann-Weierstrass_theorem.rst
+   Theorems/Liouville's_Theorem_and_the_Construction_of_Transcendental_Numbers.rst
 
-   Liouville's_Theorem_and_the_Construction_of_Transcendental_Numbers.rst
+   Theorems/Mean_Value_Theorem.rst
 
-   Mean_Value_Theorem.rst
+   Theorems/Minkowski's_theorem.rst
 
-   Minkowski's_theorem.rst
+   Theorems/Morley's_Trisector_Theorem.rst
 
-   Morley's_Trisector_Theorem.rst
+   Theorems/Non-Denumerability_of_the_Continuum.rst
 
-   Non-Denumerability_of_the_Continuum.rst
+   Theorems/Number_of_Platonic_Solids.rst
 
-   Number_of_Platonic_Solids.rst
+   Theorems/Number_of_Subsets_of_a_Set.rst
 
-   Number_of_Subsets_of_a_Set.rst
+   Theorems/Order_of_a_Subgroup.rst
 
-   Order_of_a_Subgroup.rst
+   Theorems/Pascal's_Hexagon_Theorem.rst
 
-   Pascal's_Hexagon_Theorem.rst
+   Theorems/Perfect_Number_Theorem.rst
 
-   Perfect_Number_Theorem.rst
+   Theorems/Pi_is_Transcendental.rst
 
-   Pi_is_Transcendental.rst
+   Theorems/Pick's_Theorem.rst
 
-   Pick's_Theorem.rst
+   Theorems/Polyhedron_Formula.rst
 
-   Polyhedron_Formula.rst
+   Theorems/Prime_Number_Theorem.rst
 
-   Prime_Number_Theorem.rst
+   Theorems/Principle_of_Inclusion-Exclusion.rst
 
-   Principle_of_Inclusion-Exclusion.rst
+   Theorems/Principle_of_Mathematical_Induction.rst
 
-   Principle_of_Mathematical_Induction.rst
+   Theorems/Product_of_Segments_of_Chords.rst
 
-   Product_of_Segments_of_Chords.rst
+   Theorems/Ptolemy's_Theorem.rst
 
-   Ptolemy's_Theorem.rst
+   Theorems/Puiseux's_Theorem.rst
 
-   Puiseux's_Theorem.rst
+   Theorems/Pythagorean_Theorem.rst
 
-   Pythagorean_Theorem.rst
+   Theorems/Ramsey's_Theorem.rst
 
-   Ramsey's_Theorem.rst
+   Theorems/Schroeder-Bernstein_Theorem.rst
 
-   Schroeder-Bernstein_Theorem.rst
+   Theorems/Seifert_van-Kampen_theorem.rst
 
-   Seifert_van-Kampen_theorem.rst
+   Theorems/Solution_of_a_Cubic.rst
 
-   Solution_of_a_Cubic.rst
+   Theorems/Solution_of_the_General_Quartic_Equation.rst
 
-   Solution_of_the_General_Quartic_Equation.rst
+   Theorems/Solutions_to_Pell's_Equation.rst
 
-   Solutions_to_Pell's_Equation.rst
+   Theorems/Stirling's_Formula.rst
 
-   Stirling's_Formula.rst
+   Theorems/Stone-Weierstrass_theorem.rst
 
-   Stone-Weierstrass_theorem.rst
-   Twin_prime_conjecture.rst
+   Theorems/Twin_prime_conjecture.rst
 
-   Sum_of_a_Geometric_Series.rst
+   Theorems/Sum_of_a_Geometric_Series.rst
 
-   Sum_of_an_arithmetic_series.rst
+   Theorems/Sum_of_an_arithmetic_series.rst
 
-   Sum_of_the_Angles_of_a_Triangle.rst
+   Theorems/Sum_of_the_Angles_of_a_Triangle.rst
 
-   Sum_of_the_Reciprocals_of_the_Triangular_Numbers.rst
+   Theorems/Sum_of_the_Reciprocals_of_the_Triangular_Numbers.rst
 
-   Sylow's_Theorem.rst
+   Theorems/Sylow's_Theorem.rst
 
-   Taylor's_Theorem.rst
+   Theorems/Taylor's_Theorem.rst
 
-   Theorem_of_Ceva.rst
+   Theorems/Theorem_of_Ceva.rst
 
-   Triangle_Inequality.rst
+   Theorems/Triangle_Inequality.rst
 
-   Trisecting_the_Angle.rst
+   Theorems/Trisecting_the_Angle.rst
 
-   Twin_prime_conjecture.rst
+   Theorems/Twin_prime_conjecture.rst
 
-   Undecidability_of_the_Continuum_Hypothesis.rst
+   Theorems/Undecidability_of_the_Continuum_Hypothesis.rst
 
-   Wikipedia_popular.rst
+   Theorems/Wilson's_Theorem.rst
 
-   Wilson's_Theorem.rst
-
-   e_is_Transcendental.rst
+   Theorems/e_is_Transcendental.rst
 
 
 
@@ -250,7 +247,7 @@ Formal Abstracts in Mathematics (Main Page)
    :maxdepth: 1
    :caption: Definitions:
 
-   unit_group.rst
+   Definitions/unit_group.rst
    
 
 
