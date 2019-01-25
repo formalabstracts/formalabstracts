@@ -25,7 +25,7 @@ isomorphic G Monster ∨ isomorphic G BabyMonster ∨
 isomorphic G Fi24' ∨ isomorphic G Fi23 ∨ isomorphic G Fi22 ∨ 
 isomorphic G Th ∨ isomorphic G HN ∨ isomorphic G He
 
-def phariah (G : Group) : Prop :=
+def pariah (G : Group) : Prop :=
 isomorphic G J1 ∨ isomorphic G J3 ∨ isomorphic G Ly ∨ 
 isomorphic G O'N ∨ isomorphic G J4 ∨ isomorphic G Ru
 
@@ -37,7 +37,7 @@ mathieu_group G ∨ second_happy_family G ∨ third_happy_family G ∨ phariah G
 -- | of_mathieu_group       : mathieu_group G       → sporadic_group
 -- | of_second_happy_family : second_happy_family G → sporadic_group
 -- | of_third_happy_family  : third_happy_family G  → sporadic_group
--- | of_phariah             : phariah G             → sporadic_group
+-- | of_pariah             : pariah G             → sporadic_group
 
 variable {G : Group}
 theorem classification_of_finite_simple_groups (h₁ : is_finite G) (h₂ : simple_group G) : 
