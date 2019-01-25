@@ -1,4 +1,4 @@
-import preliminaries group_theory.sylow
+import preliminaries group_theory.sylow group_theory.perm
 universe u
 open equiv category_theory
 
