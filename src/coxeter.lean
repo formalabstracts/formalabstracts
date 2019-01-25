@@ -29,5 +29,10 @@ end
 instance {α : Type*} [group α] : has_pow α enat := ⟨egpow⟩
 
 /-- coxeter group -/
-def coxeter_group {n : ℕ} (m : fin n → fin n → enat) : Group := 
-⟪fin n | (λ(x : fin n × fin n), (⟪x.1⟫ * ⟪x.2⟫)^m x.1 x.2) '' univ⟫
+-- We could require that m i i = 1 for all i : α
+def coxeter_group {α : Type*} (m : α → α → enat) : Group := 
+⟪α | (λ(x : α × α), (⟪x.1⟫ * ⟪x.2⟫)^m x.1 x.2) '' univ⟫
+
+def matrix_of_graph {α : Type*} [decidable_eq α] (E : α → α → Prop) [decidable_rel E] (x y : α) :
+  enat :=
+if x = y then 1 else if E x y then 3 else 2
