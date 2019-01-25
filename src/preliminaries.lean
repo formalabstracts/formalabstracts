@@ -1,4 +1,4 @@
-import data.set.finite category_theory.isomorphism
+import data.nat.enat data.set.finite category_theory.isomorphism
 
 open category_theory
 
@@ -41,3 +41,6 @@ def glift (G : Group.{u}) : Group.{max u v} :=
 /-- This is the notion of isomorphic groups which might live in arbitrary universe levels -/
 def isomorphic (G : Group.{u}) (H : Group.{v}) : Prop :=
 nonempty (glift.{u v} G ≅ glift.{v u} H)
+
+noncomputable def roption.classical_to_option {α} (x : roption α) : option α :=
+by haveI := classical.dec; exact x.to_option
