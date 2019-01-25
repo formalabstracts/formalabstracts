@@ -26,7 +26,7 @@ def Th : Group := sorry
 def HN : Group := sorry
 def He : Group := sorry
 
-/- the phariahs -/
+/- the pariahs -/
 def J1 : Group := sorry
 def J3 : Group := sorry
 def Ly : Group := sorry
