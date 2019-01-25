@@ -2,7 +2,7 @@ import data.set.finite category_theory.isomorphism
 
 open category_theory
 
-universe u
+universes u v
 
 axiom omitted {P : Prop} : P
 
@@ -22,7 +22,17 @@ end Group
 instance concrete_is_group_hom : concrete_category @is_group_hom :=
 ⟨by introsI α ia; apply_instance, by introsI α β γ ia ib ic f g hf hg; apply_instance⟩
 
-variables (G H : Group.{u})
-#check G ⟶ H
-#check G ≅ H
+def group.equiv {α β} (e : α ≃ β) [group α] : group β :=
+begin
+  refine {mul := λ x y, e (e.symm x * e.symm y), one := e 1, inv := λ x, e (e.symm x)⁻¹, ..},
+  all_goals {exact omitted}
+end
 
+instance ulift.group {α} [group α] : group (ulift α) :=
+group.equiv (by tidy : ulift α ≃ α).symm
+
+def glift (G : Group.{u}) : Group.{max u v} :=
+⟨ulift G, by apply_instance⟩
+
+def isomorphic (G : Group.{u}) (H : Group.{v}) : Prop :=
+nonempty (glift.{u v} G ≅ glift.{v u} H)
