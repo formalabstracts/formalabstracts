@@ -1,4 +1,4 @@
-import data.nat.enat data.set.finite category_theory.isomorphism
+import data.nat.enat data.set.finite category_theory.isomorphism group_theory.quotient_group
 
 open category_theory
 
@@ -7,6 +7,12 @@ universes u v
 axiom omitted {P : Prop} : P
 
 def is_finite (α : Type*) : Prop := nonempty (fintype α) -- set.finite (set.univ : set α)
+
+noncomputable def instantiate_existential {α : Type*} {P : α → Prop} (h : ∃ x, P x) : {x // P x} :=
+begin
+  haveI : nonempty α := nonempty_of_exists h,
+  exact ⟨classical.epsilon P, classical.epsilon_spec h⟩
+end
 
 /-- The type of groups. -/
 @[reducible] def Group : Type (u+1) := bundled group
@@ -44,3 +50,8 @@ nonempty (glift.{u v} G ≅ glift.{v u} H)
 
 noncomputable def roption.classical_to_option {α} (x : roption α) : option α :=
 by haveI := classical.dec; exact x.to_option
+
+/- Given N ⊆ G normal, return the canonical surjection G → G/N -/
+def canonical_surjection {G : Type*} [group G]  (N : set G) [normal_subgroup N] : G → quotient_group.quotient N:= quotient_group.mk 
+
+instance {G : Type*} [group G]  (N : set G) [normal_subgroup N] : is_group_hom $ canonical_surjection N := omitted

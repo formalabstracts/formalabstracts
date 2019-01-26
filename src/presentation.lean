@@ -2,7 +2,7 @@ import preliminaries group_theory.free_group group_theory.coset group_theory.quo
 
 /- Some definitions for specifying a finite group as a quotient of a free group -/
 
-namespace quotient_group
+open quotient_group
 
 variables {α : Type*} [group α]
 
@@ -28,4 +28,5 @@ def group_of_generators_relations (gen : Type*) (relations : set (free_group gen
 
 notation `⟪`:95 G `|`:90 R`⟫`:0 := group_of_generators_relations G R
 
-end quotient_group
+def generated_of {G : Type*} {R : set (free_group G)} : G → ⟪G | R⟫ :=
+  λ g, by {apply mk, exact free_group.of g}
