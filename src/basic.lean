@@ -13,13 +13,13 @@ end
 
 
 /-- the "extended" group power, where g^∞ is defined as 1 -/
-def egpow {α : Type*} [group α] (x : α) (n : enat) : α :=
+noncomputable def egpow {α : Type*} [group α] (x : α) (n : enat) : α :=
 match n.classical_to_option with
 | some n := x ^ n
 | none   := 1
 end
 
-instance {α : Type*} [group α] : has_pow α enat := ⟨egpow⟩
+noncomputable instance {α : Type*} [group α] : has_pow α enat := ⟨egpow⟩
 
 /- Conjugacy Classes -/
 variables {α : Type u} [group α]
