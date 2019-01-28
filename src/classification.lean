@@ -1,6 +1,6 @@
 import .lie_type .sporadic_group 
 
-open nat
+open nat monster
 local infix ` ≅ `:60 := isomorphic 
 
 /-- Cyclic groups of prime order -/

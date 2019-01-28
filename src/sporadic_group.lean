@@ -1,5 +1,4 @@
 import .basic monster
-open Monster
 
 /- the first happy family, a.k.a. Mathieu groups -/
 def M11 : Group := sorry
@@ -18,7 +17,6 @@ def J2 : Group := sorry
 def Suz : Group := sorry
 
 /- the third happy family -/
-noncomputable def Monster : Group := Monster
 def BabyMonster : Group := sorry
 def Fi24' : Group := sorry
 def Fi23 : Group := sorry
