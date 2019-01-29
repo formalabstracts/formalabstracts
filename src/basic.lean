@@ -24,13 +24,19 @@ noncomputable instance {α : Type*} [group α] : has_pow α enat := ⟨egpow⟩
 variables {α : Type u} [group α] {s : set α} {x y : α}
 /-- The centralizer of a set s consists of all elements commuting with all elements of s -/
 def centralizer (s : set α) : set α := { g | ∀x ∈ s, g * x = x * g }
+
 instance (s : set α) : is_subgroup (centralizer s) := omitted
+
+/-- The normalizer of a set s consists of all elements commuting with s as a set -/
+def normalizer (s : set α) : set α := { g | (λx, g * x) '' s = (λx, x * g) '' s }
+
+instance (s : set α) : is_subgroup (normalizer s) := omitted
 
 /- Conjugacy Classes -/
 
 variable (α)
-/-- A conjugacy class is a set of the form { h⁻¹ * g * h | h : α} for some element g -/
-def is_conjugacy_class : set (set α) := {s | ∃g, s = (λh, h⁻¹ * g * h) '' set.univ }
+/-- A conjugacy class is a set of the form { h * g * h⁻¹ | h : α} for some element g : α -/
+def is_conjugacy_class : set (set α) := {s | ∃g, s = (λh, h * g * h⁻¹) '' set.univ }
 
 variable {α}
 /-- Elements in the same conjugacy class have equal order -/

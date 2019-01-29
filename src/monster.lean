@@ -58,27 +58,14 @@ noncomputable def spider : Y443 := (a * b₁ * c₁ * a * b₂ * c₂ * a * b₃
 
 noncomputable def Y443_mod_spider : Group := Y443/⟪{spider}⟫
 
-lemma unique_non_identity_in_center_Monster_spec : 
+lemma unique_non_identity_in_center_Y443_mod_spider_spec : 
   ∃! x : Y443_mod_spider, x ≠ 1 ∧ (x ∈ is_subgroup.center Y443_mod_spider) := 
 omitted 
 
-noncomputable def unique_non_identity_in_center_Monster : Y443_mod_spider := 
-classical.some unique_non_identity_in_center_Monster_spec
+noncomputable def unique_non_identity_in_center_Y443_mod_spider : Y443_mod_spider := 
+classical.some unique_non_identity_in_center_Y443_mod_spider_spec
 
-noncomputable def Monster : Group := Y443_mod_spider/⟪{unique_non_identity_in_center_Monster}⟫
-
-noncomputable def twoB : Group :=
-let C := conj_class Monster 2 'A' in
-let x := classical.some C.1.2 in
-category_theory.mk_ob (@centralizer Monster _ {x})
-
-lemma unique_non_identity_in_center_B_spec : 
-  ∃! x : twoB, x ≠ 1 ∧ (x ∈ is_subgroup.center twoB) := 
-omitted 
-
-noncomputable def unique_non_identity_in_center_B : twoB := 
-classical.some unique_non_identity_in_center_B_spec
-
-noncomputable def BabyMonster : Group := twoB/⟪{unique_non_identity_in_center_B}⟫
+noncomputable def Monster : Group := 
+Y443_mod_spider/⟪{unique_non_identity_in_center_Y443_mod_spider}⟫
 
 end monster
