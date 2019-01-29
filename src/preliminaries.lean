@@ -56,3 +56,36 @@ by haveI := classical.dec; exact x.to_option
 def canonical_surjection {G : Type*} [group G]  (N : set G) [normal_subgroup N] : G → quotient_group.quotient N:= quotient_group.mk 
 
 instance {G : Type*} [group G]  (N : set G) [normal_subgroup N] : is_group_hom $ canonical_surjection N := omitted
+
+variables {α : Type*} {β : Type*}
+def pullback_rel (f : α → β) (r : β → β → Prop) : α → α → Prop := λ x y, r (f x) (f y)
+namespace pullback_rel
+instance (f : α → β) (r : β → β → Prop) [is_trans β r] : is_trans α (pullback_rel f r) :=
+⟨λ x y z h₁ h₂, (trans h₁ h₂ : r (f x) (f z))⟩
+
+protected def is_antisymm (f : α → β) (r : β → β → Prop) (h : function.injective f)
+  [is_antisymm β r] : is_antisymm α (pullback_rel f r) :=
+⟨λ x y h₁ h₂, h $ antisymm h₁ h₂⟩
+
+instance (f : α → β) (r : β → β → Prop) [is_total β r] : is_total α (pullback_rel f r) :=
+⟨λ x y, total_of r (f x) (f y)⟩
+
+instance (f : α → β) (r : β → β → Prop) [decidable_rel r] : decidable_rel (pullback_rel f r) :=
+by dsimp [pullback_rel]; apply_instance
+end pullback_rel
+
+namespace set
+lemma finite_of_subset_finset {s : set α} (t : finset α) (h : s ⊆ ↑t) : s.finite :=
+finite_subset (finset.finite_to_set t) h
+
+/-- The cardinality of any subset of a finite type. -/
+noncomputable def cardinality [fintype α] (s : set α) : ℕ :=
+by haveI := classical.prop_decidable; haveI := (set_fintype s); exact fintype.card s
+
+end set
+
+namespace char
+
+protected def to_nat_m65 (c : char) : ℕ := c.val - 65
+
+end char

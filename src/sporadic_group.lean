@@ -17,7 +17,6 @@ def J2 : Group := sorry
 def Suz : Group := sorry
 
 /- the third happy family -/
-def BabyMonster : Group := sorry
 def Fi24' : Group := sorry
 def Fi23 : Group := sorry
 def Fi22 : Group := sorry
