@@ -42,13 +42,14 @@ let x := classical.some C.1.2 in
 let Cx : set Monster := centralizer {x} in
 category_theory.mk_ob $ quotient_group.quotient $ is_subgroup.center $ Cx
 
-/-- The Fischer group Fi24 -/
+/-- The Fischer group Fi24 is characterized by 3 ⬝ Fi24 ≅ C_M(x) 
+  where x is any element in conjugacy class 3C -/
 -- remark on notation: according to Wikipedia is written Fi₂₄ or F₂₄'. Tom denotes it as Fi24' and sometimes without a prime as Fi24 (assuming that he means the same group)
 noncomputable def Fi24' : Group := 
 let C := conj_class Monster 3 'A' in
 let x := classical.some C.1.2 in
 let Cx : set Monster := centralizer {x} in
-category_theory.mk_ob $ quotient_group.quotient $ is_subgroup.center $ Cx
+sorry
 
 /-- the Fischer group Fi23 -/
 def Fi23 : Group := sorry
