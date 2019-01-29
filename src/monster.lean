@@ -56,16 +56,7 @@ def c₃ : Y443 := generated_of $ arm (by to_dfin 2) (by to_dfin 1)
 /- (ab₁c₁ab₂c₂ab₃c₃)^10 -/
 noncomputable def spider : Y443 := (a * b₁ * c₁ * a * b₂ * c₂ * a * b₃ * c₃)^10
 
-noncomputable def Y443_mod_spider : Group := Y443/⟪{spider}⟫
-
-lemma unique_non_identity_in_center_Y443_mod_spider_spec : 
-  ∃! x : Y443_mod_spider, x ≠ 1 ∧ (x ∈ is_subgroup.center Y443_mod_spider) := 
-omitted 
-
-noncomputable def unique_non_identity_in_center_Y443_mod_spider : Y443_mod_spider := 
-classical.some unique_non_identity_in_center_Y443_mod_spider_spec
-
 noncomputable def Monster : Group := 
-Y443_mod_spider/⟪{unique_non_identity_in_center_Y443_mod_spider}⟫
+category_theory.mk_ob $ quotient_group.quotient $ is_subgroup.center $ Y443/⟪{spider}⟫
 
 end monster

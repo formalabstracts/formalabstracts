@@ -27,10 +27,8 @@ def centralizer (s : set α) : set α := { g | ∀x ∈ s, g * x = x * g }
 
 instance (s : set α) : is_subgroup (centralizer s) := omitted
 
-/-- The normalizer of a set s consists of all elements commuting with s as a set -/
-def normalizer (s : set α) : set α := { g | (λx, g * x) '' s = (λx, x * g) '' s }
-
-instance (s : set α) : is_subgroup (normalizer s) := omitted
+-- the normalizer is already defined
+export is_subgroup (normalizer)
 
 /- Conjugacy Classes -/
 
