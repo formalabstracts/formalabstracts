@@ -27,6 +27,19 @@ def centralizer (s : set α) : set α := { g | ∀x ∈ s, g * x = x * g }
 
 instance (s : set α) : is_subgroup (centralizer s) := omitted
 
+/-- the induced_subgroup t s is the set t viewed as a subgroup s.
+  in applications we will have t ⊆ s, but otherwise this definition gives t ∩ s -/
+def induced_subgroup (t s : set α) : set s :=
+subtype.val ⁻¹' t
+
+instance (t s : set α) [is_subgroup s] [is_subgroup t] : is_subgroup (induced_subgroup t s) :=
+is_group_hom.preimage _ _
+
+/-- the subgroup spanned by x is normal in its centralizer -/
+instance (x : α) : 
+  normal_subgroup $ induced_subgroup (group.closure {x}) (centralizer {x} : set α) :=
+omitted
+
 -- the normalizer is already defined
 export is_subgroup (normalizer)
 

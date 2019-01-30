@@ -48,38 +48,55 @@ category_theory.mk_ob $ quotient_group.quotient $ is_subgroup.center $ Cx
 noncomputable def Fi24' : Group := 
 let C := conj_class Monster 3 'A' in
 let x := classical.some C.1.2 in
-let Cx : set Monster := centralizer {x} in
-sorry
+let C_Mx : set Monster := centralizer {x} in
+sorry -- can we define Fi24 := C_M(x)/<x> ?
 
 /-- the Fischer group Fi23 -/
 def Fi23 : Group := sorry
+
 /-- the Fischer group Fi22 -/
 def Fi22 : Group := sorry
-/-- the Thompson Group -/
+
+/-- the Thompson Group is C_M(x)/<x> for some element x in 3C -/
 noncomputable def Th : Group :=
 let C := conj_class Monster 3 'C' in
 let x := classical.some C.1.2 in
-let span_x : set Monster := group.closure {x} in
-let C_span_x : set Monster := centralizer span_x in
-let span_x' : set C_span_x := subtype.val ⁻¹' span_x in
-by { haveI : normal_subgroup span_x' := omitted,
-     exact category_theory.mk_ob (quotient_group.quotient span_x') }
+let C_Mx : set Monster := centralizer {x} in
+let span_x : set C_Mx := induced_subgroup (group.closure {x}) C_Mx in
+by exact category_theory.mk_ob (quotient_group.quotient span_x)
 
-/-- the Harada–Norton group	-/
-def HN : Group := sorry
-/-- the Held group -/
-def He : Group := sorry
+/-- the Harada–Norton group	is C_M(x)/<x> for some element x in 5A -/
+noncomputable def HN : Group :=
+let C := conj_class Monster 5 'A' in
+let x := classical.some C.1.2 in
+let C_Mx : set Monster := centralizer {x} in
+let span_x : set C_Mx := induced_subgroup (group.closure {x}) C_Mx in
+by exact category_theory.mk_ob (quotient_group.quotient span_x)
+
+/-- the Held group is C_M(x)/<x> for some element x in 7A -/
+noncomputable def He : Group := 
+let C := conj_class Monster 7 'A' in
+let x := classical.some C.1.2 in
+let C_Mx : set Monster := centralizer {x} in
+let span_x : set C_Mx := induced_subgroup (group.closure {x}) C_Mx in
+by exact category_theory.mk_ob (quotient_group.quotient span_x)
 
 /- the pariahs  -/
+
 /-- the Janko group J₁ -/
 def J1 : Group := sorry
+
 /-- the Janko group J₃ -/
 def J3 : Group := sorry
+
 /-- the Lyons group -/
 def Ly : Group := sorry
+
 /-- the O'Nan group	-/
 def O'N : Group := sorry
+
 /-- the Janko group J₄ -/
 def J4 : Group := sorry
+
 /-- the Rudvalis group -/
 def Ru : Group := sorry
