@@ -90,5 +90,6 @@ def conjugacy_class_classification (G : Group) [fintype G] [decidable_eq G] (N :
 (list_conjugacy_class_of_order G N h1).nth_le m h2
 
 /- The notation for conjugacy classes. The conjugacy class 7C in group G can be written as
-conj_class G 7 'C' -/
+conj_class G 7 'C'.
+Beware: when using this notation we assume that the group is finite, there are no two conjugacy classes of the same cardinality with the given order and that there are sufficiently many conjugacy classes of that order -/
 notation `conj_class` := (λ β N X, @conjugacy_class_classification β (classical.choice omitted) (classical.dec_rel _) N (char.to_nat_m65 X) omitted omitted)
