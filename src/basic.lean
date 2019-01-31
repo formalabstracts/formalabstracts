@@ -31,7 +31,7 @@ def centralizer (s : set α) : set α := { g | ∀x ∈ s, g * x = x * g }
 
 instance (s : set α) : is_subgroup (centralizer s) := omitted
 
--- the normalizer is already defined
+-- the normalizer is already defined in mathlib
 export is_subgroup (normalizer)
 
 /-- the induced_subgroup t s is the set t viewed as a subgroup s.
@@ -43,9 +43,13 @@ instance (t s : set α) [is_subgroup s] [is_subgroup t] : is_subgroup (induced_s
 is_group_hom.preimage _ _
 
 /-- the subgroup spanned by x is normal in its centralizer -/
-instance (x : α) : 
+instance closure_normal_in_centralizer (x : α) : 
   normal_subgroup $ induced_subgroup (group.closure {x}) (centralizer {x} : set α) :=
 omitted
+
+/-- A subgroup is normal in its normalizer -/
+instance (s : set α) [is_subgroup s] : normal_subgroup (induced_subgroup s (normalizer s)) :=
+by { dsimp [induced_subgroup], apply_instance }
 
 /- Primary groups or p-groups -/
 
@@ -64,7 +68,7 @@ def commutative_on (s : set α) : Prop := ∀(x y ∈ s), x * y = y * x
 
 variable (α)
 /-- A conjugacy class is a set of the form { h * g * h⁻¹ | h : α} for some element g : α -/
-def is_conjugacy_class : set (set α) := {s | ∃g, s = (λh, h * g * h⁻¹) '' set.univ }
+def is_conjugacy_class : set (set α) := {s | ∃g, s = set.range (λh, h * g * h⁻¹) }
 
 variable {α}
 /-- Elements in the same conjugacy class have equal order -/
