@@ -1,5 +1,7 @@
 import .basic monster
-open monster
+open monster 
+open category_theory (mk_ob)
+local infix ` ≅ `:60 := isomorphic 
 
 /- the first happy family, a.k.a. Mathieu groups -/
 /-- the Mathieu group M₁₁ -/
@@ -84,7 +86,15 @@ by exact category_theory.mk_ob (quotient_group.quotient span_x)
 /- the pariahs  -/
 
 /-- the Janko group J₁ -/
-def J1 : Group := sorry
+theorem J1_char : ∃!(G : Group.{0}), ∃(h : fintype G), 
+by { exactI
+  simple_group G ∧ 
+  (∃(s : set G), is_Sylow_subgroup 2 s ∧ commutative_on s) ∧
+  (∃x : G, x*x = 1 ∧ mk_ob (centralizer {x} : set G) ≅ 
+    mk_ob (cyclic_group 2 × alternating_group 5)) } :=
+omitted
+
+noncomputable def J1 : Group := classical.some J1_char
 
 /-- the Janko group J₃ -/
 def J3 : Group := sorry

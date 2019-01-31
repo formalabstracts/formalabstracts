@@ -1,7 +1,11 @@
-import preliminaries group_theory.sylow group_theory.perm
-universe u
-open equiv category_theory
+import preliminaries group_theory.sylow group_theory.perm data.zmod.basic
+universes u v
+open equiv 
+open category_theory (mk_ob)
 noncomputable theory
+
+/- cyclic groups -/
+def cyclic_group (n : ℕ+) : Group := mk_ob $ multiplicative $ zmod n
 
 /- The alternating groups -/
 section
@@ -27,6 +31,9 @@ def centralizer (s : set α) : set α := { g | ∀x ∈ s, g * x = x * g }
 
 instance (s : set α) : is_subgroup (centralizer s) := omitted
 
+-- the normalizer is already defined
+export is_subgroup (normalizer)
+
 /-- the induced_subgroup t s is the set t viewed as a subgroup s.
   in applications we will have t ⊆ s, but otherwise this definition gives t ∩ s -/
 def induced_subgroup (t s : set α) : set s :=
@@ -40,8 +47,18 @@ instance (x : α) :
   normal_subgroup $ induced_subgroup (group.closure {x}) (centralizer {x} : set α) :=
 omitted
 
--- the normalizer is already defined
-export is_subgroup (normalizer)
+/- Primary groups or p-groups -/
+
+def is_primary (p : nat) (α : Type*) [group α] [decidable_eq α] [fintype α] : Prop := 
+∀(x : α), ∃(n : ℕ), order_of x = p ^ n
+
+def is_Sylow_subgroup [fintype α] (p : nat) (s : set α) : Prop := 
+by { haveI := classical.prop_decidable, exact
+  ∃(hs : is_subgroup s), is_primary p s ∧
+    (∀ t (ht : is_subgroup t), by { exact is_primary p t } → s ⊆ t → s = t) }
+
+/-- the multiplication is commutative on a subset -/
+def commutative_on (s : set α) : Prop := ∀(x y ∈ s), x * y = y * x
 
 /- Conjugacy Classes -/
 
@@ -82,12 +99,26 @@ let r := pullback_rel f (≤) in
 by { haveI : is_antisymm _ r := pullback_rel.is_antisymm f (≤) h,
      exact finset.sort r (@finset.univ (is_conjugacy_class_of_order α N) _) }
 
+def number_of_conjugacy_classes_of_order [fintype α] [decidable_eq α] (N : ℕ) : ℕ :=
+fintype.card (is_conjugacy_class_of_order α N)
+
+lemma number_of_conjugacy_classes_of_order_eq [fintype α] [decidable_eq α] (N : ℕ) 
+  (h : function.injective (λ s : is_conjugacy_class_of_order α N, s.1.1.cardinality)) :
+  number_of_conjugacy_classes_of_order α N = (list_conjugacy_class_of_order α N h).length :=
+let f : is_conjugacy_class_of_order α N → ℕ := λ s, s.1.1.cardinality in
+let r := pullback_rel f (≤) in
+begin
+  haveI : is_antisymm _ r := pullback_rel.is_antisymm f (≤) h,
+  dsimp [number_of_conjugacy_classes_of_order, list_conjugacy_class_of_order], 
+  exact omitted --rw [finset.sort_length]
+end
+
 /- The m-th conjugacy class of order N -/
 def conjugacy_class_classification (G : Group) [fintype G] [decidable_eq G] (N : ℕ) (m : ℕ) 
   (h1 : function.injective (λ s : is_conjugacy_class_of_order G N, s.1.1.cardinality))
-  (h2 : m < (list_conjugacy_class_of_order G N h1).length) : 
+  (h2 : m < number_of_conjugacy_classes_of_order G N) : 
   is_conjugacy_class_of_order G N :=
-(list_conjugacy_class_of_order G N h1).nth_le m h2
+(list_conjugacy_class_of_order G N h1).nth_le m (by rwa ←number_of_conjugacy_classes_of_order_eq)
 
 /- The notation for conjugacy classes. The conjugacy class 7C in group G can be written as
 conj_class G 7 'C'.

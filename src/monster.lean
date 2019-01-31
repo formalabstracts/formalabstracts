@@ -56,6 +56,7 @@ def c₃ : Y443 := generated_of $ arm (by to_dfin 2) (by to_dfin 1)
 /- (ab₁c₁ab₂c₂ab₃c₃)^10 -/
 noncomputable def spider : Y443 := (a * b₁ * c₁ * a * b₂ * c₂ * a * b₃ * c₃)^10
 
+/-- The Fischer-Griess monster group -/
 noncomputable def Monster : Group := 
 category_theory.mk_ob $ quotient_group.quotient $ is_subgroup.center $ Y443/⟪{spider}⟫
 

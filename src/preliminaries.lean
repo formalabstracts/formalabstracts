@@ -84,6 +84,15 @@ by haveI := classical.prop_decidable; haveI := (set_fintype s); exact fintype.ca
 
 end set
 
+namespace finset
+
+variables (r : α → α → Prop) [decidable_rel r] [is_trans α r] [is_antisymm α r] [is_total α r] 
+
+lemma sort_length [decidable_eq α] (s : finset α) : (sort r s).length = s.card :=
+by rw [←list.to_finset_card_of_nodup (sort_nodup r s), sort_to_finset r s]
+
+end finset
+
 namespace char
 
 protected def to_nat_m65 (c : char) : ℕ := c.val - 65
