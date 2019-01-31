@@ -1,4 +1,5 @@
-import data.nat.enat data.set.finite category_theory.isomorphism group_theory.quotient_group
+import category_theory.concrete_category category_theory.isomorphism
+       data.nat.enat data.set.finite group_theory.quotient_group
        group_theory.free_group
        
 open category_theory
