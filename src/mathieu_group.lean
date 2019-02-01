@@ -1,7 +1,8 @@
 import .basic
-import data.finset 
+import tactic.depends
+import data.finset group_theory.group_action
 
-open finset fintype
+open finset fintype is_monoid_action
 
 universe u 
 
@@ -28,14 +29,36 @@ variable s : steiner_system t k v
 
 def Aut {t k v : ℕ}(s : steiner_system t k v) := steiner_system_isomorphism s s  
 
-instance {s : steiner_system t k v} : group (Aut s) := sorry
+instance {s : steiner_system t k v} : group (Aut s) := sorry 
 -- by refine { one := _, inv := _, mul := _, .. }; obviously 
 
 lemma s_5_8_24 : steiner_system 5 8 24 := sorry 
 
+lemma is_unique_s_5_8_24 : ∀ x y : steiner_system 5 8 24, steiner_system_isomorphism x y := sorry 
+
 lemma s_5_6_12 : steiner_system 5 6 12 := sorry 
 
-def M24 : Aut(s_5_8_24) := sorry 
-def M12 : Aut(s_5_6_12) := sorry 
+lemma is_unique_s_5_6_12 : ∀ x y : steiner_system 5 6 12, steiner_system_isomorphism x y := sorry 
+
+def map_action {t k v : ℕ} (s : steiner_system t k v):
+Aut(s) → s.X → s.X :=
+begin
+intros f x, 
+exact f.map x,
+end
+
+instance {t k v : ℕ} (s : steiner_system t k v) : is_monoid_action (map_action s) := sorry 
+
+def M11 (x : s_5_6_12.X):= stabilizer (map_action s_5_6_12) x
+def M12 := Aut(s_5_6_12) 
+def M22 : unit := sorry
+def M23 (x : s_5_8_24.X):= stabilizer (map_action s_5_8_24) x
+def M24 := Aut(s_5_8_24) 
+
+-- #check is_monoid_action.stabilizer $ map_action s  
 
 
+#depends M24
+#depends steiner_system_isomorphism
+#depends steiner_system.blocks
+#check @is_monoid_action.stabilizer
