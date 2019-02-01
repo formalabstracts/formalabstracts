@@ -1,5 +1,5 @@
 import preliminaries group_theory.sylow group_theory.perm
-import .depends
+-- import .depends
 universe u
 open equiv category_theory
 

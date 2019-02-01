@@ -38,6 +38,7 @@ do e ← get_env,
    tactic.trace $ take 150 f,
    skip
 
+/- TODO : modify this to take structures into account -/
 @[user_command] meta def depends_cmd (meta_info : decl_meta_info) ( _ : parse $ tk "#depends")
  : lean.parser unit
 := do given_name ← ident,
