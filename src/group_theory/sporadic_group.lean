@@ -1,4 +1,4 @@
-import .basic monster
+import .basic .monster
 noncomputable theory
 open monster 
 open category_theory (mk_ob)

@@ -1,4 +1,4 @@
-import dvector presentation
+import ..data.dvector .presentation
 
 local notation h :: t  := dvector.cons h t
 local notation `[` l:(foldr `, ` (h t, dvector.cons h t) dvector.nil `]`) := l
