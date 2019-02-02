@@ -44,7 +44,8 @@ do e ← get_env,
 := do given_name ← ident,
     resolved ← resolve_constant given_name,
     d ← get_decl resolved <|> fail ("declaration " ++ to_string given_name ++ " not found"),
-    tactic.trace $ d.type 
+    tactic.trace $ list_names d.type 
+
 
 meta def direct_dependencies : tactic unit :=
 do  t ← tactic.target,

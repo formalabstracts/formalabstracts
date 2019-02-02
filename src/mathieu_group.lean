@@ -71,8 +71,6 @@ def M22 : Group := sorry
 def M23 (x : s_5_8_24.X):= stabilizer (evaluation_action s_5_8_24) x
 def M24 := Aut(s_5_8_24) 
 
--- #check is_monoid_action.stabilizer $ evaluation_action s  
-
 
 #depends M24
 #depends steiner_system_isomorphism
