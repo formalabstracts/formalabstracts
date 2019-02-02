@@ -6,8 +6,8 @@ Authors: Koundinya Vajjha
 A meta def called `#depends` which gives the names of all the theorems (the statement of) a given definition/theorem depends on.
 -/
 
-import measure_theory.probability_theory
-import ..preliminaries
+import data.buffer.parser
+import tactic.squeeze
 
 open tactic expr interactive native name list lean.parser parser
 
@@ -44,8 +44,7 @@ do e ← get_env,
 := do given_name ← ident,
     resolved ← resolve_constant given_name,
     d ← get_decl resolved <|> fail ("declaration " ++ to_string given_name ++ " not found"),
-    tactic.trace $ list_names d.type 
-
+    tactic.trace $ d.type 
 
 meta def direct_dependencies : tactic unit :=
 do  t ← tactic.target,
@@ -55,14 +54,14 @@ do  t ← tactic.target,
 
 theorem foo : 2+2 = 4 :=
 begin
-direct_dependencies,
-trace_all_decls `name,
-simp,
+-- direct_dependencies,
+-- trace_all_decls `name,
+squeeze_simp,
 end
-
+#check eq_self_iff_true
 #depends foo 
-#depends cond_prob_swap
-#depends total_prob
-#depends group.equiv
-#depends isomorphic
-#depends is_simple_alternating_group
+-- #depends cond_prob_swap
+-- #depends total_prob
+-- #depends group.equiv
+-- #depends isomorphic
+-- #depends is_simple_alternating_group
