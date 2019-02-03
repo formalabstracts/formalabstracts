@@ -70,10 +70,28 @@ def matrix_of_graph {α : Type*} [decidable_eq α] (E : α → α → Prop) [dec
   enat :=
 if x = y then 1 else if E x y then 3 else 2
 
+/- Annotated graphs for generalized Coxeter-type presentations (see xviii of the atlas) -/
+structure annotated_graph :=
+  (vertex : Type*)
+  (edge : vertex → vertex → Prop)
+  (annotation : Π{{x y}}, edge x y → ℕ+)
+
+/- By default, all edges are annotated with 3 -/
+def annotated_graph_of_graph {α : Type*} (E : α → α → Prop) : annotated_graph :=
+{ vertex := α,
+  edge := E,
+  annotation := λ _ _ _, 3}
+
+/- Note: this scheme does not handle the possibility of loops. But I don't think we need that case. -/
+def matrix_of_annotated_graph {α : annotated_graph} [decidable_eq α.vertex] [decidable_rel α.edge] (x y : α.vertex) : enat :=
+  if x = y then 1 else dite (α.edge x y) (λ h, α.annotation h) (λ _, 2)
+
 /- Derived subgroups -/
 
 def commutator {α : Type*} [group α] : α × α → α
 | ⟨x, y⟩ :=  x * y * x⁻¹ * y⁻¹
+
+notation `⟦`:95 x `,` y `⟧`:0 := commutator (x,y)
 
 def commutators_of {α : Type*} [group α] (s : set α) : set α :=
 group.closure $ commutator '' s.prod s
