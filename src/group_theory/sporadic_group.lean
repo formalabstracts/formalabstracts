@@ -1,6 +1,6 @@
-import .basic .monster .presentation .suzuki
+import .basic .monster .presentation .suzuki .higman_sims
 noncomputable theory
-open monster suzuki
+open monster suzuki higman_sims
 open category_theory (mk_ob)
 local infix ` ≅ `:60 := isomorphic 
 local notation `⟪`:50 a `⟫`:50 := free_group.of a
@@ -27,10 +27,9 @@ def Co3 : Group := sorry
 /-- the McLaughlin group -/
 def McL : Group := sorry
 /-- the Higman–Sims group -/
-def HS : Group := sorry
+def HS : Group := HS
 
 section J2
-
 private def a : free_group $ dfin 4 := ⟪(by to_dfin 0)⟫
 private def b : free_group $ dfin 4 := ⟪(by to_dfin 1)⟫
 private def u : free_group $ dfin 4 := ⟪(by to_dfin 2)⟫
@@ -40,12 +39,10 @@ private def v : free_group $ dfin 4 := ⟪(by to_dfin 3)⟫
 /-- the Hall-Janko group J₂ -/
 /- From the corresponding entry in the atlas of finite groups -/
 def J2 : Group := ⟪dfin 4 | {a * b * u ⁻¹, a * b⁻¹ * v ⁻¹, a^2, b^3, u^15, (u^4 * v^2 * u^3 * v^3)^2, (u^3 * v * (u^2 * v^2)^2)^2} ⟫
-
 end J2
-/-- the Suzuki sporadic group -/
 
-/- From the corresponding entry in the atlas of finite groups -/
-noncomputable def Suz : Group := Suz
+/-- the Suzuki sporadic group -/
+def Suz : Group := Suz
 
 /- THE THIRD HAPPY FAMILY -/
 
@@ -135,14 +132,9 @@ def Ly : Group := sorry
 
 def O'N : Group := sorry
 
-
-#print dfin 3
-
 /-- the Janko group J₄ -/
-/- From http://brauer.maths.qmul.ac.uk/Atlas/v3/spor/J4/ -/
 
 def J4 : Group := sorry
-
 
 
 /-- the Rudvalis group -/
