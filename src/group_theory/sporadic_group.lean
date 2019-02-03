@@ -1,9 +1,9 @@
-import .basic .monster
+import .basic .monster .presentation
 noncomputable theory
 open monster 
 open category_theory (mk_ob)
 local infix ` ≅ `:60 := isomorphic 
-
+local notation `⟪`:50 a `⟫`:50 := free_group.of a
 
 /- the first happy family, a.k.a. Mathieu groups -/
 /-- the Mathieu group M₁₁ -/
@@ -28,9 +28,23 @@ def Co3 : Group := sorry
 def McL : Group := sorry
 /-- the Higman–Sims group -/
 def HS : Group := sorry
-/-- the Janko group J₂ -/
-def J2 : Group := sorry
-/-- the Suzuki sporadic group	-/
+
+section J2
+
+private def a : free_group $ dfin 4 := ⟪(by to_dfin 0)⟫
+private def b : free_group $ dfin 4 := ⟪(by to_dfin 1)⟫
+private def u : free_group $ dfin 4 := ⟪(by to_dfin 2)⟫
+private def v : free_group $ dfin 4 := ⟪(by to_dfin 3)⟫
+
+
+/-- the Hall-Janko group J₂ -/
+/- From the corresponding entry in the atlas of finite groups -/
+def J2 : Group := ⟪dfin 4 | {a * b * u ⁻¹, a * b⁻¹ * v ⁻¹, a^2, b^3, u^15, (u^4 * v^2 * u^3 * v^3)^2, (u^3 * v * (u^2 * v^2)^2)^2} ⟫
+
+end J2
+/-- the Suzuki sporadic group -/
+
+/- From the corresponding entry in the atlas of finite groups -/
 def Suz : Group := sorry
 
 /- THE THIRD HAPPY FAMILY -/
@@ -105,17 +119,31 @@ omitted
 
 def J1 : Group := classical.some J1_char
 
+private def a := ⟪ff⟫
+private def b := ⟪tt⟫
+
 /-- the Janko group J₃ -/
-def J3 : Group := sorry
+/- From http://brauer.maths.qmul.ac.uk/Atlas/v3/pres/J3G1-P1:
+  
+  Presentation 	〈 a, b | a2 = b3 = (ab)19 = [a, b]9 = ((ab)6(ab−1)5)2 = ((ababab−1)2abab−1ab−1abab−1)2 = abab(abab−1)3abab(abab−1)4ab−1(abab−1)3 = (ababababab−1abab−1)4 = 1 〉 -/
+def J3 : Group := ⟪bool | {a^2, b^3, (a * b)^19, ⟦a , b⟧^9, ((a * b)^6 * (a * b⁻¹)^5)^2, ((a*b*a*b*a*(b⁻¹))^2 * a * b * a * b⁻¹ * a * b ⁻¹ * a * b * a * b ⁻¹)^2, a * b * a * b * (a * b * a * b⁻¹)^3 * a * b * a * b * (a * b * a * b ⁻¹)^4 * a * b ⁻¹ * (a * b * a * b ⁻¹ )^3, (a * b * a * b * a * b * a * b * a * b ⁻¹ * a * b * a * b ⁻¹)^4} ⟫
 
 /-- the Lyons group -/
 def Ly : Group := sorry
 
 /-- the O'Nan group	-/
+
 def O'N : Group := sorry
 
+
+#print dfin 3
+
 /-- the Janko group J₄ -/
+/- From http://brauer.maths.qmul.ac.uk/Atlas/v3/spor/J4/ -/
+
 def J4 : Group := sorry
+
+
 
 /-- the Rudvalis group -/
 def Ru : Group := sorry
