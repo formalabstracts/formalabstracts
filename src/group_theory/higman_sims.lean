@@ -4,7 +4,7 @@ local notation `⟪`:50 a `⟫`:50 := free_group.of a
 local notation h :: t  := dvector.cons h t
 local notation `[` l:(foldr `, ` (h t, dvector.cons h t) dvector.nil `]`) := l
 
-/- From the corresponding entry in the atlas (p. 123) the Higman-Sims sporadic group is given by a generalized Coxeter-type presentation -/
+/- From the corresponding entry in the atlas (p. 123) the Higman-Sims sporadic group is given by a generalized Coxeter-type presentation modulo additional relations -/
 
 open coxeter_vertices
 namespace higman_sims
