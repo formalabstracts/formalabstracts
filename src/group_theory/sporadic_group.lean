@@ -1,6 +1,6 @@
-import .basic .monster .presentation .suzuki .higman_sims
+import .basic .monster .presentation .suzuki .higman_sims .mclaughlin
 noncomputable theory
-open monster suzuki higman_sims
+open monster suzuki higman_sims mclaughlin
 open category_theory (mk_ob)
 local infix ` ≅ `:60 := isomorphic 
 local notation `⟪`:50 a `⟫`:50 := free_group.of a
@@ -25,7 +25,7 @@ def Co2 : Group := sorry
 /-- the Conway group Co₃ -/
 def Co3 : Group := sorry
 /-- the McLaughlin group -/
-def McL : Group := sorry
+def McL : Group := McL
 /-- the Higman–Sims group -/
 def HS : Group := HS
 
