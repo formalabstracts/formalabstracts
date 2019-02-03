@@ -93,6 +93,13 @@ def annotate (Γ : annotated_graph) [decidable_rel Γ.edge] [decidable_eq Γ.ver
   edge := Γ.edge,
   annotation := λ a b H, if (a = x.1 ∧ b = x.2) ∨ (a = x.2 ∧ b = x.1) then n else Γ.annotation H }
 
+/-- "insert edge Γ (a,b) n" returns Γ' which is Γ except Γ'.edge a b and Γ'.edge b a are true and annotated with n.
+If an edge is already present, this does nothing. -/
+def insert_edge (Γ : annotated_graph) [decidable_rel Γ.edge] [decidable_eq Γ.vertex] (x : Γ.vertex × Γ.vertex) (n : ℕ+) : annotated_graph :=
+{ vertex := Γ.vertex,
+  edge := λ a b, if (a = x.1 ∧ b = x.2) ∨ (a = x.2 ∧ b = x.1) then true else Γ.edge a b,
+  annotation := λ a b H, dite (Γ.edge a b) (λ H, Γ.annotation H) (λ _, n)}
+
 /- Coxeter Y-diagrams -/
 @[derive decidable_eq] inductive coxeter_vertices {n} (xs : dvector ℕ n) : Type
 | torso : coxeter_vertices
@@ -118,10 +125,20 @@ noncomputable instance decidable_coxeter_edges {n} (xs : dvector ℕ n) :
   decidable_rel $ coxeter_edges xs :=
 λ _ _, classical.prop_decidable _
 
-noncomputable instance decidable_annotated_coxeter_edges {n} (xs : dvector ℕ n) : decidable_rel $ (annotated_graph_of_graph (coxeter_edges xs)).edge :=
+noncomputable instance decidable_rel_annotated_coxeter_edges {n} (xs : dvector ℕ n) : decidable_rel $ (annotated_graph_of_graph (coxeter_edges xs)).edge :=
 λ _ _, classical.prop_decidable _
 
-noncomputable instance decidable_annotate_of_decidable (Γ : annotated_graph) [decidable_eq Γ.vertex] [decidable_rel Γ.edge] (x n) : decidable_rel $ (annotate Γ x n).edge := λ _ _, classical.prop_decidable _
+noncomputable instance decidable_eq_annotate_of_decidable (Γ : annotated_graph) [decidable_eq Γ.vertex] [decidable_rel Γ.edge] (x n) : decidable_eq $ (annotate Γ x n).vertex :=
+  λ _ _, classical.prop_decidable _
+
+noncomputable instance decidable_rel_annotate_of_decidable (Γ : annotated_graph) [decidable_eq Γ.vertex] [decidable_rel Γ.edge] (x n) : decidable_rel $ (annotate Γ x n).edge :=
+  λ _ _, classical.prop_decidable _
+
+noncomputable instance decidable_eq_insert_edge_of_decidable (Γ : annotated_graph) [decidable_rel Γ.edge] [decidable_eq Γ.vertex] (x n) : decidable_eq $ (insert_edge Γ x n).vertex :=
+  λ _ _, classical.prop_decidable _
+
+noncomputable instance decidable_rel_insert_edge_of_decidable (Γ : annotated_graph) [decidable_rel Γ.edge] [decidable_eq Γ.vertex] (x n) : decidable_rel $ (insert_edge Γ x n).edge :=
+  λ _ _, classical.prop_decidable _
 
 /- Derived subgroups -/
 
