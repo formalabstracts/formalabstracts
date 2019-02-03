@@ -3,7 +3,6 @@ import ..data.dvector .presentation .monster
 local notation `⟪`:50 a `⟫`:50 := free_group.of a
 local notation h :: t  := dvector.cons h t
 local notation `[` l:(foldr `, ` (h t, dvector.cons h t) dvector.nil `]`) := l
-universe v
 
 /- From the corresponding entry in the atlas (p. 128) Suz . 2 is a quotient of the group given
   by a certain Coxeter-type presentation   -/
@@ -16,9 +15,6 @@ namespace suzuki
 
 noncomputable def abc8defgh_graph : annotated_graph :=
 annotate (annotated_graph_of_graph $ coxeter_edges [2,5]) (torso _ ,arm (by to_dfin 1) (by to_dfin 0)) 8
-
-
-instance abc8defgh_decidable_eq : decidable_eq abc8defgh_graph.vertex := by apply_instance
 
 noncomputable instance abc8defgh_decidable_rel : decidable_rel abc8defgh_graph.edge := λ _ _, classical.prop_decidable _
 
