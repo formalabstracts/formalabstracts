@@ -76,15 +76,22 @@ structure annotated_graph :=
   (edge : vertex → vertex → Prop)
   (annotation : Π{{x y}}, edge x y → ℕ+)
 
-/- By default, all edges are annotated with 3 -/
+/-- Turn a binary relation on a type into an annotated graph.
+  By default, all edges are annotated with 3. -/
 def annotated_graph_of_graph {α : Type*} (E : α → α → Prop) : annotated_graph :=
 { vertex := α,
   edge := E,
   annotation := λ _ _ _, 3}
 
 /- Note: this scheme does not handle the possibility of loops. But I don't think we need that case. -/
-def matrix_of_annotated_graph {α : annotated_graph} [decidable_eq α.vertex] [decidable_rel α.edge] (x y : α.vertex) : enat :=
-  if x = y then 1 else dite (α.edge x y) (λ h, α.annotation h) (λ _, 2)
+def matrix_of_annotated_graph (Γ : annotated_graph) [decidable_eq Γ.vertex] [decidable_rel Γ.edge] (x y : Γ.vertex) :  enat :=
+  if x = y then 1 else dite (Γ.edge x y) (λ h, Γ.annotation h) (λ _, 2)
+
+/-- "annotate Γ (a,b) n" returns an annotated graph Γ' which is identical to Γ, except that Γ'.annotation a b = n. -/
+def annotate (Γ : annotated_graph) [decidable_rel Γ.edge] [decidable_eq Γ.vertex] (x : Γ.vertex × Γ.vertex) (n : ℕ+) : annotated_graph :=
+{ vertex := Γ.vertex,
+  edge := Γ.edge,
+  annotation := λ a b H, if (a = x.1 ∧ b = x.2) ∨ (a = x.2 ∧ b = x.1) then n else Γ.annotation H }
 
 /- Coxeter Y-diagrams -/
 @[derive decidable_eq] inductive coxeter_vertices {n} (xs : dvector ℕ n) : Type
@@ -106,10 +113,15 @@ inductive symmetric_closure {α : Type*} (E : α → α → Prop) : α → α �
 def coxeter_edges {n} (xs : dvector ℕ n) : coxeter_vertices xs → coxeter_vertices xs → Prop :=
 symmetric_closure (coxeter_edges_directed xs)
 
--- TODO derive decidability instance
+-- TODO derive decidability instances
 noncomputable instance decidable_coxeter_edges {n} (xs : dvector ℕ n) : 
   decidable_rel $ coxeter_edges xs :=
 λ _ _, classical.prop_decidable _
+
+noncomputable instance decidable_annotated_coxeter_edges {n} (xs : dvector ℕ n) : decidable_rel $ (annotated_graph_of_graph (coxeter_edges xs)).edge :=
+λ _ _, classical.prop_decidable _
+
+noncomputable instance decidable_annotate_of_decidable (Γ : annotated_graph) [decidable_eq Γ.vertex] [decidable_rel Γ.edge] (x n) : decidable_rel $ (annotate Γ x n).edge := λ _ _, classical.prop_decidable _
 
 /- Derived subgroups -/
 
@@ -146,4 +158,3 @@ def is_perfect (α : Type*) [group α] : Prop := derived_subgroup α = set.univ
 
 /-- A group is called perfect if its derived subgroup is the whole group -/
 def is_solvable (α : Type*) [group α] : Prop := ∃ n, iterated_derived_subgroup α n = {1}
-

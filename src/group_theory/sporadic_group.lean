@@ -1,6 +1,6 @@
-import .basic .monster .presentation
+import .basic .monster .presentation .suzuki
 noncomputable theory
-open monster 
+open monster suzuki
 open category_theory (mk_ob)
 local infix ` ≅ `:60 := isomorphic 
 local notation `⟪`:50 a `⟫`:50 := free_group.of a
@@ -45,7 +45,7 @@ end J2
 /-- the Suzuki sporadic group -/
 
 /- From the corresponding entry in the atlas of finite groups -/
-def Suz : Group := sorry
+noncomputable def Suz : Group := Suz
 
 /- THE THIRD HAPPY FAMILY -/
 
