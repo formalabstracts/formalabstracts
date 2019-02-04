@@ -32,7 +32,7 @@ private def g : abc8defgh_group := generated_of $ arm (by to_dfin 1) (by to_dfin
 private def h : abc8defgh_group := generated_of $ arm (by to_dfin 1) (by to_dfin 4)
 
 /-- Suz.2 is the above group quotiented by additional relations -/
-noncomputable def Suz_2 : Group := abc8defgh_group/⟪{(c * d)^4 * a ⁻¹, (b * c * d * e)^8, (b * c * d * c * d * e * f * g * g)^13}⟫
+noncomputable def Suz_2 : Group :=abc8defgh_group/⟪{(c*d)^4*a⁻¹,(b*c*d*e)^8,(b*c*d*c*d*e*f*g*g)^13}⟫
 
 /- As with the monster, since we now have an extension by 2, we can quotient by the center -/
 

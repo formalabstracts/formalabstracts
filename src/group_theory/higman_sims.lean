@@ -19,7 +19,7 @@ which we'll write as the annotated_graph of a Coxeter Y-diagram with the diagona
 -/ 
 
 def higman_sims_prediagram : annotated_graph := -- above diagram without diagonals or annotations
-annotated_graph_of_graph $ coxeter_edges [1,3,1]
+  annotated_graph_of_graph $ coxeter_edges [1,3,1]
 
 instance higman_sims_prediagram_decidable_eq : decidable_eq higman_sims_prediagram.vertex :=
   by apply_instance
@@ -44,12 +44,12 @@ noncomputable instance higman_sims_diagram_decidable_rel : decidable_rel higman_
 noncomputable def higman_sims_diagram_group : Group :=
   coxeter_group $ matrix_of_annotated_graph (higman_sims_diagram)
 
-private def a : higman_sims_diagram_group := generated_of $  arm (by to_dfin 0) (by to_dfin 0)
-private def b : higman_sims_diagram_group:= generated_of $  torso _
-private def c : higman_sims_diagram_group := generated_of $  arm (by to_dfin 1) (by to_dfin 0)
-private def d : higman_sims_diagram_group:= generated_of $  arm (by to_dfin 1) (by to_dfin 1)
-private def e : higman_sims_diagram_group := generated_of $  arm (by to_dfin 1) (by to_dfin 2)
-private def f : higman_sims_diagram_group:= generated_of $  arm (by to_dfin 2) (by to_dfin 0)
+private def a : higman_sims_diagram_group := generated_of a
+private def b : higman_sims_diagram_group:= generated_of b
+private def c : higman_sims_diagram_group := generated_of c
+private def d : higman_sims_diagram_group:= generated_of d
+private def e : higman_sims_diagram_group := generated_of e
+private def f : higman_sims_diagram_group:= generated_of f
 
 noncomputable def HS : Group := higman_sims_diagram_group/⟪{(f * a)^2 * e⁻¹, (c * b * f)^3, (f * d * c)^5, (b * c * d * e)^4}⟫
 

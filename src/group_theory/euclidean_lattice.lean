@@ -58,8 +58,18 @@ local notation `⟪`:90 x `,` y `⟫`:0  := inner_product x y
 
 local notation `ℝ^^`:50 n:0 := euclidean_space n
 
+instance ℤ_module_euclidean_space {n} : module ℤ (ℝ^^n) :=
+{ smul := λ z x, by {induction x, exact [], exact z * x_x :: x_ih},
+  smul_add := omitted,
+  add_smul := omitted,
+  mul_smul := omitted,
+  one_smul := omitted,
+  zero_smul := omitted,
+  smul_zero := omitted }
+
 /- An x : ℝ^^n is in the integral span of B if it can be written as a ℤ-linear combination of elements of B -/
-def in_integral_span {n} (B : set ℝ^^n) : (ℝ^^n) → Prop := sorry
+def in_integral_span {n} (B : set ℝ^^n) : (ℝ^^n) → Prop :=
+ λ x, x ∈ submodule.span ℤ B
 
 def is_euclidean_lattice {n : ℕ} (Λ : set ℝ^^n) := ∃ B : set ℝ^^n, is_basis ℝ B ∧ ∀ x ∈ Λ, in_integral_span B x
 

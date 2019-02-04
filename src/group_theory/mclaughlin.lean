@@ -40,12 +40,12 @@ noncomputable instance mclaughlin_diagram_decidable_rel : decidable_rel mclaughl
 noncomputable def mclaughlin_diagram_group : Group :=
   coxeter_group $ matrix_of_annotated_graph mclaughlin_diagram
 
-private def a : mclaughlin_diagram_group := generated_of $ torso _
-private def b : mclaughlin_diagram_group := generated_of $ arm (by to_dfin 0) (by to_dfin 0)
-private def c : mclaughlin_diagram_group := generated_of $ arm (by to_dfin 0) (by to_dfin 1)
-private def e : mclaughlin_diagram_group := generated_of $ arm (by to_dfin 0) (by to_dfin 2)
-private def d : mclaughlin_diagram_group := generated_of $ arm (by to_dfin 0) (by to_dfin 3)
-private def f : mclaughlin_diagram_group := generated_of $ arm (by to_dfin 0) (by to_dfin 4)
+private def a : mclaughlin_diagram_group := generated_of $ a
+private def b : mclaughlin_diagram_group := generated_of $ b
+private def c : mclaughlin_diagram_group := generated_of $ c
+private def e : mclaughlin_diagram_group := generated_of $ d
+private def d : mclaughlin_diagram_group := generated_of $ d
+private def f : mclaughlin_diagram_group := generated_of $ f
 
 noncomputable def McL : Group :=
   mclaughlin_diagram_group/⟪{(c*f)^2 * a⁻¹, (e * f)^3 * b⁻¹, (e*a*b)^3, (b*c*e)^5, (a*e*c*d)^4, (c*e*f)^21, (c*e*f)^7}⟫
