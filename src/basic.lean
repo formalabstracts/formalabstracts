@@ -2,7 +2,6 @@
   is not enough material to make its own file -/
 
 import data.pfun data.set.finite data.nat.enat
-import tactic.depends
 universes u v
 
 variables {α : Type*} {β : Type*}
