@@ -8,26 +8,27 @@ A meta def called `#depends` which gives the names of all the theorems (the stat
 
 import data.buffer.parser
 import tactic.squeeze
+import mathieu_group
 
-open tactic expr interactive native name list lean.parser parser
+open tactic expr interactive native name list lean.parser parser environment
 
 universe u
 
 variables {s : Type u} 
 
-/-Takes an expr and spits out a list of all the names in that expr -/
+/--Takes an expr and spits out a list of all the names in that expr -/
 meta def list_names (e : expr): list name :=
 e.fold [] (λ e _ es, if is_constant e then insert e.const_name es else es)
 
-/- Takes an environment and naively lists all declarations in it.-/
+/-- Takes an environment and naively lists all declarations in it.-/
 meta def list_all_decls (env : environment) : list name :=
 env.fold [] $ (λ d ns, d.to_name :: ns)
 
-/- Takes an environment and lists all declarations in it, much faster. -/
+/-- Takes an environment and lists all declarations in it, much faster. -/
 meta def list_all_decls' (env : environment) : rb_set name :=
 env.fold (mk_rb_set) $ (λ d ns, ns.insert d.to_name)
 
-/- Traces all declarations with prefix namesp in the current environment. -/
+/-- Traces all declarations with prefix namesp in the current environment. -/
 /-TODO : optimize using rb_set filters and maps(?)-/
 meta def trace_all_decls (namesp : name) : tactic unit :=
 do e ← get_env,
@@ -66,3 +67,30 @@ end
 -- #depends group.equiv
 -- #depends isomorphic
 -- #depends is_simple_alternating_group
+
+meta structure fabstract (n : name):=
+(formal : string)
+(informal : string)
+(depends : list name)
+
+
+meta def get_fabstract (n : name) : fabstract n :=
+do resolved ← resolve_constant n, 
+    let informal := doc_string n, 
+    d ← get_decl resolved <|> fail ("could not retrieve given declration"),
+    let formal := to_string $ d.type,
+    let depends := list_names d.type,
+    pure $ {
+        formal := formal, 
+        informal := informal, 
+        depends := depends}
+
+
+run_cmd  do e ← get_env,
+tactic.trace $ environment.is_structure e `steiner_system
+
+run_cmd do e ← (doc_string `is_unique_s_5_8_24),
+            d ← resolve_constant `is_unique_s_5_8_24,
+            d' ← get_decl d, 
+             tactic.trace $ e,
+             tactic.trace $ d'.type
