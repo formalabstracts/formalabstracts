@@ -1,6 +1,6 @@
-import .basic .monster .presentation .suzuki .higman_sims .mclaughlin
+import .basic .monster .presentation .suzuki .higman_sims .mclaughlin linear_algebra.basic data.real.basic .conway_groups
 noncomputable theory
-open monster suzuki higman_sims mclaughlin
+open monster suzuki higman_sims mclaughlin conway_groups
 open category_theory (mk_ob)
 local infix ` ≅ `:60 := isomorphic 
 local notation `⟪`:50 a `⟫`:50 := free_group.of a
@@ -18,12 +18,13 @@ def M23 : Group := sorry
 def M24 : Group := sorry
 
 /- the second happy family -/
+
 /-- the Conway group Co₁ -/
-def Co1 : Group := sorry
+def Co1 : Group := Co1
 /-- the Conway group Co₂ -/
-def Co2 : Group := sorry
+def Co2 : Group := Co2
 /-- the Conway group Co₃ -/
-def Co3 : Group := sorry
+def Co3 : Group := Co3
 /-- the McLaughlin group -/
 def McL : Group := McL
 /-- the Higman–Sims group -/
@@ -34,7 +35,6 @@ private def a : free_group $ dfin 4 := ⟪(by to_dfin 0)⟫
 private def b : free_group $ dfin 4 := ⟪(by to_dfin 1)⟫
 private def u : free_group $ dfin 4 := ⟪(by to_dfin 2)⟫
 private def v : free_group $ dfin 4 := ⟪(by to_dfin 3)⟫
-
 
 /-- the Hall-Janko group J₂ -/
 /- From the corresponding entry in the atlas of finite groups -/
@@ -123,7 +123,7 @@ private def b := ⟪tt⟫
 /- From http://brauer.maths.qmul.ac.uk/Atlas/v3/pres/J3G1-P1:
   
   Presentation 	〈 a, b | a2 = b3 = (ab)19 = [a, b]9 = ((ab)6(ab−1)5)2 = ((ababab−1)2abab−1ab−1abab−1)2 = abab(abab−1)3abab(abab−1)4ab−1(abab−1)3 = (ababababab−1abab−1)4 = 1 〉 -/
-def J3 : Group := ⟪bool | {a^2, b^3, (a * b)^19, ⟦a , b⟧^9, ((a * b)^6 * (a * b⁻¹)^5)^2, ((a*b*a*b*a*(b⁻¹))^2 * a * b * a * b⁻¹ * a * b ⁻¹ * a * b * a * b ⁻¹)^2, a * b * a * b * (a * b * a * b⁻¹)^3 * a * b * a * b * (a * b * a * b ⁻¹)^4 * a * b ⁻¹ * (a * b * a * b ⁻¹ )^3, (a * b * a * b * a * b * a * b * a * b ⁻¹ * a * b * a * b ⁻¹)^4} ⟫
+def J3 : Group := ⟪bool | {a^2, b^3, (a*b)^19, ⟦a, b⟧^9, ((a*b)^6*(a*b⁻¹)^5)^2, ((a*b*a*b*a*(b⁻¹))^2*a*b*a*b⁻¹*a*b⁻¹*a*b*a*b⁻¹)^2, a*b*a*b*(a*b*a*b⁻¹)^3*a*b*a*b*(a*b*a*b⁻¹)^4*a*b⁻¹*(a*b*a*b⁻¹)^3, (a*b*a*b*a*b*a*b*a*b⁻¹*a*b*a*b⁻¹)^4}⟫
 
 /-- the Lyons group -/
 def Ly : Group := sorry
