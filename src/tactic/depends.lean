@@ -57,10 +57,10 @@ theorem foo : 2+2 = 4 :=
 begin
 -- direct_dependencies,
 -- trace_all_decls `name,
-squeeze_simp,
+  simp,
 end
-#check eq_self_iff_true
-#depends foo 
+-- #check eq_self_iff_true
+-- #depends foo 
 -- #depends cond_prob_swap
 -- #depends total_prob
 -- #depends group.equiv
