@@ -137,6 +137,9 @@ protected def mem : ∀{n : ℕ} (x : α) (xs : dvector α n), Prop
 | _ x (x'::xs) := x = x' ∨ mem x xs
 instance {n : ℕ} : has_mem α (dvector α n) := ⟨dvector.mem⟩
 
+protected def to_set : ∀{n : ℕ}, dvector α n → set α :=
+λ n xs, λ a, dvector.mem a xs
+
 protected def pmem : ∀{n : ℕ} (x : α) (xs : dvector α n), Type
 | _ x []       := empty
 | _ x (x'::xs) := psum (x = x') (pmem x xs)
