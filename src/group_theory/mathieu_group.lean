@@ -9,6 +9,7 @@ local attribute [instance, priority 0] classical.prop_decidable
 
 variables {α : Type u} {β : Type v} (t k v : ℕ) 
 
+namespace mathieu_group
 /-- 
 A Steiner system $S(t,k,v)$, where $t < k < v$ are positive integers is a finite set $X$ of cardinality $v$, a collection of $k$ element subsets of $X$ (called blocks), such that each $t$ element subset of $X$ is contained in a unique block.
 -/
@@ -83,18 +84,4 @@ instance is_subgroup_stabilizer [group α] (f : α → β → β) [is_monoid_act
 instance is_subgroup_two_pt_stabilizer [group α](f : α → β → β)
 [is_monoid_action f] (x ∈ {y : β × β | y.1 ≠ y.2}) : is_subgroup(two_pt_stabilizer f x (by {assumption})) := omitted
 
-/-- The group $M_{11}$ is the stabilizer of an arbitrary point of the steiner system $S(5,6,12)$ under the evaluation action of its Automorphism group.-/
-def M11 := stabilizer (evaluation_action s_5_6_12) (classical.choice (by {rw ← fintype.card_pos_iff, rw  s_5_6_12.h₂, exact dec_trivial}))
-
-/--The group $M_{12}$ is the automorphism group of the steiner system $S(5,6,12)$.-/
-def M12 := Aut(s_5_6_12)
-
-/-- The group $M_{23}$ is the stabilizer of an arbitrary point of the steiner system $S(5,8,24)$ under the evaluation action of its automorphism group.-/
-def M23 := stabilizer (evaluation_action s_5_8_24) (classical.choice (by {rw ← fintype.card_pos_iff, rw s_5_8_24.h₂,exact dec_trivial}))
-
-/-- The group $M_{22}$ is the stabilizer of two arbitrary points of the steiner system $S(5,8,24)$ under the evaluation action of its automorphism group. -/
-/- TODO : prove you can pick two elements by choice. -/
-def M22 := two_pt_stabilizer (evaluation_action s_5_8_24) (classical.choice (omitted)) 
-
-/-- The group $M_{24}$ is the automorphism group of the steiner system $S(5,8,24)$. -/
-def M24 := Aut(s_5_8_24) 
+end mathieu_group
