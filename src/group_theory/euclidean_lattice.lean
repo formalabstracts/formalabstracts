@@ -50,7 +50,25 @@ def is_alternating {n k} (f : dvector (euclidean_space (n)) k → ℝ) :=
   ∀ i j (h₁ : i < k) (h₂ : j < k) (xs : dvector (euclidean_space n) (k)),
     xs.nth i h₁ = xs.nth j h₂ → f xs = 0
 
-def determinant_spec {n} : ∃! (f : dvector (euclidean_space n) n → ℝ), is_multilinear f ∧ is_alternating f := omitted
+/-- The canonical inclusion from ℝ^n → ℝ^(n+1) given by inserting 0 at the end of all vectors -/
+def euclidean_space_canonical_inclusion {n} : euclidean_space n → euclidean_space (n+1) :=
+  λ xs, by {induction xs, exact [0], exact xs_x :: xs_ih}
+
+def identity_matrix : ∀(n), dvector (euclidean_space n) n
+| 0 := []
+| (n+1) := ((@identity_matrix n).map (λ xs, euclidean_space_canonical_inclusion xs)).concat $
+            (0 : euclidean_space n).concat 1
+
+lemma identity_matrix_1 : identity_matrix 1 = [[1]] := by refl
+
+lemma identity_matrix_2 : identity_matrix 2 = [[1,0],[0,1]] := by refl
+
+def sends_identity_to_1 {n} (f : dvector (euclidean_space (n)) n → ℝ) : Prop :=
+  f (identity_matrix _) = 1
+
+/-- The determinant is the unique alternating multilinear function which sends the identity
+   matrix to 1-/
+def determinant_spec {n} : ∃! (f : dvector (euclidean_space n) n → ℝ), is_multilinear f ∧ is_alternating f ∧ sends_identity_to_1 f := omitted
 
 noncomputable def determinant {n} : dvector (euclidean_space n) n → ℝ := (classical.indefinite_description _ determinant_spec).val
 
@@ -86,9 +104,9 @@ def even {n} (Λ : euclidean_lattice n) : Prop := ∀ x ∈ Λ.val, is_even_inte
 def unimodular {n} (Λ : euclidean_lattice n) : Prop := ∃ B : (dvector (ℝ^^n) n), is_basis ℝ (B.to_set) ∧ ∀ x ∈ Λ.val, in_integral_span (B.to_set) x ∧ determinant B = 1
 
 /-- The Leech lattice satisfies the property that the norm square of all of its nonzero
-  elements is greater than or equal to 4 -/
-def nonzero_lengths_ge_2 {n} (Λ : euclidean_lattice n) : Prop :=
-  ∀ x : ℝ^^n, x ∈ Λ.val → x ≠ 0 → ⟪x,x⟫ ≥ 4
+  elements is greater than 4 -/
+def nonzero_lengths_gt_2 {n} (Λ : euclidean_lattice n) : Prop :=
+  ∀ x : ℝ^^n, x ∈ Λ.val → x ≠ 0 → ⟪x,x⟫ > 4
 
 def GL (n) := linear_map.general_linear_group ℝ (ℝ^^n)
 
@@ -117,11 +135,15 @@ noncomputable instance GL_inv (n) : has_inv $ GL n :=
 def is_lattice_automorphism {n} {Λ : euclidean_lattice n} (σ : GL n) : Prop :=
   set.bij_on (λ x : ℝ^^n, by cases σ; exact σ_val.to_fun x : (ℝ^^n) → (ℝ^^n)) Λ.val Λ.val
 
--- set.bij_on (σ.val.to_fun) Λ.val Λ.val
+/- Source: https://groupprops.subwiki.org/wiki/Leech_lattice -/
 
 /-- The Leech lattice is the unique even unimodular lattice Λ_24 in 24 dimensions
-such that the length of every non-zero vector in Λ_24 is 2 -/
-def leech_lattice_spec : ∃! Λ_24 : euclidean_lattice 24, even Λ_24 ∧ unimodular Λ_24 ∧ nonzero_lengths_ge_2 Λ_24 := omitted
+such that the length of every non-zero vector in Λ_24 is strictly greater than 2.
+It is unique up to isomorphism, so any Λ_24 witnessing this existential assertion
+will suffice.
+-/
+
+def leech_lattice_spec : ∃ Λ_24 : euclidean_lattice 24, even Λ_24 ∧ unimodular Λ_24 ∧ nonzero_lengths_gt_2 Λ_24 := omitted
 
 noncomputable def Λ_24 := (classical.indefinite_description _ leech_lattice_spec).val
 
