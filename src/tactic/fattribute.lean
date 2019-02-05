@@ -17,7 +17,7 @@ meta def fabstract_attr : user_attribute (rb_map name (list name)) (list name) :
 {
   name := `fabstract,
   descr := "The fabstract user attribute. Used to mark lemmas captured and also to store the 2010 MSC classification.",
-  parser := list_of ident,
+  parser := list_of ident <|> pure [],
   cache_cfg := ⟨ λ l, l.mfoldl (λ m n, do
       tags ← fabstract_attr.get_param n,
       return $ tags.foldl (λ m t, m.insert_cons t n) m) mk_rb_map
@@ -42,8 +42,7 @@ def welp : 1+1 =2 := by simp
 @[fabstract [JBX190,AXX200]] 
 def woolp : 1+1 =2 := by simp
 
-/- TODO: fix this garbage. -/
-@[fabstract[]] 
+@[fabstract] 
 def flump : 1+1 =2 := by simp
 
 run_cmd attribute.get_instances `fabstract >>= tactic.trace
