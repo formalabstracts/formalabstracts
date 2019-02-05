@@ -7,14 +7,10 @@ A meta def called `#depends` which gives the names of all the theorems (the stat
 -/
 
 import data.buffer.parser
-import tactic.squeeze
-import mathieu_group
+import group_theory.mathieu_group
+import group_theory.euclidean_lattice
 
-open tactic expr interactive native name list lean.parser parser environment
-
-universe u
-
-variables {s : Type u} 
+open tactic expr interactive native name list lean.parser
 
 /--Takes an expr and spits out a list of all the names in that expr -/
 meta def list_names (e : expr): list name :=
@@ -60,37 +56,45 @@ begin
 -- trace_all_decls `name,
   simp,
 end
--- #check eq_self_iff_true
--- #depends foo 
--- #depends cond_prob_swap
--- #depends total_prob
--- #depends group.equiv
--- #depends isomorphic
--- #depends is_simple_alternating_group
 
+namespace fabstract 
 meta structure fabstract (n : name):=
-(formal : string)
+(formal : expr)
 (informal : string)
 (depends : list name)
 
 
-meta def get_fabstract (n : name) : fabstract n :=
-do resolved ← resolve_constant n, 
-    let informal := doc_string n, 
+meta def get_fabstract (n : name) : tactic (fabstract n) :=
+do 
+    resolved ← resolve_constant n, 
+    informal ← doc_string n, 
     d ← get_decl resolved <|> fail ("could not retrieve given declration"),
-    let formal := to_string $ d.type,
+    let formal := d.type,
     let depends := list_names d.type,
-    pure $ {
-        formal := formal, 
-        informal := informal, 
-        depends := depends}
+    pure $ fabstract.mk n formal informal depends
+
+/- TODO : Declare a has_to_tactic_format instance for fabstract n -/
+meta def trace_fabstract (n : name) : tactic unit :=
+do f ← get_fabstract n,
+    tactic.trace "Formal statement: ",
+    tactic.trace f.formal,
+    tactic.trace " ",
+    tactic.trace "Informal statement: ",
+    tactic.trace f.informal,
+    tactic.trace " ",
+    tactic.trace "Dependencies: ",
+    tactic.trace f.depends,
+    tactic.trace " "
 
 
-run_cmd  do e ← get_env,
-tactic.trace $ environment.is_structure e `steiner_system
+/- Tests -/
+#depends foo 
+#depends group.equiv
+#depends isomorphic
+run_cmd trace_all_decls `mathieu_group
+run_cmd trace_fabstract `mathieu_group.Aut
+run_cmd trace_fabstract `euclidean_space_canonical_inclusion
+run_cmd trace_fabstract `determinant_spec 
+run_cmd trace_fabstract `leech_lattice_spec 
 
-run_cmd do e ← (doc_string `is_unique_s_5_8_24),
-            d ← resolve_constant `is_unique_s_5_8_24,
-            d' ← get_decl d, 
-             tactic.trace $ e,
-             tactic.trace $ d'.type
+end fabstract
