@@ -49,7 +49,7 @@ run_cmd attribute.get_instances `fabstract >>= tactic.trace
 
 meta def get_MSC_codes (n : name) : tactic (list name) := user_attribute.get_param fabstract_attr n
 
-run_cmd doc_string `test₁ >>= tactic.trace >>                  get_MSC_codes `test₁ >>= tactic.trace 
+run_cmd doc_string `test₁ >>= tactic.trace >> get_MSC_codes `test₁ >>= tactic.trace 
 
 /- Gives all declarations with a particular MSC code.-/
 run_cmd do 
