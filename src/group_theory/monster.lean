@@ -22,13 +22,13 @@ a bottom arm of length r+1, with one node in the center connecting them.
 arm i j gets the jth element of the ith arm, where both i and j start indexing from 0.
 -/
 
-def a  : Y443 := generated_of $ torso _
-def b₁ : Y443 := generated_of $ arm (by to_dfin 0) (by to_dfin 0)
-def c₁ : Y443 := generated_of $ arm (by to_dfin 0) (by to_dfin 1)
-def b₂ : Y443 := generated_of $ arm (by to_dfin 1) (by to_dfin 0)
-def c₂ : Y443 := generated_of $ arm (by to_dfin 1) (by to_dfin 1)
-def b₃ : Y443 := generated_of $ arm (by to_dfin 2) (by to_dfin 0)
-def c₃ : Y443 := generated_of $ arm (by to_dfin 2) (by to_dfin 1)
+private def a  : Y443 := generated_of $ torso _
+private def b₁ : Y443 := generated_of $ arm (by to_dfin 0) (by to_dfin 0)
+private def c₁ : Y443 := generated_of $ arm (by to_dfin 0) (by to_dfin 1)
+private def b₂ : Y443 := generated_of $ arm (by to_dfin 1) (by to_dfin 0)
+private def c₂ : Y443 := generated_of $ arm (by to_dfin 1) (by to_dfin 1)
+private def b₃ : Y443 := generated_of $ arm (by to_dfin 2) (by to_dfin 0)
+private def c₃ : Y443 := generated_of $ arm (by to_dfin 2) (by to_dfin 1)
 
 /- (ab₁c₁ab₂c₂ab₃c₃)^10 -/
 noncomputable def spider : Y443 := (a * b₁ * c₁ * a * b₂ * c₂ * a * b₃ * c₃)^10
