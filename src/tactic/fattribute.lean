@@ -77,6 +77,10 @@ def welp : 1+1 =2 := by simp
 @[fabstract [JBX190,AXX200]] 
 def woolp : 1+1 =2 := by simp
 
+/- TODO: fix this garbage. -/
+@[fabstract[]] 
+def flump : 1+1 =2 := by simp
+
 meta def get_MSC_codes (n : name) : tactic (list name) := user_attribute.get_param fabstract_attr n
 
 run_cmd doc_string `test₁ >>= tactic.trace >>                  get_MSC_codes `test₁ >>= tactic.trace 
@@ -84,5 +88,9 @@ run_cmd doc_string `test₁ >>= tactic.trace >>                  get_MSC_codes `
 run_cmd do 
   m ← fabstract_attr.get_cache,
   v ← m.find `woolp,
+<<<<<<< HEAD
   trace v
 >>>>>>> fix(fattribute): added cache_cfg to fabstract_attr
+=======
+  trace m
+>>>>>>> do we NEED to enforce MSC codes? are empty codes blasphemous?
