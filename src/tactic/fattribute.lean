@@ -10,17 +10,11 @@ import tactic.basic
 import tactic.ext 
 
 open interactive interactive.types lean.parser tactic native
-<<<<<<< HEAD
-
-=======
--- #check name_map
->>>>>>> fix(fattribute): added cache_cfg to fabstract_attr
 @[user_attribute]
 meta def fabstract_attr : user_attribute (rb_map name (list name)) (list name) :=
 {
   name := `fabstract,
   descr := "The fabstract user attribute. Used to mark lemmas captured and also to store the 2010 MSC classification.",
-<<<<<<< HEAD
   parser := many ident <|> pure [],
   cache_cfg := ⟨ λ l, l.mfoldl (λ m n, do
       tags ← fabstract_attr.get_param n,
@@ -55,42 +49,3 @@ run_cmd do
   m ← fabstract_attr.get_cache,
   v ← m.find `ABC101,
   trace v
-=======
-  parser := list_of ident,
-  cache_cfg := ⟨ λ l, l.mfoldl (λ m n, do
-      d ← get_decl n, 
-      v ← fabstract_attr.get_param n,
-      return (m.insert n v)) mk_rb_map
-   , [] ⟩ 
-} 
-
-/-- Well, hello there! -/
-@[fabstract [ABC000,ABC200]] 
-def test₁ : 1+1 =2 := by simp
-
-@[fabstract [ABC101,ABC200]] 
-def test₂ : 1+1 =2 := by simp
-
-@[fabstract [ABC101,XYZ200]] 
-def welp : 1+1 =2 := by simp
-
-@[fabstract [JBX190,AXX200]] 
-def woolp : 1+1 =2 := by simp
-
-/- TODO: fix this garbage. -/
-@[fabstract[]] 
-def flump : 1+1 =2 := by simp
-
-meta def get_MSC_codes (n : name) : tactic (list name) := user_attribute.get_param fabstract_attr n
-
-run_cmd doc_string `test₁ >>= tactic.trace >>                  get_MSC_codes `test₁ >>= tactic.trace 
-
-run_cmd do 
-  m ← fabstract_attr.get_cache,
-  v ← m.find `woolp,
-<<<<<<< HEAD
-  trace v
->>>>>>> fix(fattribute): added cache_cfg to fabstract_attr
-=======
-  trace m
->>>>>>> do we NEED to enforce MSC codes? are empty codes blasphemous?
