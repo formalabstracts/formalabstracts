@@ -9,22 +9,39 @@ The fabstract user attribute.
 import tactic.basic 
 import tactic.ext 
 
-open interactive interactive.types lean.parser tactic
-
+open interactive interactive.types lean.parser tactic native
+-- #check name_map
 @[user_attribute]
-meta def fabstract_attr : user_attribute unit (list name) :=
+meta def fabstract_attr : user_attribute (rb_map name (list name)) (list name) :=
 {
   name := `fabstract,
   descr := "The fabstract user attribute. Used to mark lemmas captured and also to store the 2010 MSC classification.",
-  parser := list_of ident
+  parser := list_of ident,
+  cache_cfg := ⟨ λ l, l.mfoldl (λ m n, do
+      d ← get_decl n, 
+      v ← fabstract_attr.get_param n,
+      return (m.insert n v)) mk_rb_map
+   , [] ⟩ 
 } 
 
 /-- Well, hello there! -/
 @[fabstract [ABC000,ABC200]] 
-def test : 1+1 =2 := by simp
+def test₁ : 1+1 =2 := by simp
 
+@[fabstract [ABC101,ABC200]] 
+def test₂ : 1+1 =2 := by simp
+
+@[fabstract [ABC101,XYZ200]] 
+def welp : 1+1 =2 := by simp
+
+@[fabstract [JBX190,AXX200]] 
+def woolp : 1+1 =2 := by simp
 
 meta def get_MSC_codes (n : name) : tactic (list name) := user_attribute.get_param fabstract_attr n
 
-run_cmd doc_string `test >>= tactic.trace >>                   get_MSC_codes `test >>= tactic.trace 
+run_cmd doc_string `test₁ >>= tactic.trace >>                  get_MSC_codes `test₁ >>= tactic.trace 
 
+run_cmd do 
+  m ← fabstract_attr.get_cache,
+  v ← m.find `woolp,
+  trace v
