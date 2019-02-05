@@ -9,10 +9,11 @@ local notation `[` l:(foldr `, ` (h t, dvector.cons h t) dvector.nil `]`) := l
 
 /- the first happy family, a.k.a. Mathieu groups -/
 
-/-- The group $M_{11}$ is the stabilizer of an arbitrary point of the steiner system $S(5,6,12)$ under the evaluation action of its Automorphism group.-/
+/-- The group $M_{11}$ is the stabilizer of an arbitrary point of the steiner system $S(5,6,12)$ 
+  under the evaluation action of its Automorphism group.-/
 def M11 : Group := 
 mk_ob $ stabilizer (evaluation_action s_5_6_12) 
-  (classical.choice (by {rw ← fintype.card_pos_iff, rw  s_5_6_12.h₂, exact dec_trivial}))
+  (classical.choice $ nonempty_steiner_system dec_trivial)
 
 /--The group $M_{12}$ is the automorphism group of the steiner system $S(5,6,12)$.-/
 def M12 : Group := mk_ob $ Aut(s_5_6_12)
@@ -20,14 +21,14 @@ def M12 : Group := mk_ob $ Aut(s_5_6_12)
 /-- The group $M_{22}$ is the stabilizer of two arbitrary points of the steiner system $S(5,8,24)$
   under the evaluation action of its automorphism group. -/
 def M22 : Group := 
-have H : ∃x : s_5_8_24.X × s_5_8_24.X, x.1 ≠ x.2, from omitted,
-mk_ob $ two_pt_stabilizer (evaluation_action s_5_8_24) (classical.some H) (classical.some_spec H)
+have H : ∃x : s_5_8_24 × s_5_8_24, x.1 ≠ x.2, from omitted,
+mk_ob $ two_pt_stabilizer (evaluation_action s_5_8_24) (classical.some_spec H)
 
 /-- The group $M_{23}$ is the stabilizer of an arbitrary point of the steiner system $S(5,8,24)$
   under the evaluation action of its automorphism group.-/
 def M23 : Group := 
 mk_ob $ stabilizer (evaluation_action s_5_8_24) 
-  (classical.choice (by {rw ← fintype.card_pos_iff, rw s_5_8_24.h₂,exact dec_trivial}))
+  (classical.choice $ nonempty_steiner_system dec_trivial)
 
 /-- The group $M_{24}$ is the automorphism group of the steiner system $S(5,8,24)$. -/
 def M24 : Group := mk_ob $ Aut(s_5_8_24) 
