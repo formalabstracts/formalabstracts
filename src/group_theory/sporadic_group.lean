@@ -176,7 +176,43 @@ def O'N : Group := sorry
 
 /-- the Janko group J₄ -/
 
-def J4 : Group := sorry
+private def x : free_group $ dfin 3 := ⟪(by to_dfin 0)⟫
+private def y : free_group $ dfin 3 := ⟪(by to_dfin 1)⟫
+private def t : free_group $ dfin 3 := ⟪(by to_dfin 2)⟫
+
+/--
+Atlas entry for J4 presented on its G2-`standard' generators.
+
+G<x,y,t>:=Group<x,y,t|
+x^2,
+y^3,
+(x*y)^23,
+(x,y)^12,
+(x,y*x*y)^5,
+(x*y*x*y*x*y^-1)^3*(x*y*x*y^-1*x*y^-1)^3,
+(x*y*(x*y*x*y^-1)^3)^4,
+t^2,
+(t,x),
+(t,y*x*y*(x*y^-1)^2*(x*y)^3),
+(y*t^(y*x*y^-1*x*y*x*y^-1*x))^3,
+((y*x*y*x*y*x*y)^3*t*t^((x*y)^3*y*(x*y)^6*y))^2
+>;
+-/
+
+def J4 : Group := ⟪ dfin 3 | {
+  x^2,
+  y^3,
+  (x*y)^23,
+  ⟦ x, y ⟧^12,
+  ⟦ x, y*x*y ⟧^5,
+  (x*y*x*y*x*y⁻¹)^3*(x*y*x*y⁻¹*x*y⁻¹)^3,
+  (x*y*(x*y*x*y⁻¹)^3)^4,
+  t^2,
+  ⟦t,x⟧,
+  ⟦t,y*x*y*(x*y⁻¹)^2*(x*y)^3⟧,
+  (y*(t ↑↑ y*x*y⁻¹*x*y*x*y⁻¹*x))^3,
+  ((y*x*y*x*y*x*y)^3 * t * (t ↑↑ (x*y)^3*y*(x*y)^6*y))^2
+} ⟫ 
 
 /-- the Rudvalis group -/
 def Ru : Group := sorry
