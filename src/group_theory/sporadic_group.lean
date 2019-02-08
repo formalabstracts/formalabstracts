@@ -174,11 +174,7 @@ def Ly : Group := sorry
 
 def O'N : Group := sorry
 
-/-- the Janko group J₄ -/
-
-private def x : free_group $ dfin 3 := ⟪(by to_dfin 0)⟫
-private def y : free_group $ dfin 3 := ⟪(by to_dfin 1)⟫
-private def t : free_group $ dfin 3 := ⟪(by to_dfin 2)⟫
+/- the Janko group J₄ -/
 
 /--
 Atlas entry for J4 presented on its G2-`standard' generators.
@@ -198,6 +194,10 @@ t^2,
 ((y*x*y*x*y*x*y)^3*t*t^((x*y)^3*y*(x*y)^6*y))^2
 >;
 -/
+
+private def x : free_group $ dfin 3 := ⟪(by to_dfin 0)⟫
+private def y : free_group $ dfin 3 := ⟪(by to_dfin 1)⟫
+private def t : free_group $ dfin 3 := ⟪(by to_dfin 2)⟫
 
 def J4 : Group := ⟪ dfin 3 | {
   x^2,
