@@ -199,6 +199,9 @@ private def x : free_group $ dfin 3 := ⟪(by to_dfin 0)⟫
 private def y : free_group $ dfin 3 := ⟪(by to_dfin 1)⟫
 private def t : free_group $ dfin 3 := ⟪(by to_dfin 2)⟫
 
+
+local infix ` ↑↑ `:65 := conjugate
+
 def J4 : Group := ⟪ dfin 3 | {
   x^2,
   y^3,
