@@ -167,29 +167,96 @@ private def b := ⟪tt⟫
   Presentation 	〈 a, b | a2 = b3 = (ab)19 = [a, b]9 = ((ab)6(ab−1)5)2 = ((ababab−1)2abab−1ab−1abab−1)2 = abab(abab−1)3abab(abab−1)4ab−1(abab−1)3 = (ababababab−1abab−1)4 = 1 〉 -/
 def J3 : Group := ⟪bool | {a^2, b^3, (a*b)^19, ⟦a, b⟧^9, ((a*b)^6*(a*b⁻¹)^5)^2, ((a*b*a*b*a*(b⁻¹))^2*a*b*a*b⁻¹*a*b⁻¹*a*b*a*b⁻¹)^2, a*b*a*b*(a*b*a*b⁻¹)^3*a*b*a*b*(a*b*a*b⁻¹)^4*a*b⁻¹*(a*b*a*b⁻¹)^3, (a*b*a*b*a*b*a*b*a*b⁻¹*a*b*a*b⁻¹)^4}⟫
 
+
+/- Presentation of the Lyons group, following section 3B of the paper
+   Volker Gebhardt, Two "Short" Presentations for Lyons' Sporadic Simple Group
+   https://projecteuclid.org/download/pdf_1/euclid.em/1045604668, p 335-6 -/
+
+private def a : free_group $ dfin 5 := ⟪by to_dfin 0⟫
+private def b : free_group $ dfin 5 := ⟪by to_dfin 1⟫
+private def c : free_group $ dfin 5 := ⟪by to_dfin 2⟫
+private def d : free_group $ dfin 5 := ⟪by to_dfin 3⟫
+private def z : free_group $ dfin 5 := ⟪by to_dfin 4⟫
+
+local infix ` ↑↑ `:65 := right_conjugation
+
+-- testing binding strength
+-- example {α : Type*} [group α] (x y z w : α) : x * y * w ↑↑ z = (x * y * w) ↑↑ z := by refl
+-- example {α : Type*} [group α] (x y z w : α) : x ↑↑ z * y * w = x ↑↑ (z * y * w) := by refl
+-- example {α : Type*} [group α] (x y z w : α) : x ↑↑ z⁻¹ = x ↑↑ (z⁻¹) := by refl
+
+
+private def RH₃ : set $ free_group $ dfin 5 := {a^8, b^5, (a*b)^4, ⟦a^2,b⟧, ⟦a,b⟧^3} 
+
+private def RH₂ : set $ free_group $ dfin 5 :=
+  RH₃ ∪ { c^5, c^3 * (c ↑↑ (a^2))⁻¹,
+  (c ↑↑ b * a)⁻¹ * (c ↑↑ a^2 * b) * c * b * c * b ⁻¹,
+  (c ↑↑ b^2)⁻¹ * c^2 * (c ↑↑ b⁻¹) * ((c ↑↑ b)⁻¹)^2 }
+
+private def RH₁ : set $ free_group $ dfin 5 :=
+  { (a * b⁻¹ * a ↑↑ d)⁻¹ * a * b⁻¹ * a^5,
+  (b^2 * a ⁻¹ ↑↑ d)⁻¹ * (a⁻¹)^2*b^2 * a⁻¹,
+  ((b*a*c⁻¹*b*a*(b⁻¹)^2*a) ↑↑ d)⁻¹ * c * d, a⁻¹*b*a⁻¹*b⁻¹*a*(b⁻¹)^2*a*c*b⁻¹*c*b*a*c⁻¹,
+  ((a^2*c⁻¹*b*a*c⁻¹*b*a⁻¹*b⁻¹) ↑↑ d*c*d)⁻¹ * (a⁻¹)^2*b⁻¹*a⁻¹*(b⁻¹*c)^2*b^2,
+  (b^2*a*c*b*a ↑↑ d*c*a⁻¹*b*c*d)⁻¹ * a⁻¹*b*a⁻¹*b⁻¹*a⁻¹*(b⁻¹)^2*c*a⁻¹*b⁻¹*c⁻¹*b*a,
+  ((a * (c⁻¹)^2 *b) ↑↑ d*c*a⁻¹*b*c*d)⁻¹ * (a⁻¹)^4 * b^2 * c⁻¹*b⁻¹*a*b⁻¹*c*a*b⁻¹,
+  c*a⁻¹*c⁻¹*a*c⁻¹*a⁻¹*c*a*d⁻¹*c⁻¹*a⁻¹*c⁻¹*a*c*a⁻¹*c*d*c*a*c⁻¹*a⁻¹*c⁻¹*a*c*d }
+
+private def RG : set $ free_group $ dfin 5 :=
+  {(a ↑↑ z)⁻¹ * (a⁻¹)^3, (a ↑↑ z * d * z)⁻¹ * a^3,
+   (c⁻¹ * d⁻¹ * c * b * a * b^2 * (c*b)^2 * c⁻¹ * d ↑↑ z * d * z)⁻¹ * c⁻¹*b*c^2 * a * c⁻¹*b*d⁻¹*c*a*c⁻¹*b*c⁻¹*(b⁻¹)^2 * c*a⁻¹*c* d⁻¹ * c* b^2 *c*d*a*d⁻¹*c⁻¹*d⁻¹*c*b*a⁻¹*b,
+   ⟦z, d⁻¹*c⁻¹*b*a*b⁻¹*d⁻¹*c*d⁻¹*c⁻¹*d*c⁻¹*b⁻¹*a*b⁻¹*c*d⁻¹*c*d⟧⁻¹ * b * c* b⁻¹*c⁻¹,
+   (a ↑↑ z*d*b⁻¹*z)⁻¹ * a⁻¹*d⁻¹*c⁻¹*b*(c⁻¹)^2*a*b⁻¹*c*a⁻¹*b^2*c*b⁻¹*c*a⁻¹*c⁻¹*d*b⁻¹*a⁻¹,
+   (c⁻¹*a⁻¹*d⁻¹*c⁻¹ * b * a * b⁻¹ * a * c⁻¹ *b*c*a*c⁻¹*d⁻¹*c*d*a*c*b⁻¹*a*b*a*c ↑↑ z*d*b⁻¹*z)⁻¹ * a⁻¹*c*(a⁻¹)^3*c⁻¹*(b⁻¹)^2*c⁻¹*d*c⁻¹*a*c⁻¹*b^2*c*b⁻¹*c*a⁻¹*c⁻¹*d*b⁻¹*c⁻¹*d⁻¹*c⁻¹*b*a*b*d*c*a⁻¹,
+   ((a⁻¹*b*d*c*a⁻¹*b⁻¹*a*b*a⁻¹*c⁻¹*b⁻¹*c*a)↑↑z*d*c*d*z)⁻¹ * c⁻¹*a^3*b*c⁻¹*b⁻¹*a⁻¹*c*d⁻¹*c⁻¹*b*a⁻¹*b⁻¹,
+   (d⁻¹*c*b*a⁻¹*b⁻¹ ↑↑ z*d*c*d*z)⁻¹ * a*c*a⁻¹*b*a*c⁻¹*b*c*a*c⁻¹*b⁻¹*a⁻¹*b⁻¹*a*b*d⁻¹*c*a*c⁻¹*b⁻¹*c⁻¹*a,
+   a*d⁻¹*c⁻¹*b*(a⁻¹)^2*d⁻¹*c⁻¹*(b⁻¹)^2*c⁻¹*d*c⁻¹*(a*c⁻¹)^2*b*a⁻¹*c^2*b⁻¹*c*d⁻¹*c*a*c*b⁻¹*a*d⁻¹*z⁻¹*b*z*b⁻¹*z
+   }
+
+/-We quote: the complete defining set RH₂ ∪ Rh₁ ∪ RG of relations for G with respect
+  to the generators a,b,c,d and z contains 25 relations of total length 549-/
+
 /-- the Lyons group -/
-def Ly : Group := sorry
+def Ly : Group := ⟪dfin 5 | RH₂ ∪ RH₁ ∪ RG ⟫
+
+/- Presentation for the O'Nan group, following the paper
+   Leonard H. Soicher, A new existence and uniqueness proof for the O'Nan group,
+   https://doi.org/10.1112/blms/22.2.148 (section 2)-/
+
+/-                                8
+   O'N := ⟨a (torso) --- b --- c --- d --- e --- f, g | relations⟩ -/
+
+private def O'N_diagram :=
+  annotate (annotated_graph_of_graph $ coxeter_edges [5])
+    (arm (by to_dfin 0) (by to_dfin 1), arm (by to_dfin 0) (by to_dfin 2)) 8
+
+noncomputable instance O'N_diagram_decidable_rel : decidable_rel $ O'N_diagram.edge :=
+λ _ _, classical.prop_decidable _
+
+private def O'N_cover := coxeter_group' (matrix_of_annotated_graph O'N_diagram) unit
+
+private def a : O'N_cover := generated_of $ sum.inl $ torso _
+private def b : O'N_cover := generated_of $ sum.inl $ arm (by to_dfin 0) (by to_dfin 0)
+private def c : O'N_cover := generated_of $ sum.inl $ arm (by to_dfin 0) (by to_dfin 1)
+private def d : O'N_cover := generated_of $ sum.inl $ arm (by to_dfin 0) (by to_dfin 2)
+private def e : O'N_cover := generated_of $ sum.inl $ arm (by to_dfin 0) (by to_dfin 3)
+private def f : O'N_cover := generated_of $ sum.inl $ arm (by to_dfin 0) (by to_dfin 4)
+private def g : O'N_cover := generated_of $ sum.inr $ ()
 
 /-- the O'Nan group -/
+def O'N : Group :=
+  O'N_cover/⟪{(a*f)⁻¹ * g^2, ((c*d)^4)⁻¹ * g^2, ⟦c,d*g*d*g⟧,
+              ⟦d, c*g*c*g⟧, (b*c*d*g)^5, f⁻¹ * (d * g)^4,
+              ((b*a)↑↑g)⁻¹ * b * a * ((b*a) ↑↑ c*g*c*g),
+              ((e*f) ↑↑ g)⁻¹ * e * f * ((e*f)↑↑ d*g*d*g)}⟫
 
-def O'N : Group := sorry
 
-/- the Janko group J₄ -/
-
-/--
+/-
 Atlas entry for J4 presented on its G2-`standard' generators.
 
-G<x,y,t>:=Group<x,y,t|
-x^2,
-y^3,
-(x*y)^23,
-(x,y)^12,
-(x,y*x*y)^5,
-(x*y*x*y*x*y^-1)^3*(x*y*x*y^-1*x*y^-1)^3,
-(x*y*(x*y*x*y^-1)^3)^4,
-t^2,
-(t,x),
-(t,y*x*y*(x*y^-1)^2*(x*y)^3),
+G<x,y,t>:=Group<x,y,t| x^2, y^3, (x*y)^23, (x,y)^12, (x,y*x*y)^5,
+(x*y*x*y*x*y^-1)^3*(x*y*x*y^-1*x*y^-1)^3, (x*y*(x*y*x*y^-1)^3)^4,
+t^2, (t,x), (t,y*x*y*(x*y^-1)^2*(x*y)^3),
 (y*t^(y*x*y^-1*x*y*x*y^-1*x))^3,
 ((y*x*y*x*y*x*y)^3*t*t^((x*y)^3*y*(x*y)^6*y))^2
 >;
@@ -199,23 +266,22 @@ private def x : free_group $ dfin 3 := ⟪(by to_dfin 0)⟫
 private def y : free_group $ dfin 3 := ⟪(by to_dfin 1)⟫
 private def t : free_group $ dfin 3 := ⟪(by to_dfin 2)⟫
 
+/-- the Janko group J₄ -/
+def J4 : Group := ⟪ dfin 3 | {x^2, y^3, (x*y)^23, ⟦x,y⟧^12, ⟦x,y*x*y ⟧^5,
+  (x*y*x*y*x*y⁻¹)^3*(x*y*x*y⁻¹*x*y⁻¹)^3, (x*y*(x*y*x*y⁻¹)^3)^4,
+  t^2, ⟦t,x⟧, ⟦t,y*x*y*(x*y⁻¹)^2*(x*y)^3⟧, (y*(t ↑↑ y*x*y⁻¹*x*y*x*y⁻¹*x))^3,
+  ((y*x*y*x*y*x*y)^3 * t * (t ↑↑ (x*y)^3*y*(x*y)^6*y))^2 }⟫ 
 
-local infix ` ↑↑ `:65 := conjugation
+/- Presentation of the Rudvalis group, following the paper
+   J.D. Bradley, R.T. Curtis and M. Aslam Malik,
+   Symmetric generation of the Rudvalis group
+   https://doi.org/10.1112/jlms/jdq039
+   Section 4.4 -/
 
-def J4 : Group := ⟪ dfin 3 | {
-  x^2,
-  y^3,
-  (x*y)^23,
-  ⟦ x, y ⟧^12,
-  ⟦ x, y*x*y ⟧^5,
-  (x*y*x*y*x*y⁻¹)^3*(x*y*x*y⁻¹*x*y⁻¹)^3,
-  (x*y*(x*y*x*y⁻¹)^3)^4,
-  t^2,
-  ⟦t,x⟧,
-  ⟦t,y*x*y*(x*y⁻¹)^2*(x*y)^3⟧,
-  (y*(t ↑↑ y*x*y⁻¹*x*y*x*y⁻¹*x))^3,
-  ((y*x*y*x*y*x*y)^3 * t * (t ↑↑ (x*y)^3*y*(x*y)^6*y))^2
-} ⟫ 
+private def u : free_group $ dfin 3 := x
+private def v : free_group $ dfin 3 := y
 
 /-- the Rudvalis group -/
-def Ru : Group := sorry
+def Ru : Group := ⟪dfin 3 | {u^4, v^2, (u*v)^7, (u^2*v)^3, t^2, ⟦t,u↑↑v⟧, ⟦t,v↑↑u⟧,
+                            (u*t)^10, (u*v*u*t)^13, (u*⟦t,u⁻¹⟧*⟦t↑↑u^2, ⟦u⁻¹, t⟧⟧)^3,
+                            ((u*t↑↑u*v)*(t*u^2)^4*(t↑↑u*v))^2, (u*(t↑↑v)*⟦t↑↑u*v,u⟧^2)^2}⟫

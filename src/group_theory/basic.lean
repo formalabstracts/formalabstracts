@@ -114,6 +114,9 @@ def commutative_on (s : set α) : Prop := ∀(x y ∈ s), x * y = y * x
 /- Conjugacy Classes -/
 
 variable (α)
+def right_conjugation {α : Type*} [group α] (x y : α)
+:= y⁻¹ * x * y
+
 /-- A conjugacy class is a set of the form { h * g * h⁻¹ | h : α} for some element g : α -/
 def is_conjugacy_class : set (set α) := {s | ∃g, s = set.range (λh, h * g * h⁻¹) }
 

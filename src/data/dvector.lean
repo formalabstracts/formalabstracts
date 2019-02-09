@@ -2,7 +2,7 @@ import tactic.tidy
 
 universes u v w
 
-inductive dvector (α : Type u) : ℕ → Type u
+@[derive decidable_eq]inductive dvector (α : Type u) : ℕ → Type u
 | nil {} : dvector 0
 | cons : ∀{n} (x : α) (xs : dvector n), dvector (n+1)
 
