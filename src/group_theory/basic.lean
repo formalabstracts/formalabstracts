@@ -4,7 +4,7 @@ import ..basic group_theory.sylow group_theory.perm data.zmod.basic
        group_theory.free_group
 
 universes u v
-open equiv 
+open equiv
 open category_theory
 noncomputable theory
 
@@ -55,12 +55,12 @@ def alternating_group (n : ℕ) : Group := mk_ob {g : perm (fin n) | g.sign = 1}
 end
 
 /- Given N ⊆ G normal, return the canonical surjection G → G/N -/
-def canonical_surjection {G : Type*} [group G]  (N : set G) [normal_subgroup N] : 
-  G → quotient_group.quotient N := 
-quotient_group.mk 
+def canonical_surjection {G : Type*} [group G]  (N : set G) [normal_subgroup N] :
+  G → quotient_group.quotient N :=
+quotient_group.mk
 
-instance {G : Type*} [group G]  (N : set G) [normal_subgroup N] : 
-  is_group_hom $ canonical_surjection N := 
+instance {G : Type*} [group G]  (N : set G) [normal_subgroup N] :
+  is_group_hom $ canonical_surjection N :=
 omitted
 
 /-- the "extended" group power, where g^∞ is defined as 1 -/
@@ -90,7 +90,7 @@ instance (t s : set α) [is_subgroup s] [is_subgroup t] : is_subgroup (induced_s
 is_group_hom.preimage _ _
 
 /-- the subgroup spanned by x is normal in its centralizer -/
-instance closure_normal_in_centralizer (x : α) : 
+instance closure_normal_in_centralizer (x : α) :
   normal_subgroup $ induced_subgroup (group.closure {x}) (centralizer {x} : set α) :=
 omitted
 
@@ -100,10 +100,10 @@ by { dsimp [induced_subgroup], apply_instance }
 
 /- Primary groups or p-groups -/
 
-def is_primary (p : nat) (α : Type*) [group α] [decidable_eq α] [fintype α] : Prop := 
+def is_primary (p : nat) (α : Type*) [group α] [decidable_eq α] [fintype α] : Prop :=
 ∀(x : α), ∃(n : ℕ), order_of x = p ^ n
 
-def is_Sylow_subgroup [fintype α] (p : nat) (s : set α) : Prop := 
+def is_Sylow_subgroup [fintype α] (p : nat) (s : set α) : Prop :=
 by { haveI := classical.prop_decidable, exact
   ∃(hs : is_subgroup s), is_primary p s ∧
     (∀ t (ht : is_subgroup t), by { exact is_primary p t } → s ⊆ t → s = t) }
@@ -114,24 +114,23 @@ def commutative_on (s : set α) : Prop := ∀(x y ∈ s), x * y = y * x
 /- Conjugacy Classes -/
 
 variable (α)
-def right_conjugation {α : Type*} [group α] (x y : α)
-:= y⁻¹ * x * y
+def right_conjugation {α : Type*} [group α] (x y : α) := y⁻¹ * x * y
 
 /-- A conjugacy class is a set of the form { h * g * h⁻¹ | h : α} for some element g : α -/
 def is_conjugacy_class : set (set α) := {s | ∃g, s = set.range (λh, h * g * h⁻¹) }
 
 variable {α}
 /-- Elements in the same conjugacy class have equal order -/
-def order_irrel_in_conjugacy_class [fintype α] [decidable_eq α] (s : is_conjugacy_class α) 
+def order_irrel_in_conjugacy_class [fintype α] [decidable_eq α] (s : is_conjugacy_class α)
   (h₁ : x ∈ s.1) (h₂ : y ∈ s.1) : order_of x = order_of y :=
 omitted
 
 /-- The order of any element in the conjugacy class -/
-noncomputable def order_in [fintype α] [decidable_eq α] (s : is_conjugacy_class α) : ℕ := 
+noncomputable def order_in [fintype α] [decidable_eq α] (s : is_conjugacy_class α) : ℕ :=
 order_of (classical.some s.2)
 
 /-- A conjugacy class of a finite group is finite -/
-noncomputable instance [fintype α] [decidable_eq α] : fintype (is_conjugacy_class α) := 
+noncomputable instance [fintype α] [decidable_eq α] : fintype (is_conjugacy_class α) :=
 @subtype.fintype _ _ _ (classical.dec_pred _)
 
 variable (α)
@@ -140,13 +139,13 @@ def is_conjugacy_class_of_order [fintype α] [decidable_eq α] (N : ℕ) : set (
 { s | order_in s = N }
 
 /-- The set of all conjugacy classes with a given order is finite -/
-noncomputable instance [fintype α] [decidable_eq α] (N : ℕ) : 
+noncomputable instance [fintype α] [decidable_eq α] (N : ℕ) :
   fintype (is_conjugacy_class_of_order α N) :=
 @subtype.fintype _ _ _ (classical.dec_pred _)
 
 /- A list of conjugacy classes with elements of the given order, sorted by ascending cardinality -/
 def list_conjugacy_class_of_order [fintype α] [decidable_eq α] (N : ℕ)
-  (h : function.injective (λ s : is_conjugacy_class_of_order α N, s.1.1.cardinality)) : 
+  (h : function.injective (λ s : is_conjugacy_class_of_order α N, s.1.1.cardinality)) :
   list (is_conjugacy_class_of_order α N) :=
 let f : is_conjugacy_class_of_order α N → ℕ := λ s, s.1.1.cardinality in
 let r := pullback_rel f (≤) in
@@ -156,21 +155,21 @@ by { haveI : is_antisymm _ r := pullback_rel.is_antisymm f (≤) h,
 def number_of_conjugacy_classes_of_order [fintype α] [decidable_eq α] (N : ℕ) : ℕ :=
 fintype.card (is_conjugacy_class_of_order α N)
 
-lemma number_of_conjugacy_classes_of_order_eq [fintype α] [decidable_eq α] (N : ℕ) 
+lemma number_of_conjugacy_classes_of_order_eq [fintype α] [decidable_eq α] (N : ℕ)
   (h : function.injective (λ s : is_conjugacy_class_of_order α N, s.1.1.cardinality)) :
   number_of_conjugacy_classes_of_order α N = (list_conjugacy_class_of_order α N h).length :=
 let f : is_conjugacy_class_of_order α N → ℕ := λ s, s.1.1.cardinality in
 let r := pullback_rel f (≤) in
 begin
   haveI : is_antisymm _ r := pullback_rel.is_antisymm f (≤) h,
-  dsimp [number_of_conjugacy_classes_of_order, list_conjugacy_class_of_order], 
+  dsimp [number_of_conjugacy_classes_of_order, list_conjugacy_class_of_order],
   exact omitted --rw [finset.sort_length]
 end
 
 /- The m-th conjugacy class of order N -/
-def conjugacy_class_classification (G : Group) [fintype G] [decidable_eq G] (N : ℕ) (m : ℕ) 
+def conjugacy_class_classification (G : Group) [fintype G] [decidable_eq G] (N : ℕ) (m : ℕ)
   (h1 : function.injective (λ s : is_conjugacy_class_of_order G N, s.1.1.cardinality))
-  (h2 : m < number_of_conjugacy_classes_of_order G N) : 
+  (h2 : m < number_of_conjugacy_classes_of_order G N) :
   is_conjugacy_class_of_order G N :=
 (list_conjugacy_class_of_order G N h1).nth_le m (by rwa ←number_of_conjugacy_classes_of_order_eq)
 
@@ -180,8 +179,8 @@ end char
 
 /- The notation for conjugacy classes. The conjugacy class 7C in group G can be written as
 conj_class G 7 'C'.
-Beware: when using this notation we assume that the group is finite, there are no two conjugacy 
-classes of the same cardinality with the given order and that there are sufficiently many conjugacy 
+Beware: when using this notation we assume that the group is finite, there are no two conjugacy
+classes of the same cardinality with the given order and that there are sufficiently many conjugacy
 classes of that order -/
-notation `conj_class` := (λ β N X, @conjugacy_class_classification β (classical.choice omitted) 
+notation `conj_class` := (λ β N X, @conjugacy_class_classification β (classical.choice omitted)
   (classical.dec_rel _) N (char.to_nat_m65 X) omitted omitted)

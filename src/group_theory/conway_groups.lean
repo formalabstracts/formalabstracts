@@ -30,7 +30,7 @@ private def b : Co2_prediagram.vertex := arm (by to_dfin 2) (by to_dfin 2)
 private def c : Co2_prediagram.vertex := arm (by to_dfin 1) (by to_dfin 0)
 private def d : Co2_prediagram.vertex := arm (by to_dfin 0) (by to_dfin 0)
 private def e : Co2_prediagram.vertex := arm (by to_dfin 2) (by to_dfin 0)
-private def f : Co2_prediagram.vertex := torso _
+private def f : Co2_prediagram.vertex := torso
 private def g : Co2_prediagram.vertex := arm (by to_dfin 3) (by to_dfin 0)
 
 noncomputable def Co2_diagram : annotated_graph :=
@@ -65,7 +65,7 @@ instance Co3_prediagram_decidable_eq : decidable_eq Co3_prediagram.vertex :=
 noncomputable instance Co3_prediagram_decidable_rel : decidable_rel Co3_prediagram.edge :=
   λ _ _, classical.prop_decidable _
 
-private def a : Co3_prediagram.vertex := torso _
+private def a : Co3_prediagram.vertex := torso
 private def b : Co3_prediagram.vertex := arm (by to_dfin 1) (by to_dfin 0)
 private def c : Co3_prediagram.vertex := arm (by to_dfin 2) (by to_dfin 1)
 private def d : Co3_prediagram.vertex := arm (by to_dfin 2) (by to_dfin 2)

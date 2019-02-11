@@ -16,7 +16,7 @@ a--b-5-c--d
      e -6-f
 
 which we'll write as the annotated_graph of a Coxeter Y-diagram with the diagonal edges inserted
--/ 
+-/
 
 def mclaughlin_prediagram : annotated_graph :=
   annotated_graph_of_graph $ coxeter_edges [5]
@@ -24,7 +24,7 @@ def mclaughlin_prediagram : annotated_graph :=
 noncomputable instance : decidable_rel mclaughlin_prediagram.edge :=
   λ _ _, classical.prop_decidable _
 
-private def a : mclaughlin_prediagram.vertex := torso _
+private def a : mclaughlin_prediagram.vertex := torso
 private def b : mclaughlin_prediagram.vertex := arm (by to_dfin 0) (by to_dfin 0)
 private def c : mclaughlin_prediagram.vertex := arm (by to_dfin 0) (by to_dfin 1)
 private def e : mclaughlin_prediagram.vertex := arm (by to_dfin 0) (by to_dfin 2)

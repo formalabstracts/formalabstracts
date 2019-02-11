@@ -12,11 +12,11 @@ namespace higman_sims
 /- The graph is question is
 
 a--b-4-c--d--e
- ↘ ↓     ↙5 
+ ↘ ↓     ↙5
 4  f
 
 which we'll write as the annotated_graph of a Coxeter Y-diagram with the diagonal edges inserted
--/ 
+-/
 
 def higman_sims_prediagram : annotated_graph := -- above diagram without diagonals or annotations
   annotated_graph_of_graph $ coxeter_edges [1,3,1]
@@ -28,7 +28,7 @@ noncomputable instance higman_sims_prediagram_decidable_rel : decidable_rel higm
   λ _ _, classical.prop_decidable _
 
 private def a : higman_sims_prediagram.vertex := arm (by to_dfin 0) (by to_dfin 0)
-private def b : higman_sims_prediagram.vertex:= torso _
+private def b : higman_sims_prediagram.vertex:= torso
 private def c : higman_sims_prediagram.vertex := arm (by to_dfin 1) (by to_dfin 0)
 private def d : higman_sims_prediagram.vertex:= arm (by to_dfin 1) (by to_dfin 1)
 private def e : higman_sims_prediagram.vertex := arm (by to_dfin 1) (by to_dfin 2)

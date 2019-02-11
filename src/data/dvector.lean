@@ -1,4 +1,4 @@
-import tactic.tidy
+import tactic.tidy data.pnat
 
 universes u v w
 
@@ -76,6 +76,10 @@ meta instance reflect : ∀ n, has_reflect (dfin n)
 | _ fz := `(fz)
 | _ (fs n) := `(fs).subst (reflect _ n)
 
+def fz' : Π{n : ℕ+}, dfin n
+| ⟨0,   h⟩ := false.elim (lt_irrefl 0 h)
+| ⟨k+1, h⟩ := fz
+
 end dfin
 
 meta def tactic.interactive.to_dfin (m : ℕ) : tactic unit := do
@@ -92,6 +96,8 @@ instance has_zero_dfin {n} : has_zero $ dfin (n+1) := ⟨fz⟩
 instance has_one_dfin : ∀ {n}, has_one (dfin (nat.succ n))
 | 0 := ⟨fz⟩
 | (n+1) := ⟨fs fz⟩
+
+instance has_one_dfin_pnat {n : ℕ+} : has_one (dfin n) := ⟨fz'⟩
 
 instance has_add_dfin {n} : has_add (dfin(n)) :=
   ⟨λ x y, of_fin $ (to_fin x) + (to_fin y)⟩
@@ -156,30 +162,30 @@ protected def mem_of_pmem : ∀{n : ℕ} {x : α} {xs : dvector α n} (hx : xs.p
 | _ []      := rfl
 | _ (x::xs) := by dsimp; simp*
 
-@[simp] protected lemma map_congr_pmem {f g : α → β} : 
+@[simp] protected lemma map_congr_pmem {f g : α → β} :
   ∀{n : ℕ} {xs : dvector α n} (h : ∀x, xs.pmem x → f x = g x), xs.map f = xs.map g
 | _ []      h := rfl
 | _ (x::xs) h :=
   begin
-    dsimp, congr' 1, exact h x (psum.inl rfl), apply map_congr_pmem, 
+    dsimp, congr' 1, exact h x (psum.inl rfl), apply map_congr_pmem,
     intros x hx, apply h, right, exact hx
   end
 
-@[simp] protected lemma map_congr_mem {f g : α → β} {n : ℕ} {xs : dvector α n} 
+@[simp] protected lemma map_congr_mem {f g : α → β} {n : ℕ} {xs : dvector α n}
   (h : ∀x, x ∈ xs → f x = g x) : xs.map f = xs.map g :=
-dvector.map_congr_pmem $ λx hx, h x $ dvector.mem_of_pmem hx 
+dvector.map_congr_pmem $ λx hx, h x $ dvector.mem_of_pmem hx
 
-@[simp] protected lemma map_congr {f g : α → β} (h : ∀x, f x = g x) : 
+@[simp] protected lemma map_congr {f g : α → β} (h : ∀x, f x = g x) :
   ∀{n : ℕ} (xs : dvector α n), xs.map f = xs.map g
 | _ []      := rfl
 | _ (x::xs) := by dsimp; simp*
 
-@[simp] protected lemma map_map (g : β → γ) (f : α → β): ∀{n : ℕ} (xs : dvector α n), 
+@[simp] protected lemma map_map (g : β → γ) (f : α → β): ∀{n : ℕ} (xs : dvector α n),
   (xs.map f).map g = xs.map (λx, g (f x))
   | _ []      := rfl
   | _ (x::xs) := by dsimp; simp*
 
-protected lemma map_inj {f : α → β} (hf : ∀{{x x'}}, f x = f x' → x = x') {n : ℕ} 
+protected lemma map_inj {f : α → β} (hf : ∀{{x x'}}, f x = f x' → x = x') {n : ℕ}
   {xs xs' : dvector α n} (h : xs.map f = xs'.map f) : xs = xs' :=
 begin
   induction xs; cases xs', refl, simp at h, congr;[apply hf, apply xs_ih]; simp [h]
@@ -196,18 +202,18 @@ end
 | _ (x::xs) 0     h := by refl
 | _ (x::xs) (m+1) h := by exact map_nth xs m _
 
-protected lemma concat_nth : ∀{n : ℕ} (xs : dvector α n) (x : α) (m : ℕ) (h' : m < n+1) 
+protected lemma concat_nth : ∀{n : ℕ} (xs : dvector α n) (x : α) (m : ℕ) (h' : m < n+1)
   (h : m < n), (xs.concat x).nth m h' = xs.nth m h
 | _ []      x' m     h' h := by exfalso; exact nat.not_lt_zero m h
 | _ (x::xs) x' 0     h' h := by refl
 | _ (x::xs) x' (m+1) h' h := by dsimp; exact concat_nth xs x' m _ _
 
-@[simp] protected lemma concat_nth_last : ∀{n : ℕ} (xs : dvector α n) (x : α) (h : n < n+1), 
+@[simp] protected lemma concat_nth_last : ∀{n : ℕ} (xs : dvector α n) (x : α) (h : n < n+1),
   (xs.concat x).nth n h = x
 | _ []      x' h := by refl
 | _ (x::xs) x' h := by dsimp; exact concat_nth_last xs x' _
 
-@[simp] protected lemma concat_nth_last' : ∀{n : ℕ} (xs : dvector α n) (x : α) (h : n < n+1), 
+@[simp] protected lemma concat_nth_last' : ∀{n : ℕ} (xs : dvector α n) (x : α) (h : n < n+1),
   (xs.concat x).last = x
 := by apply dvector.concat_nth_last
 
@@ -271,5 +277,5 @@ protected lemma cast_hrfl {n m} {p : n = m} {v : dvector α n} : v.cast p == v :
   | n 0 (dvector.cons y ys) := ys
   | (n+1) (k+1) (dvector.cons y ys) := dvector.cons y (remove_mth k ys)
 
- 
+
 end dvector
