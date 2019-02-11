@@ -16,7 +16,7 @@ namespace Group
 noncomputable def order (G : Group) (h : is_finite G) : ℕ :=
 @fintype.card G (classical.choice h)
 
-instance (G : Group) : group G := G.str
+@[priority 2000] instance (G : Group) : group G := G.str
 end Group
 
 /-- Group + group homomorphisms form a concrete category -/
