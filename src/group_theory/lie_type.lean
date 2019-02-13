@@ -1,4 +1,4 @@
-import .basic data.dvector
+import .basic data.dvector data.nat.prime
 
 noncomputable theory
 universes u v
@@ -24,6 +24,8 @@ namespace dynkin_diagram
     λ x y e,
     have h : ∃(n : ℕ+), (edge y x → n = 1) ∧ ∀(e : edge x y), n = annotation e, from omitted,
     classical.some h, omitted⟩
+
+  /- The following are all Dynkin diagrams of simple root systems -/
 
   /-- The edges of the Dynkin diagrams A_n and B_n -/
   inductive A_edges {n : ℕ+} : dfin n → dfin n → Prop
@@ -69,6 +71,40 @@ namespace dynkin_diagram
   /-- The Dynkin diagram $G_2$ -/
   protected def G2 : dynkin_diagram :=
   undirected_closure (dfin (2 : ℕ+)) A_edges (λ x y e, 3) omitted
+
+  /-- The set of all isomorphisms between two dynkin diagrams is defined as the graph isomorphisms which ignore the direction of directed edges but preserve the annotation. -/
+def dynkin_diagram_isomorphism (X Y : dynkin_diagram) :=
+{f : X.vertex ≃ Y.vertex |
+  ∀(x x' : X.vertex), (X.edge x x' ↔ Y.edge (f x) (f x') ∨ Y.edge (f x') (f x)) ∧
+  ∀(e : X.edge x x'), (∀(e' : Y.edge (f x) (f x')), X.annotation e = Y.annotation e') ∧
+                      (∀(e' : Y.edge (f x') (f x)), X.annotation e = Y.annotation e') }
+
+local infix ` ≅ ` := dynkin_diagram_isomorphism
+
+local attribute [instance, priority 0] classical.prop_decidable
+
+/-- If f reverses the direction of an arrow, returns `some n` where `n` is the annotation of that edge (chooses the smallest n in case of a tie), and otherwise returns `none`. -/
+def reverses_an_arrow {X Y : dynkin_diagram} (f : X ≅ Y) : option ℕ :=
+if h : ∃(x x' : X.vertex) (e : X.edge x x'), ¬Y.edge (f x) (f x')
+then
+have h' : ∃(n : ℕ) (x x' : X.vertex) (e : X.edge x x'), ¬Y.edge (f x) (f x') ∧
+  ↑(X.annotation e) = n,
+from let ⟨x, x', e, he⟩ := h in ⟨X.annotation e, x, x', e, he, rfl⟩,
+some $ nat.find h'
+else none
+
+/-- A finite simple group of Lie type is a triple `(X,ρ,q)` where `X` is a Dynkin diagram of simple root system, `ρ` is an automorphism of the diagram and `q = p^e` where `p` is a prime and `e ∈ ½ℤ` such that
+* If `ρ` flips the direction of an arrow with annotation `p'`, then `p = p'`
+* Otherwise, `e ∈ ℤ` -/
+/- We store `2e` instead of `e` -/
+structure finite_simple_group_of_lie_type :=
+  (X : dynkin_diagram)
+  (ρ : X ≅ X)
+  (p : ℕ)
+  (two_e : ℤ)
+  (p_prime : p.prime)
+  (h_flip : ∀n, reverses_an_arrow ρ = some n → n = p)
+  (h_noflip : reverses_an_arrow ρ = none → ∃e' : ℤ, two_e = e')
 
 end dynkin_diagram
 
