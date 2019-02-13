@@ -45,20 +45,39 @@ do e ← get_env,
     d ← get_decl resolved <|> fail ("declaration " ++ to_string given_name ++ " not found"),
     tactic.trace $ list_names d.type 
 
-
+/-- Return the direct dependencies of the *type* of a declaration. -/
 meta def name_dir_deps (n : name) : tactic(list name) := 
 do env ← get_env,
     l ← get_decl n,
     if is_structure env n then  
-    do fl ← returnopt $ structure_fields env n,
-        k ← mmap (λ h, do l ← get_decl h, pure $ list_names l.value) fl,
-    pure $ list.join k 
+    do fields ← returnopt $ structure_fields env n,
+        let res := map (λ h, name.append n h) fields,
+        k ← mmap (λ h, do l ← get_decl h, pure $ list_names l.type) res,
+        let clean := list.erase_dup (list.join k),
+        let final := list.filter (λ h, ¬ name.is_prefix_of n h) clean,
+        pure $ final 
     else 
-    pure $ list_names l.type
+    pure $ list_names l.type 
 
-#check mmap
+/-- Return the direct dependencies of the *value* of a declaration.-/
+meta def name_dir_deps_val (n : name) : tactic(list name) := 
+do env ← get_env,
+    l ← get_decl n,
+    if is_structure env n then  
+    do fields ← returnopt $ structure_fields env n,
+        let res := map (λ h, name.append n h) fields,
+        k ← mmap (λ h, do l ← get_decl h, pure $ list_names l.value) res,
+        let clean := list.erase_dup (list.join k),
+        let final := list.filter (λ h, ¬ name.is_prefix_of n h) clean,
+        pure $ final 
+    else 
+    pure $ list_names l.value 
+
 run_cmd name_dir_deps `mathieu_group.steiner_system >>= tactic.trace 
 
+run_cmd name_dir_deps_val `J4 >>= tactic.trace  
+
+/-- Recursively return a joint list of the m-th sub-dependencies of the type of given name.-/
 meta def name_dir_deps_depth (n : name) : ℕ → tactic(list name)
 | 0 := name_dir_deps n 
 | (succ m) :=
@@ -66,10 +85,23 @@ meta def name_dir_deps_depth (n : name) : ℕ → tactic(list name)
     l' ← mmap (λ h, name_dir_deps h) l, 
     let k := list.erase_dup $ 
     list.join (l :: l'),
-    tactic.trace k.length, 
+    -- tactic.trace k.length, 
     pure $ k
 
-run_cmd do l ← mmap (λ h, name_dir_deps h) [`mathieu_group.steiner_system], tactic.trace l 
+run_cmd do l ← name_dir_deps_depth `mathieu_group.steiner_system 3, tactic.trace l 
+
+run_cmd name_dir_deps_depth `sends_identity_to_1 5 >>= tactic.trace
+
+/-- Recursively return a joint list of the m-th sub-dependencies of the type of given name.-/
+meta def name_dir_deps_depth_val (n : name) : ℕ → tactic(list name)
+| 0 := name_dir_deps_val n 
+| (succ m) :=
+ do l ← name_dir_deps_depth_val m <|> name_dir_deps_val n, 
+    l' ← mmap (λ h, name_dir_deps h) l, 
+    let k := list.erase_dup $ 
+    list.join (l :: l'),
+    -- tactic.trace k.length, 
+    pure $ k
 
 theorem foo' : 2+2 = 4 :=
 begin
@@ -80,7 +112,6 @@ end
 namespace fabstract 
 
 /- TODO : Declare a has_to_tactic_format instance for fabstract n -/
-
 
 meta def show_pos (n : name) : command :=
 do env   ← get_env,
