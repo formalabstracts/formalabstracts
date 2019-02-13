@@ -10,6 +10,7 @@ import data.buffer.parser
 import group_theory.mathieu_group
 import group_theory.euclidean_lattice
 import group_theory.sporadic_group 
+import tactic.tidy
 -- import group_theory.lie_type
 
 open tactic expr interactive nat native name list lean.parser pexpr
@@ -50,7 +51,7 @@ meta def trace_metadata (n : name) : tactic unit :=
 do f ← gen_metadata n,
     tactic.trace "Type: ",
     tactic.trace f.type,
-    tactic.trace " ",
+    tactic.trace "  ",
     tactic.trace "Value: ",
     tactic.trace f.value,
     tactic.trace " ",
@@ -69,7 +70,5 @@ do f ← gen_metadata n,
 run_cmd trace_metadata `mathieu_group.Aut
 run_cmd trace_metadata `euclidean_space_canonical_inclusion
 run_cmd trace_metadata `determinant_spec 
-
-#check list.empty
 -- run_cmd trace_metadata `dynkin_diagram
 
