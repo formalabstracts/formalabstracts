@@ -97,7 +97,11 @@ instance has_one_dfin : ∀ {n}, has_one (dfin (nat.succ n))
 | 0 := ⟨fz⟩
 | (n+1) := ⟨fs fz⟩
 
-instance has_one_dfin_pnat {n : ℕ+} : has_one (dfin n) := ⟨fz'⟩
+instance has_zero_dfin_pnat {n : ℕ+} : has_zero (dfin n) := ⟨fz'⟩
+instance has_one_dfin_pnat : Π{n : ℕ+}, has_one (dfin n)
+| ⟨0, h⟩   := false.elim (lt_irrefl 0 h)
+| ⟨1, h⟩   := ⟨fz⟩
+| ⟨n+2, h⟩ := ⟨fs fz⟩
 
 instance has_add_dfin {n} : has_add (dfin(n)) :=
   ⟨λ x y, of_fin $ (to_fin x) + (to_fin y)⟩
