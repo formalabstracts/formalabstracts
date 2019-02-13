@@ -56,8 +56,7 @@ do env ← get_env,
     else 
     pure $ list_names l.type
 
-#check mmap
-run_cmd name_dir_deps `mathieu_group.steiner_system >>= tactic.trace 
+-- run_cmd name_dir_deps `mathieu_group.steiner_system >>= tactic.trace 
 
 meta def name_dir_deps_depth (n : name) : ℕ → tactic(list name)
 | 0 := name_dir_deps n 
@@ -69,7 +68,7 @@ meta def name_dir_deps_depth (n : name) : ℕ → tactic(list name)
     tactic.trace k.length, 
     pure $ k
 
-run_cmd do l ← mmap (λ h, name_dir_deps h) [`mathieu_group.steiner_system], tactic.trace l 
+-- run_cmd do l ← mmap (λ h, name_dir_deps h) [`mathieu_group.steiner_system], tactic.trace l 
 
 theorem foo' : 2+2 = 4 :=
 begin
