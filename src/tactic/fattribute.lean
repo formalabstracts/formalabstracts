@@ -24,14 +24,13 @@ meta def fabstract_attr : user_attribute (rb_map name (list name)) (list name) :
 } 
 
 /-- Well, hello there! -/
-@[fabstract ABC000 ABC200] 
+@[fabstract] 
 def test₁ : 1+1 =2 := by simp
 
-@[fabstract ABC101 ABC200] 
-def test₂ : 1+1 =2 := by simp
+@[fabstract] 
+def steiner_system : 1+1 =2 := by simp
 
-@[fabstract ABC101 XYZ200] 
-def welp : 1+1 =2 := by simp
+def steiner_system_help : 1+1 =2 := by simp
 
 @[fabstract JBX190 AXX200] 
 def woolp : 1+1 =2 := by simp
