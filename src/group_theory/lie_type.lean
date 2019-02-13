@@ -96,7 +96,9 @@ else none
 /-- A finite simple group of Lie type is a triple `(X,ρ,q)` where `X` is a Dynkin diagram of simple root system, `ρ` is an automorphism of the diagram and `q = p^e` where `p` is a prime and `e ∈ ½ℤ` such that
 * If `ρ` flips the direction of an arrow with annotation `p'`, then `p = p'`
 * Otherwise, `e ∈ ℤ` -/
-/- We store `2e` instead of `e` -/
+/- We store `2e` instead of `e`.
+   Question 1: is two_e : ℕ or two_e : ℤ?
+   Question 2: Is two_e required to be odd if ρ reverses an arrow? -/
 structure finite_simple_group_of_lie_type :=
   (X : dynkin_diagram)
   (ρ : X ≅ X)
@@ -104,7 +106,7 @@ structure finite_simple_group_of_lie_type :=
   (two_e : ℤ)
   (p_prime : p.prime)
   (h_flip : ∀n, reverses_an_arrow ρ = some n → n = p)
-  (h_noflip : reverses_an_arrow ρ = none → ∃e' : ℤ, two_e = e')
+  (h_noflip : reverses_an_arrow ρ = none → 2 ∣ two_e)
 
 end dynkin_diagram
 

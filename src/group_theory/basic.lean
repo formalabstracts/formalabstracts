@@ -1,7 +1,7 @@
-import ..basic group_theory.sylow group_theory.perm data.zmod.basic
+import ..basic
+       group_theory.sylow group_theory.perm group_theory.free_group
+       data.zmod.basic data.nat.enat data.set.finite
        category_theory.concrete_category category_theory.isomorphism
-       data.nat.enat data.set.finite group_theory.quotient_group
-       group_theory.free_group
 
 universes u v
 open equiv
@@ -11,6 +11,10 @@ noncomputable theory
 /-- The type of groups. -/
 @[reducible] def Group : Type (u+1) := bundled group
 
+/-- Group + group homomorphisms form a concrete category -/
+instance concrete_is_group_hom : concrete_category @is_group_hom :=
+⟨by introsI α ia; apply_instance, by introsI α β γ ia ib ic f g hf hg; apply_instance⟩
+
 namespace Group
 /-- The order of a finite group is defined as its cardinality  -/
 noncomputable def order (G : Group) (h : is_finite G) : ℕ :=
@@ -18,10 +22,6 @@ noncomputable def order (G : Group) (h : is_finite G) : ℕ :=
 
 @[priority 2000] instance (G : Group) : group G := G.str
 end Group
-
-/-- Group + group homomorphisms form a concrete category -/
-instance concrete_is_group_hom : concrete_category @is_group_hom :=
-⟨by introsI α ia; apply_instance, by introsI α β γ ia ib ic f g hf hg; apply_instance⟩
 
 /-- Transferring the structure of a group along an equivalence of types -/
 def group.equiv {α β} (e : α ≃ β) [group α] : group β :=
