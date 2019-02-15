@@ -10,21 +10,20 @@ import data.buffer.parser
 import group_theory.mathieu_group
 import group_theory.euclidean_lattice
 import group_theory.sporadic_group 
-import tactic.tidy
+import tactic.explode
+import .depends
+-- import system.io
 -- import group_theory.lie_type
 
-open tactic expr interactive nat native name list lean.parser pexpr
+open tactic expr interactive nat native name list
 
-
-/--Takes an expr and spits out a list of all the names in that expr -/
-meta def list_names (e : expr): list name :=
-e.fold [] (λ e _ es, if is_constant e then insert e.const_name es else es)
 
 meta structure meta_data (n : name):=
 (type : expr)
 (value : expr)
 (informal : string)
-(depends : list name)
+(typedepends : list name)
+(valdepends : list name)
 (position : string)
 
 
@@ -34,18 +33,19 @@ do env   ← get_env,
    olean ← returnopt (env.decl_olean n) <|> return "current file",
    pure $ to_string n ++ " was defined at " ++ olean ++ " : " ++ to_string pos.1 ++ ":" ++ to_string pos.2
 
-/- -/
+/-TODO(Kody): What about structures? (A. Use is_structure)
+            What about instances? (A. Anything that is not a thm, ax, defn, lemma, structure?)-/
 meta def gen_metadata (n : name) : tactic (meta_data n) :=
 do 
     resolved ← resolve_constant n, 
-    informal ← doc_string n,
+    informal ← doc_string n <|> return " ",
     d ← get_decl resolved <|> fail ("could not retrieve given declration"),
     let type := d.type,
     let value := d.value,
-    let depends := list_names d.type,
-    docstring ← doc_string n, 
+    typedepends ← name_dir_deps n,
+    valdepends ← name_dir_deps_val n,
     position ← show_pos n,
-    pure $ meta_data.mk n type value informal depends position
+    pure $ meta_data.mk n type value informal typedepends valdepends position
 
 meta def trace_metadata (n : name) : tactic unit :=
 do f ← gen_metadata n,
@@ -58,17 +58,27 @@ do f ← gen_metadata n,
     tactic.trace "Informal statement: ",
     tactic.trace f.informal,
     tactic.trace " ",
-    tactic.trace "Dependencies: ",
-    tactic.trace f.depends,
+    tactic.trace "Type Dependencies: ",
+    tactic.trace f.typedepends,
+    tactic.trace " ",
+    tactic.trace "Value Dependencies: ",
+    tactic.trace f.valdepends,
     tactic.trace " ",
     tactic.trace "Position: ",
     tactic.trace f.position,
     tactic.trace " "
 
-/- Tests -/
-#check environment.is_structure
+-- namespace JSON
+
+-- end JSON 
+
 run_cmd trace_metadata `mathieu_group.Aut
 run_cmd trace_metadata `euclidean_space_canonical_inclusion
-run_cmd trace_metadata `determinant_spec 
--- run_cmd trace_metadata `dynkin_diagram
+run_cmd trace_metadata `nat.rec_on
+run_cmd trace_metadata `mathieu_group.steiner_system
+run_cmd trace_metadata `J4
 
+-- run_cmd trace_metadata `dynkin_diagram
+#check mathieu_group.steiner_system_fintype
+
+#check name
