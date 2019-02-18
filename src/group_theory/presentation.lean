@@ -48,6 +48,8 @@ def generated_of {G : Type*} {R : set (free_group G)} : G → ⟪G | R⟫ :=
 
 local notation `⟪`:50 a `⟫`:50 := free_group.of a
 
+def cyclic_group_presentation (n : ℕ) : Group := ⟪unit |{ ⟪()⟫^n }⟫ 
+
 /- The dihedral groups -/
 
 /- The dihedral groups are an easy case of the Coxeter groups -/
@@ -182,5 +184,5 @@ mk_ob $ quotient_group.quotient $ derived_subgroup α
 /-- A group is called perfect if its derived subgroup is the whole group -/
 def is_perfect (α : Type*) [group α] : Prop := derived_subgroup α = set.univ
 
-/-- A group is called perfect if its derived subgroup is the whole group -/
+/-- A group is called solvable if its derived series eventually becomes trivial -/
 def is_solvable (α : Type*) [group α] : Prop := ∃ n, iterated_derived_subgroup α n = {1}
