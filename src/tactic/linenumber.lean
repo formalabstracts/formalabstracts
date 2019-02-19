@@ -68,18 +68,28 @@ do f ← gen_metadata n,
     tactic.trace f.position,
     tactic.trace " "
 
+/-TODO:1) Make this more general (arbitrary structure fields + values).
+2) Make this more comprehensive (include `meta`, `noncomputable` information) 
+3) URGENT: Remove newlines in strings/replace them with \\n
+-/
+
 meta def trace_metadata_JSON (n : name) : tactic unit := 
 do  env ← get_env, 
     f ← gen_metadata n,
     fields ← returnopt $ structure_fields env `meta_data,
     pptype ← pp f.type,
-    ppval ← pp f.value,
-    let informal := pp f.informal,
+    sppval ← pp f.value,
+    let informal := f.informal,
     let tdeps := f.typedepends,
     let vdeps := f.valdepends, 
     let pos := f.position,
-    trace format!"{{\"Type\" :\"{pptype}\",\n\"Value\":\"{ppval}\",\n\"Type Dependencies\":\"{tdeps}\",\n\"Value Dependencies\":\"{vdeps}\",\n\"Position\":\"{pos}\",\n }"
+    trace format!"{{\"Type\" :\"{pptype}\",\n\"Docstring\" :\"{informal}\",\n\"Value\":\"{sppval}\",\n\"Type Dependencies\":\"{tdeps}\",\n\"Value Dependencies\":\"{vdeps}\",\n\"Position\":\"{pos}\"\n }"
 
+
+-- def find_linebreak (s : string) : bool :=
+-- s.fold ff (λ _ es, if " " = to_string es then tt else ff)
+
+-- run_cmd do let l:= find_linebreak "", tactic.trace l 
 /- Tests -/
 run_cmd trace_metadata `mathieu_group.Aut
 run_cmd trace_metadata `euclidean_space_canonical_inclusion
@@ -92,7 +102,6 @@ run_cmd trace_metadata `J4
 run_cmd trace_metadata `mathieu_group.steiner_system_fintype
 -- run_cmd trace_metadata `dynkin_diagram
 #check mathieu_group.steiner_system_fintype
-
-run_cmd trace_metadata_JSON `J4  
+run_cmd trace_metadata_JSON `J4
 run_cmd trace_metadata_JSON `mathieu_group.steiner_system_fintype
-run_cmd trace_metadata `J4  
+run_cmd trace_metadata_JSON `list.rec_on  
