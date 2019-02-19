@@ -15,7 +15,7 @@ import .depends
 -- import system.io
 -- import group_theory.lie_type
 
-open tactic expr interactive nat native name list
+open tactic expr interactive nat native name list environment
 
 
 meta structure meta_data (n : name):=
@@ -26,12 +26,12 @@ meta structure meta_data (n : name):=
 (valdepends : list name)
 (position : string)
 
-
 meta def show_pos (n : name) : tactic string :=
 do env   ← get_env,
    pos   ← returnopt (env.decl_pos n),
    olean ← returnopt (env.decl_olean n) <|> return "current file",
-   pure $ to_string n ++ " was defined at " ++ olean ++ " : " ++ to_string pos.1 ++ ":" ++ to_string pos.2
+    -- to_string n ++ " was defined at " ++
+   pure $  olean ++ " : " ++ to_string pos.1 ++ ":" ++ to_string pos.2
 
 /-TODO(Kody): What about structures? (A. Use is_structure)
             What about instances? (A. Anything that is not a thm, ax, defn, lemma, structure?)-/
@@ -68,17 +68,31 @@ do f ← gen_metadata n,
     tactic.trace f.position,
     tactic.trace " "
 
--- namespace JSON
+meta def trace_metadata_JSON (n : name) : tactic unit := 
+do  env ← get_env, 
+    f ← gen_metadata n,
+    fields ← returnopt $ structure_fields env `meta_data,
+    pptype ← pp f.type,
+    ppval ← pp f.value,
+    let informal := pp f.informal,
+    let tdeps := f.typedepends,
+    let vdeps := f.valdepends, 
+    let pos := f.position,
+    trace format!"{{\"Type\" :\"{pptype}\",\n\"Value\":\"{ppval}\",\n\"Type Dependencies\":\"{tdeps}\",\n\"Value Dependencies\":\"{vdeps}\",\n\"Position\":\"{pos}\",\n }"
 
--- end JSON 
-
+/- Tests -/
 run_cmd trace_metadata `mathieu_group.Aut
 run_cmd trace_metadata `euclidean_space_canonical_inclusion
 run_cmd trace_metadata `nat.rec_on
+/- Example of a metadata trace on a structure -/
 run_cmd trace_metadata `mathieu_group.steiner_system
+/- Example of a metadata trace on an instance -/
+run_cmd trace_metadata `mathieu_group.steiner_system_fintype
 run_cmd trace_metadata `J4
-
+run_cmd trace_metadata `mathieu_group.steiner_system_fintype
 -- run_cmd trace_metadata `dynkin_diagram
 #check mathieu_group.steiner_system_fintype
 
-#check name
+run_cmd trace_metadata_JSON `J4  
+run_cmd trace_metadata_JSON `mathieu_group.steiner_system_fintype
+run_cmd trace_metadata `J4  
