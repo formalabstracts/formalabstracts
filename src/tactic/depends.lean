@@ -107,17 +107,7 @@ theorem foo' : 2+2 = 4 :=
 begin
   simp,
 end
- 
 
-namespace fabstract 
-
-/- TODO : Declare a has_to_tactic_format instance for fabstract n -/
-#check has_to_tactic_format
-meta def show_pos (n : name) : command :=
-do env   ← get_env,
-   pos   ← returnopt (env^.decl_pos n),
-   olean ← returnopt (env.decl_olean n) <|> return "current file",
-   trace $ to_string n ++ " was defined at " ++ olean ++ " : " ++ to_string pos.1 ++ ":" ++ to_string pos.2
 
 /- Tests -/
 #depends nat.has_one
@@ -126,18 +116,6 @@ do env   ← get_env,
 #depends nat.add._main
 #depends mclaughlin.McL
 #depends sends_identity_to_1
-
-#eval to_string $ format!"{1+1}"
-
-#check λ α, format!"{α}"
-#eval sformat!"a{'b'}c"
     
-run_cmd do let k :=  to_string $ list.to_format [1,2], tactic.trace k 
-
 set_option profiler true 
 run_cmd (name_dir_deps_depth_val `mathieu_group.Aut 10) >>= tactic.trace
-
-#check mclaughlin.McL
-
-end fabstract
-
