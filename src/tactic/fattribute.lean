@@ -42,7 +42,8 @@ def test₁ : 1+1 =2 := by simp
 @[fabstract ABC101 ABC200] 
 def test₂ : 1+1 =2 := by simp
 
-def steiner_system_help : 1+1 =2 := by simp
+@[fabstract ABC101 XYZ200] 
+def welp : 1+1 =2 := by simp
 
 @[fabstract JBX190 AXX200] 
 def woolp : 1+1 =2 := by simp
