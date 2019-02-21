@@ -68,6 +68,9 @@ do f ← gen_metadata n,
     tactic.trace f.position,
     tactic.trace " "
 
+def squash_linebreak (s : string) : string :=
+list.foldr  (++) ""  $ list.map (λ h, if h = '\n' then " " else to_string h) (s.to_list)
+
 /-TODO:1) Make this more general (arbitrary structure fields + values).
 2) Make this more comprehensive (include `meta`, `noncomputable` information) 
 -/
@@ -77,15 +80,13 @@ do  env ← get_env,
     fields ← returnopt $ structure_fields env `meta_data,
     pptype ← pp f.type,
     sppval ← pp f.value,
+    let sanitype := squash_linebreak $ format.to_string pptype,
+    let sanival := squash_linebreak $ format.to_string sppval,
     let informal := f.informal,
     let tdeps := f.typedepends,
     let vdeps := f.valdepends, 
     let pos := f.position,
-    trace format!"{{\"Type\" :\"{pptype}\",\n\"Docstring\" :\"{informal}\",\n\"Value\":\"{sppval}\",\n\"Type Dependencies\":\"{tdeps}\",\n\"Value Dependencies\":\"{vdeps}\",\n\"Position\":\"{pos}\"\n }"
-
-
-def squash_linebreak (s : string) : string :=
-list.foldr  (++) ""  $ list.map (λ h, if h = '\n' then " " else to_string h) (s.to_list)
+    trace format!"{{\"Type\" :\"{sanitype}\",\n\"Docstring\" :\"{informal}\",\n\"Value\":\"{sanival}\",\n\"Type Dependencies\":\"{tdeps}\",\n\"Value Dependencies\":\"{vdeps}\",\n\"Position\":\"{pos}\"\n }"
 
 /- Tests -/
 run_cmd trace_metadata `mathieu_group.Aut
