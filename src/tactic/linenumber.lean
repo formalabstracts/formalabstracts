@@ -12,6 +12,7 @@ import group_theory.euclidean_lattice
 import group_theory.sporadic_group 
 import tactic.explode
 import .depends
+import measure_theory.giry_monad
 -- import system.io
 -- import group_theory.lie_type
 
@@ -69,7 +70,7 @@ do f ← gen_metadata n,
     tactic.trace " "
 
 def squash_linebreak (s : string) : string :=
-list.foldr  (++) ""  $ list.map (λ h, if h = '\n' then " " else to_string h) (s.to_list)
+list.foldr  (++) ""  $ list.map (λ h, if h = '\n' then "" else to_string h) (s.to_list)
 
 /-TODO:1) Make this more general (arbitrary structure fields + values).
 2) Make this more comprehensive (include `meta`, `noncomputable` information) 
@@ -78,15 +79,20 @@ meta def trace_metadata_JSON (n : name) : tactic unit :=
 do  env ← get_env, 
     f ← gen_metadata n,
     fields ← returnopt $ structure_fields env `meta_data,
+    -- tactic.trace $ map () fields,
     pptype ← pp f.type,
     sppval ← pp f.value,
-    let sanitype := squash_linebreak $ format.to_string pptype,
-    let sanival := squash_linebreak $ format.to_string sppval,
-    let informal := f.informal,
-    let tdeps := f.typedepends,
-    let vdeps := f.valdepends, 
+    let jsanitype := squash_linebreak $ format.to_string pptype,
+    let jsanival := squash_linebreak $ format.to_string sppval,
+    let jinformal := squash_linebreak f.informal,
+    let tdeps := (do m ← f.typedepends, pure $ squash_linebreak $ to_string m),
+    let jtdeps := squash_linebreak $ to_string tdeps,
+    let vdeps := (do m ← f.valdepends, pure $ squash_linebreak $ to_string m),
+    let jvdeps := squash_linebreak $ to_string vdeps,
+    -- tactic.trace vdeps,
     let pos := f.position,
-    trace format!"{{\"Type\" :\"{sanitype}\",\n\"Docstring\" :\"{informal}\",\n\"Value\":\"{sanival}\",\n\"Type Dependencies\":\"{tdeps}\",\n\"Value Dependencies\":\"{vdeps}\",\n\"Position\":\"{pos}\"\n }"
+    -- skip
+    trace format!"{{\"Type\" :\"{jsanitype}\",\n\"Docstring\" :\"{jinformal}\",\n\"Value\":\"{jsanival}\",\n\"Type Dependencies\":\"{jtdeps}\",\n\"Value Dependencies\":\"{jvdeps}\",\n\"Position\":\"{pos}\"\n }"
 
 /- Tests -/
 run_cmd trace_metadata `mathieu_group.Aut
@@ -102,4 +108,15 @@ run_cmd trace_metadata `mathieu_group.steiner_system_fintype
 #check mathieu_group.steiner_system_fintype
 run_cmd trace_metadata_JSON `J4
 run_cmd trace_metadata_JSON `mathieu_group.steiner_system_fintype
-run_cmd trace_metadata_JSON `list.rec_on  
+run_cmd trace_metadata_JSON `nat.rec_on
+run_cmd trace_metadata_JSON `measure_theory.lintegral_supr_directed
+
+-- #eval range 100
+#depends measure_theory.lintegral_supr_directed
+#eval list.repeat 3 3
+def long_lists (m : ℕ) : list (list ℕ) := 
+do l ← list.repeat m 10,
+    pure [l]
+
+#help options
+#help commands
