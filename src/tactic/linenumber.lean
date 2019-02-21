@@ -70,9 +70,7 @@ do f ← gen_metadata n,
 
 /-TODO:1) Make this more general (arbitrary structure fields + values).
 2) Make this more comprehensive (include `meta`, `noncomputable` information) 
-3) URGENT: Remove newlines in strings/replace them with \\n
 -/
-
 meta def trace_metadata_JSON (n : name) : tactic unit := 
 do  env ← get_env, 
     f ← gen_metadata n,
@@ -86,10 +84,9 @@ do  env ← get_env,
     trace format!"{{\"Type\" :\"{pptype}\",\n\"Docstring\" :\"{informal}\",\n\"Value\":\"{sppval}\",\n\"Type Dependencies\":\"{tdeps}\",\n\"Value Dependencies\":\"{vdeps}\",\n\"Position\":\"{pos}\"\n }"
 
 
--- def find_linebreak (s : string) : bool :=
--- s.fold ff (λ _ es, if " " = to_string es then tt else ff)
+def squash_linebreak (s : string) : string :=
+list.foldr  (++) ""  $ list.map (λ h, if h = '\n' then " " else to_string h) (s.to_list)
 
--- run_cmd do let l:= find_linebreak "", tactic.trace l 
 /- Tests -/
 run_cmd trace_metadata `mathieu_group.Aut
 run_cmd trace_metadata `euclidean_space_canonical_inclusion
