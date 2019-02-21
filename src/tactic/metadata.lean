@@ -111,12 +111,3 @@ run_cmd trace_metadata_JSON `mathieu_group.steiner_system_fintype
 run_cmd trace_metadata_JSON `nat.rec_on
 run_cmd trace_metadata_JSON `measure_theory.lintegral_supr_directed >>= tactic.trace
 
--- #eval range 100
-#depends measure_theory.lintegral_supr_directed
-#eval list.repeat 3 3
-def long_lists (m : ℕ) : list (list ℕ) := 
-do l ← list.repeat m 10,
-    pure [l]
-
-#help options
-#help commands
