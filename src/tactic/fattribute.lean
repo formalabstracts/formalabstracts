@@ -7,54 +7,56 @@ The fabstract user attribute.
 -/
 
 import tactic.basic 
-import tactic.ext 
 import tactic.linenumber
 
 open interactive interactive.types lean.parser tactic native
+
+-- @[user_attribute]
+-- meta def fabstract_attr : user_attribute (rb_map name (list name)) (list name) :=
+-- {
+--   name := `fabstract,
+--   descr := "The fabstract user attribute. Used to mark lemmas captured in order to capture meta data.",
+--   parser := many ident <|> pure [],
+--   cache_cfg := ⟨ λ l, l.mfoldl (λ m n, do
+--       tags ← fabstract_attr.get_param n,
+--       return $ tags.foldl (λ m t, m.insert_cons t n) m) mk_rb_map
+--    , [] ⟩
+-- } 
+
 @[user_attribute]
-meta def fabstract_attr : user_attribute (rb_map name (list name)) (list name) :=
+meta def fabstract_attr : user_attribute (rb_map name (string)) (list name) :=
 {
   name := `fabstract,
   descr := "The fabstract user attribute. Used to mark lemmas captured in order to capture meta data.",
   parser := many ident <|> pure [],
-  cache_cfg := ⟨ λ l, l.mfoldl (λ m n, do
-      tags ← fabstract_attr.get_param n,
-      return $ tags.foldl (λ m t, m.insert_cons t n) m) mk_rb_map
-   , [] ⟩
-} 
-
-@[user_attribute]
-meta def fabstract_attr' : user_attribute (list string) (list name) :=
-{
-  name := `fabstract',
-  descr := "The fabstract user attribute. Used to mark lemmas captured in order to capture meta data.",
-  parser := many ident <|> pure [],
-  cache_cfg := ⟨ λ ns, mmap (trace_metadata_JSON) ns
+  cache_cfg := ⟨ 
+    λ ns, ( do l ← mmap (trace_metadata_JSON) ns, pure $ rb_map.of_list (list.zip ns l))
    , [] ⟩
 }
+
+/- Tests -/
 /-- Well, hello there! -/
-@[fabstract] 
+@[fabstract ABC000 ABC200] 
 def test₁ : 1+1 =2 := by simp
 
-@[fabstract] 
-def steiner_system : 1+1 =2 := by simp
+@[fabstract ABC101 ABC200] 
+def test₂ : 1+1 =2 := by simp
 
 def steiner_system_help : 1+1 =2 := by simp
 
-@[fabstract' JBX190 AXX200] 
+@[fabstract JBX190 AXX200] 
 def woolp : 1+1 =2 := by simp
 
-@[fabstract'] 
+@[fabstract] 
 def flump : 1+1 =2 := by simp
 
 meta def get_MSC_codes (n : name) : tactic (list name) := user_attribute.get_param fabstract_attr n
 
-/- Tests -/
-run_cmd attribute.get_instances `fabstract' >>= tactic.trace
--- run_cmd doc_string `test₁ >>= tactic.trace >> get_MSC_codes `test₁ >>= tactic.trace 
+run_cmd attribute.get_instances `fabstract >>= tactic.trace
+run_cmd doc_string `test₁ >>= tactic.trace >> get_MSC_codes `test₁ >>= tactic.trace 
 
-/- Gives all declarations with a particular MSC code.-/
 run_cmd do 
   m ← fabstract_attr.get_cache,
-  v ← m.find `ABC101,
-  trace v
+  -- v ← m.find `flump,
+  trace m
+
