@@ -7,7 +7,7 @@ The fabstract user attribute.
 -/
 
 import tactic.basic 
-import tactic.linenumber
+import tactic.metadata
 
 open interactive interactive.types lean.parser tactic native
 
