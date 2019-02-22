@@ -1,6 +1,6 @@
 -- Copyright (c) 2018 Scott Morrison. All rights reserved.
 -- Released under Apache 2.0 license as described in the file LICENSE.
--- Authors: Scott Morrison
+-- Authors: Scott Morrison, Jesse Han
 
 import category_theory.limits.shapes.products basic data.dvector
 
@@ -56,16 +56,46 @@ def π₂ {X Y : C} [has_limit (functor.of_function $ two.map X Y)] : binary_pro
 
 local infix ` × `:60 := binary_product
 
+def dfin.map {n : ℕ} : dvector C n → dfin n → C :=
+  λ v d, by {induction v, cases d, cases d, exact v_x, exact v_ih d_a}
+
+example {X : C} [has_limits C] : X × X × X = (X × X) × X := by refl
+
+variable [has_limits C]
+
+def exchange_coordinates {X Y : C} [has_limits C] : X × Y ⟶ X × X := sorry
+
+-- def reassoc {X : C} [has_limits C] : iso ((X × X) × X) (X × (X × X)) :=
+-- { hom := _,
+--   inv := _,
+--   hom_inv_id' := _,
+--   inv_hom_id' := _ }
+
+-- structure group_object : Type (max u v) :=
+-- (carrier : C)
+-- (mul : (carrier × carrier) ⟶ carrier)
+-- (mul_assoc)
+-- (one)
+-- (one_mul)
+-- (mul_one)
+-- (inv)
+-- (mul_left_inv)
+
+
 end binary_product
 
-def dfin.map {n : ℕ} (v : dvector C n) : dfin n → C :=
- λ d, by {induction v, cases d, from v_x}
+-- 64:1: @[class, priority 100, to_additive name.mk_string "add_group" name.anonymous]
+-- structure group : Type u → Type u
+-- fields:
+-- group.mul : Π {α : Type u} [c : group α], α → α → α
+-- group.mul_assoc : ∀ {α : Type u} [c : group α] (a b c_1 : α), a * b * c_1 = a * (b * c_1)
+-- group.one : Π (α : Type u) [c : group α], α
+-- group.one_mul : ∀ {α : Type u} [c : group α] (a : α), 1 * a = a
+-- group.mul_one : ∀ {α : Type u} [c : group α] (a : α), a * 1 = a
+-- group.inv : Π {α : Type u} [c : group α], α → α
+-- group.mul_left_inv : ∀ {α : Type u} [c : group α] (a : α), a⁻¹ * a = 1
 
 -- variable [has_limit (@functor.of_function C _ _ $ dfin.map Xs)]
-
-
-def finitary_product {n : ℕ} {Xs : dvector C n} [has_limit (functor.of_function $ dfin.map Xs)] : C :=
-  limit (@functor.of_function C _ _ (dfin.map Xs))
 
 /- Testing this definition -/
 -- omit 𝒞 
@@ -78,10 +108,18 @@ def finitary_product {n : ℕ} {Xs : dvector C n} [has_limit (functor.of_functio
 -- #eval my_example 1
 -- #eval my_example 2
 
-
-
+def finitary_product {n : ℕ} (Xs : dvector C n)
+  [has_limit (functor.of_function $ dfin.map Xs)] : C :=
+  limit (@functor.of_function C _ _ (dfin.map Xs))
 
 namespace finitary_product
+def π_nth (m : ℕ) {n : ℕ} (h : m < n) {Xs : dvector C n} [has_limit (functor.of_function $ dfin.map Xs)] : finitary_product Xs ⟶ (Xs.nth m h) :=
+  by {convert (limit.π (functor.of_function $ dfin.map Xs) (dfin.of_fin ⟨m,h⟩)), from omitted}
+
+/- TODO(jesse) this should say that there is a cone isomorphism between the binary product of two objects, and the binary product induced by the finitary product induced by the map from dfin 2 → C -/
+lemma binary_finitary_product {X Y : C} : sorry := sorry
+
+-- actually, maybe for general group objects, what we want is an association isomorphism between iterated binary products... hmm...
 
 end finitary_product
 
