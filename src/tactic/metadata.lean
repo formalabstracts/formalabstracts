@@ -34,7 +34,7 @@ do
     -- resolved ← resolve_constant n <|> fail ("unable to resolve constant " ++ to_string n)
     resolved ← resolve_constant n <|> pure n,
     informal ← doc_string n <|> return " ",
-    d ← get_decl n <|> fail ("could not retrieve given declration"),
+    d ← get_decl resolved <|> fail ("could not retrieve given declration"),
     let type := d.type,
     let value := d.value,
     typedepends ← name_dir_deps n,
