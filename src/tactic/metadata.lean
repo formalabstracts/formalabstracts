@@ -27,23 +27,12 @@ do env   ← get_env,
     -- to_string n ++ " was defined at " ++
    pure $  olean ++ " : " ++ to_string pos.1 ++ ":" ++ to_string pos.2
 
-private meta def check_no_overload (p : pexpr) : tactic unit :=
-when p.is_choice_macro $
-  match p with
-  | macro _ ps :=
-    fail $ to_fmt "ambiguous overload, possible interpretations" ++
-           format.join (ps.map (λ p, (to_fmt p).indent 4))
-  | _ := failed
-  end
-
 /-TODO(Kody): What about structures? (A. Use is_structure)
             What about instances? (A. Anything that is not a thm, ax, defn, lemma, structure?)-/
 meta def gen_metadata (n : name) : tactic (meta_data n) :=
 do
     -- resolved ← resolve_constant n <|> fail ("unable to resolve constant " ++ to_string n)
     resolved ← resolve_constant n <|> pure n,
-    -- res ← resolve_name resolved,
-    -- check_no_overload res,
     informal ← doc_string n <|> return " ",
     d ← get_decl n <|> fail ("could not retrieve given declration"),
     let type := d.type,
@@ -100,7 +89,6 @@ do  env ← get_env <|> fail ("cannot get environment"),
     pure $ to_string format!"{{\"Type\" :\"{jsanitype}\",\n\"Docstring\" :\"{jinformal}\",\n\"Value\":\"{jsanival}\",\n\"Type Dependencies\":\"{jtdeps}\",\n\"Value Dependencies\":\"{jvdeps}\",\n\"Position\":\"{pos}\"\n }"
 
 /- Tests -/
--- #check check_no_overload
 -- run_cmd trace_metadata `mathieu_group.Aut
 -- run_cmd trace_metadata `euclidean_space_canonical_inclusion
 -- run_cmd trace_metadata `nat.rec_on
