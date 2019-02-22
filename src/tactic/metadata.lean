@@ -6,15 +6,8 @@ Authors: Koundinya Vajjha
 Generating meta data for a formal abstract.
 -/
 
-import data.buffer.parser
--- import group_theory.mathieu_group
-import group_theory.euclidean_lattice
--- import group_theory.sporadic_group
-import tactic.explode
 import .depends
--- import measure_theory.giry_monad
--- import system.io
--- import group_theory.lie_type
+import init.meta.interactive
 
 open tactic expr interactive nat native name list environment
 
@@ -34,13 +27,25 @@ do env   ← get_env,
     -- to_string n ++ " was defined at " ++
    pure $  olean ++ " : " ++ to_string pos.1 ++ ":" ++ to_string pos.2
 
+private meta def check_no_overload (p : pexpr) : tactic unit :=
+when p.is_choice_macro $
+  match p with
+  | macro _ ps :=
+    fail $ to_fmt "ambiguous overload, possible interpretations" ++
+           format.join (ps.map (λ p, (to_fmt p).indent 4))
+  | _ := failed
+  end
+
 /-TODO(Kody): What about structures? (A. Use is_structure)
             What about instances? (A. Anything that is not a thm, ax, defn, lemma, structure?)-/
 meta def gen_metadata (n : name) : tactic (meta_data n) :=
 do
-    resolved ← resolve_constant n,
+    -- resolved ← resolve_constant n <|> fail ("unable to resolve constant " ++ to_string n)
+    resolved ← resolve_constant n <|> pure n,
+    -- res ← resolve_name resolved,
+    -- check_no_overload res,
     informal ← doc_string n <|> return " ",
-    d ← get_decl resolved <|> fail ("could not retrieve given declration"),
+    d ← get_decl n <|> fail ("could not retrieve given declration"),
     let type := d.type,
     let value := d.value,
     typedepends ← name_dir_deps n,
@@ -76,9 +81,9 @@ list.foldr  (++) ""  $ list.map (λ h, if h = '\n' then "" else to_string h) (s.
 2) Make this more comprehensive (include `meta`, `noncomputable` information)
 -/
 meta def trace_metadata_JSON (n : name) : tactic string :=
-do  env ← get_env,
-    f ← gen_metadata n,
-    fields ← returnopt $ structure_fields env `meta_data,
+do  env ← get_env <|> fail ("cannot get environment"),
+    f ← gen_metadata n <|> fail ("cannot generate metadata for " ++ to_string n ++ "\npossibly due to ambiguous overload"),
+    -- fields ← returnopt $ structure_fields env `meta_data,
     -- tactic.trace $ map () fields,
     pptype ← pp f.type,
     sppval ← pp f.value,
@@ -95,6 +100,7 @@ do  env ← get_env,
     pure $ to_string format!"{{\"Type\" :\"{jsanitype}\",\n\"Docstring\" :\"{jinformal}\",\n\"Value\":\"{jsanival}\",\n\"Type Dependencies\":\"{jtdeps}\",\n\"Value Dependencies\":\"{jvdeps}\",\n\"Position\":\"{pos}\"\n }"
 
 /- Tests -/
+-- #check check_no_overload
 -- run_cmd trace_metadata `mathieu_group.Aut
 -- run_cmd trace_metadata `euclidean_space_canonical_inclusion
 -- run_cmd trace_metadata `nat.rec_on

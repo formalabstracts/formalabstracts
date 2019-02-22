@@ -6,11 +6,7 @@ Authors: Koundinya Vajjha
 A meta def called `#depends` which gives the names of all the theorems (the statement of) a given definition/theorem depends on.
 -/
 
-import data.buffer.parser
--- import group_theory.mathieu_group
-import group_theory.euclidean_lattice
--- import group_theory.sporadic_group
--- import measure_theory.giry_monad
+import ..basic
 
 open tactic expr interactive nat native name list lean.parser environment
 
