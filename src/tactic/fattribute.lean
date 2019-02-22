@@ -29,7 +29,7 @@ meta def fabstract_attr : user_attribute (rb_map name (string)) (list name) :=
   descr := "The fabstract user attribute. Used to mark lemmas captured in order to capture meta data.",
   parser := many ident <|> pure [],
   cache_cfg := ⟨
-    λ ns, ( do l ← mmap (trace_metadata_JSON) ns <|> fail ("failing here"),
+    λ ns, ( do l ← mmap (trace_metadata_JSON) ns,
          pure $ rb_map.of_list (list.zip ns l))
    , [] ⟩
 }
@@ -56,7 +56,7 @@ do m ← fabstract_attr.get_cache,
   v ← m.find n,
   pure v
 
--- run_cmd attribute.get_instances `vm_monitor >>= tactic.trace
+-- run_cmd attribute.get_instances `fabstract >>= tactic.trace
 
 -- run_cmd do
 --   m ← fabstract_attr.get_cache,
