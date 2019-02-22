@@ -1,4 +1,5 @@
 import ..data.dvector .presentation
+import tactic.fattribute
 open category_theory (mk_ob)
 
 local notation h :: t  := dvector.cons h t
@@ -35,6 +36,7 @@ private def c₃ : Y443 := generated_of $ arm (by to_dfin 2) (by to_dfin 1)
 noncomputable def spider : Y443 := (a * b₁ * c₁ * a * b₂ * c₂ * a * b₃ * c₃)^10
 
 /-- The Fischer-Griess monster group -/
+@[fabstract]
 noncomputable def Monster : Group :=
 mk_ob $ quotient_group.quotient $ is_subgroup.center $ Y443/⟪{spider}⟫
 
