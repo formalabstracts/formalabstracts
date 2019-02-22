@@ -6,9 +6,61 @@ import ..basic
 open set
 
 universes u v w
+
+/- move to ideal-/
+namespace ideal
+namespace quotient
+variables {α : Type*} {β : Type*} [comm_ring α] [comm_ring β] {S : ideal α} {T : ideal β} {f : α → β}
+  {H : ∀ {{a : α}}, a ∈ S → f a ∈ T}
+
+-- replace lift
+def lift' (S : ideal α) (f : α → β) [is_add_group_hom f] (H : ∀ (a : α), a ∈ S → f a = 0) :
+  quotient S → β :=
+λ x, quotient.lift_on' x f $ λ (a b) (h : _ ∈ _),
+eq_of_sub_eq_zero (by simpa only [is_add_group_hom.sub f] using H _ h)
+
+def map (S : ideal α) (T : ideal β) (f : α → β) [is_add_group_hom f]
+  (H : ∀ {{a : α}}, a ∈ S → f a ∈ T) : quotient S → quotient T :=
+begin
+  haveI : is_add_group_hom ((mk T : β → quotient T) ∘ f) := is_add_group_hom.comp _ _,
+  refine ideal.quotient.lift' S (mk T ∘ f) _,
+  intros x hx, refine ideal.quotient.eq.2 _, rw [sub_zero], exact H hx
+end
+
+@[simp] lemma map_mk' [is_add_group_hom f] (x : α) : map S T f H (mk S x) = mk T (f x) := rfl
+
+instance map.is_ring_hom [is_ring_hom f] : is_ring_hom (map S T f H) :=
+by dsimp [map]; exact omitted
+
+end quotient
+end ideal
+
+/- move to module -/
+
+section module
+
+variables {R : Type u} {S : Type*} [ring R]
+variables {M : Type*} [add_comm_group M]
+variables [module R M]
+
+instance smul.is_add_group_hom {r : R} : is_add_group_hom (λ x : M, r • x) :=
+by refine_struct {..}; simp [smul_add]
+
+def quotient_add_group.quotient.module {s : set M} [normal_add_subgroup s] (h : ∀(r : R) {x : M}, x ∈ s → r • x ∈ s) :
+  module R (quotient_add_group.quotient s) :=
+{ smul := λ r, quotient_add_group.map _ _ (λ(x : M), r • x) (λ x h', h r h'),
+  smul_add := omitted,
+  add_smul := omitted,
+  mul_smul := omitted,
+  one_smul := omitted,
+  zero_smul := omitted,
+  smul_zero := omitted }
+
+end module
+
 variables {R : Type u} {S : Type*} [comm_ring R] [comm_ring S]
-variables {M : Type*} {N : Type*} [ring M] [ring N]
-variables [algebra R M] [algebra R N]
+variables {M : Type*} {N : Type*} {A : Type*} [ring M] [ring N] [comm_ring A]
+variables [algebra R M] [algebra R N] [algebra R A]
 
 local notation M ` ⊗[`:100 R `] ` N:100 := tensor_product R M N
 
@@ -77,6 +129,49 @@ instance : ring (M ⊗[R] N) :=
 instance : algebra R (M ⊗[R] N) := algebra.of_module omitted
 
 end tensor_product
+
+namespace quotient
+
+def smul {I : ideal A} (r : R) : I.quotient → I.quotient :=
+ideal.quotient.map _ _ (λ(x : A), r • x) (λ x h', by rw [smul_def]; exact I.mul_mem_left h')
+
+@[simp] lemma smul_mk {I : ideal A} (r : R) (x : A) :
+  quotient.smul r (ideal.quotient.mk I x) = ideal.quotient.mk I (r • x) :=
+by refl
+
+end quotient
+
+instance quotient.algebra (I : ideal A) : algebra R I.quotient :=
+{ smul := quotient.smul,
+  smul_add := λ r x y, quotient.induction_on₂' x y $ λ a b, congr_arg (ideal.quotient.mk _) $
+    smul_add r a b,
+  add_smul := λ r s x, quotient.induction_on' x $ λ a, congr_arg (ideal.quotient.mk _) $
+    add_smul r s a,
+  mul_smul := λ r s x, quotient.induction_on' x $ λ a, congr_arg (ideal.quotient.mk _) $
+    mul_smul r s a,
+  one_smul := λ x, quotient.induction_on' x $ λ a, congr_arg (ideal.quotient.mk _) $
+    by simp only [one_smul],
+  zero_smul := λ x, quotient.induction_on' x $ λ a, congr_arg (ideal.quotient.mk _) $
+    by simp only [zero_smul],
+  smul_zero := λ r, congr_arg (ideal.quotient.mk _) $ by simp only [smul_zero],
+  to_fun := ideal.quotient.mk I ∘ algebra_map A,
+  commutes' := λ r x, quotient.induction_on' x $ λ a, congr_arg (ideal.quotient.mk _) $
+    commutes r a,
+  smul_def' := λ r x, quotient.induction_on' x $ λ a, congr_arg (ideal.quotient.mk _) $
+    smul_def r a }
+
+local attribute [instance, priority 0] classical.prop_decidable
+/-- An algebra `β` is finitely generated over a ring `α` if there is a finite subset `s` of `β` such that every element of `β` can be expressed as a polynomial in the elements of `s` with coefficients in `α` -/
+def is_finitely_generated (α : Type u) [comm_ring α] (β : Type v) [comm_ring β] [algebra α β] :
+  Prop :=
+∃(s : finset β), ∀(x : β), ∃(p : mv_polynomial {x // x ∈ s} α),
+  p.eval₂ (algebra_map β) subtype.val = x
+
+/-- Every quotient algebra is finitely generated -/
+lemma is_finitely_generated_quotient {α : Type u} [comm_ring α] {β : Type v} [comm_ring β]
+  [algebra α β] [decidable_eq α] [decidable_eq β] (h : is_finitely_generated α β) (I : ideal β) :
+  is_finitely_generated α (I.quotient) :=
+omitted
 
 /-- The type of algebras over a fixed commutative ring. -/
 structure Algebra (R : Type u) [comm_ring R] : Type max u (v+1) :=

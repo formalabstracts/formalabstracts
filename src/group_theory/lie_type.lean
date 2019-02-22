@@ -5,7 +5,8 @@ universes u v
 
 /- Dynkin diagrams -/
 
-/- A Dynkin diagram is a graph where the edges are annotated with positive natural numbers. If an edge is annotated with 1, then it is undirected, otherwise directed -/
+/-- A Dynkin diagram is a graph where the edges are annotated with positive natural numbers. If an edge is annotated with 1, then it is undirected, otherwise directed -/
+/- To do: maybe add hypothesis ¬edge x x -/
 structure dynkin_diagram :=
   (vertex : Type v)
   (edge : vertex → vertex → Prop)
@@ -97,16 +98,15 @@ else none
 * If `ρ` flips the direction of an arrow with annotation `p'`, then `p = p'`
 * Otherwise, `e ∈ ℤ` -/
 /- We store `2e` instead of `e`.
-   Question 1: is two_e : ℕ or two_e : ℤ?
-   Question 2: Is two_e required to be odd if ρ reverses an arrow? -/
+To do: add condition that if no arrow is reversed, p^(two_e/2) + X.vertex.card > 4 -/
 structure finite_simple_group_of_lie_type :=
   (X : dynkin_diagram)
   (ρ : X ≅ X)
   (p : ℕ)
-  (two_e : ℤ)
+  (two_e : ℕ+)
   (p_prime : p.prime)
-  (h_flip : ∀n, reverses_an_arrow ρ = some n → n = p)
-  (h_noflip : reverses_an_arrow ρ = none → 2 ∣ two_e)
+  (h_flip : ∀n, reverses_an_arrow ρ = some n → n = p ∧ ¬(2 ∣ ↑two_e))
+  (h_noflip : reverses_an_arrow ρ = none → 2 ∣ ↑two_e)
 
 end dynkin_diagram
 

@@ -10,6 +10,9 @@ open set
 def is_nilpotent {α : Type u} [comm_semiring α] (x : α) : Prop := ∃ n : ℕ, x^n = 0
 /-- An ring is reduced if `0` is its only nilpotent element -/
 def is_reduced (α : Type u) [comm_semiring α] : Prop := ∀(x : α), is_nilpotent x → x = 0
+/-- A ring is algebraically closed if every non-constant polynomial has a root in α -/
+def is_algebraically_closed (α : Type u) [comm_semiring α] [decidable_eq α] : Prop :=
+∀(p : polynomial α), p.degree > 0 → ∃x, p.is_root x
 
 namespace ideal
 
@@ -41,6 +44,10 @@ linear_map.ker (alg_hom.of_ring_hom f).to_linear_map
 @[simp] lemma mem_ker (f : α → β) [is_ring_hom f] {x : α} : x ∈ ideal.ker f ↔ f x = 0 :=
 linear_map.mem_ker
 
+/-- The quotient of a ring by a radical ideal is reduced. -/
+lemma is_reduced_quotient {I : ideal α} (h : I.is_radical) : is_reduced (quotient I) :=
+omitted
+
 /-- the map f → range f is a ring homomorphism -/
 instance range_factorization.is_ring_hom (f : α → β) [is_ring_hom f] :
   is_ring_hom (range_factorization f) :=
@@ -70,6 +77,8 @@ def quotient_ker_inv (f : α → β) [is_ring_hom f] : range f → (ideal.ker f)
 /-- The maps above form an equivalence -/
 def quotient_ker_equiv (f : α → β) [is_ring_hom f] : (ideal.ker f).quotient ≃ range f :=
 ⟨quotient_ker_map f, quotient_ker_inv f, omitted, omitted⟩
+
+/- To do: Every field is a subfield of an algebraically closed field -/
 
 end ideal
 
