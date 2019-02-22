@@ -3,13 +3,13 @@ Copyright (c) 2018 Koundinya Vajjha. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Koundinya Vajjha
 
-Generating meta data for a formal abstract. 
+Generating meta data for a formal abstract.
 -/
 
 import data.buffer.parser
 -- import group_theory.mathieu_group
 import group_theory.euclidean_lattice
--- import group_theory.sporadic_group 
+-- import group_theory.sporadic_group
 import tactic.explode
 import .depends
 -- import measure_theory.giry_monad
@@ -37,8 +37,8 @@ do env   ← get_env,
 /-TODO(Kody): What about structures? (A. Use is_structure)
             What about instances? (A. Anything that is not a thm, ax, defn, lemma, structure?)-/
 meta def gen_metadata (n : name) : tactic (meta_data n) :=
-do 
-    resolved ← resolve_constant n, 
+do
+    resolved ← resolve_constant n,
     informal ← doc_string n <|> return " ",
     d ← get_decl resolved <|> fail ("could not retrieve given declration"),
     let type := d.type,
@@ -73,10 +73,10 @@ def squash_linebreak (s : string) : string :=
 list.foldr  (++) ""  $ list.map (λ h, if h = '\n' then "" else to_string h) (s.to_list)
 
 /-TODO:1) Make this more general (arbitrary structure fields + values).
-2) Make this more comprehensive (include `meta`, `noncomputable` information) 
+2) Make this more comprehensive (include `meta`, `noncomputable` information)
 -/
-meta def trace_metadata_JSON (n : name) : tactic string := 
-do  env ← get_env, 
+meta def trace_metadata_JSON (n : name) : tactic string :=
+do  env ← get_env,
     f ← gen_metadata n,
     fields ← returnopt $ structure_fields env `meta_data,
     -- tactic.trace $ map () fields,
@@ -96,8 +96,8 @@ do  env ← get_env,
 
 /- Tests -/
 -- run_cmd trace_metadata `mathieu_group.Aut
-run_cmd trace_metadata `euclidean_space_canonical_inclusion
-run_cmd trace_metadata `nat.rec_on
+-- run_cmd trace_metadata `euclidean_space_canonical_inclusion
+-- run_cmd trace_metadata `nat.rec_on
 /- Example of a metadata trace on a structure -/
 -- run_cmd trace_metadata `mathieu_group.steiner_system
 /- Example of a metadata trace on an instance -/
@@ -108,6 +108,6 @@ run_cmd trace_metadata `nat.rec_on
 -- #check mathieu_group.steiner_system_fintype
 -- run_cmd trace_metadata_JSON `J4
 -- run_cmd trace_metadata_JSON `mathieu_group.steiner_system_fintype
-run_cmd trace_metadata_JSON `nat.rec_on
+-- run_cmd trace_metadata_JSON `nat.rec_on
 -- run_cmd trace_metadata_JSON `measure_theory.lintegral_supr_directed >>= tactic.trace
 
