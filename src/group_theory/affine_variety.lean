@@ -1,7 +1,10 @@
-import ..basic
+import 
+       ..basic
        ring_theory.basic
        topology.basic
        category_theory.opposites
+       category_theory.limits.limits
+       ..category_theory.group_object
 
 open category_theory ideal set topological_space
 
@@ -109,12 +112,19 @@ variables (K)
 /-- In algebraic geometry, the categories of algebra's over K and affine varieties are opposite of each other. In this development we take a shortcut, and *define* affine varieties as the opposite of algebra's over K. -/
 @[reducible] def affine_variety : Type* := opposite (FRAlgebra K)
 
-example : category (affine_variety K) := by apply_instance
+@[instance]def affine_variety.category : category (affine_variety K) := by apply_instance
 
 def affine_variety.subobject (R : affine_variety K) (Z : closed_set (spectrum K ↥(unop R))) :
   FRAlgebra K :=
 FRAlgebra.quotient (unop R) Z
 
+@[instance] lemma affine_variety.complete : limits.has_limits (affine_variety K) :=
+begin
+intros F 𝒥 X, haveI := F,
+  cases classical.indefinite_description _
+    (omitted : ∃ t : limits.cone X, nonempty (limits.is_limit t)) with w h,
+  exact ⟨w, classical.choice h⟩
+end
 
 variables {K R}
 
@@ -126,3 +136,13 @@ variables {K R}
 -/
 
 end algebraic_geometry
+
+section algebraic_group
+open algebraic_geometry
+variables (K) [discrete_field K]
+/- For our purposes, an algebraic group is a group object in the category of affine varieties -/
+
+def algebraic_group : Type* :=
+@group_object (affine_variety K) (affine_variety.category K) (by apply affine_variety.complete)
+
+end algebraic_group

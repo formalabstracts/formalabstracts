@@ -79,14 +79,6 @@ def dfin.map {n : ℕ} : dvector C n → dfin n → C :=
 
 example {X : C} [has_limits_of_shape (discrete two) C] : X × X × X = (X × X) × X := by refl
 
-#print is_limit.hom_iso
-
-#print is_limit.hom_iso'
-
-#check is_limit
-
-#print limits.cone
-
 -- @[unify] def hewwo {A A' : C} {F : (discrete two) ⥤ C} {t : limits.cone F} : unification_hint :=
 -- { pattern := (A × A') ≟ (t.X),
 --   constraints := [(t.X) ≟ (limits.limit F)]
@@ -135,26 +127,28 @@ example :
 def terminal_object [@has_limits_of_shape (discrete pempty) (by apply_instance) C 𝒞] : C
   := limit (functor.of_function (λ x, by {cases x} : pempty → C))
 
-instance has_one_term {D} [category D] [has_limits_of_shape (discrete pempty) D] : has_one D :=
-⟨terminal_object⟩
+-- instance has_one_term {D} [category D] [has_limits_of_shape (discrete pempty) D] : has_one D :=
+-- ⟨terminal_object⟩
 
-def terminal_map [has_limits_of_shape (discrete pempty) C] (A : C) : A ⟶ 1 :=
+notation `term` := terminal_object
+
+def terminal_map [has_limits_of_shape (discrete pempty) C] (A : C) : A ⟶ term :=
 (is_limit.lift (limit.is_limit (empty.functor C)) (empty_cone A))
 
-lemma mul_one [has_limits C] (G : C) : nonempty $ iso (1 × G) G := omitted
+lemma mul_one [has_limits C] (G : C) : nonempty $ iso (term × G) G := omitted
 
-lemma one_mul [has_limits C] (G : C) : nonempty $ iso (G × 1) G := omitted
+lemma one_mul [has_limits C] (G : C) : nonempty $ iso (G × term) G := omitted
 
-noncomputable def mul_one_hom [has_limits C] (G : C) : (1 × G) ⟶ G :=
-(classical.choice $ mul_one G).hom
+-- noncomputable def mul_one_hom [has_limits C] (G : C) : (term × G) ⟶ G :=
+-- (classical.choice $ mul_one G).hom
 
-noncomputable def one_mul_hom [has_limits C] (G : C) : (G × 1) ⟶ G :=
-(classical.choice $ one_mul G).hom
+-- noncomputable def one_mul_hom [has_limits C] (G : C) : (G × term) ⟶ G :=
+-- (classical.choice $ (one_mul G)).hom
 
-def mul_one_inv [has_limits C] (G : C) : G ⟶ (G × 1) :=
+def mul_one_inv [has_limits C] (G : C) : G ⟶ (G × term) :=
   map_to_product.mk (𝟙 _) (terminal_map G)
 
-def one_mul_inv [has_limits C] (G : C) : G ⟶ (1 × G) :=
+def one_mul_inv [has_limits C] (G : C) : G ⟶ (term × G) :=
   map_to_product.mk (terminal_map G) (𝟙 _)
 
 end binary_product
