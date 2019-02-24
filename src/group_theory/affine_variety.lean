@@ -145,4 +145,15 @@ variables (K) [discrete_field K]
 def algebraic_group : Type* :=
 @group_object (affine_variety K) (affine_variety.category K) (by apply affine_variety.complete)
 
+
+
+-- /- The underlying type of an affine variety G = Rᵒᵖ is Spec(R), equivalently the global points
+--    of G in the category of affine varieties. It is easy to show that the global points functor
+--    in a category with finite limits is left-exact. -/
+-- def algebraic_group.type : (affine_variety K) ⥤ Type u :=
+-- { obj := sorry,
+--   map := sorry,
+--   map_id' := sorry,
+--   map_comp' := sorry }
+
 end algebraic_group
