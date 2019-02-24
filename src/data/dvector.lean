@@ -6,7 +6,7 @@ universes u v w
 | nil {} : dvector 0
 | cons : ∀{n} (x : α) (xs : dvector n), dvector (n+1)
 
-@[derive decidable_eq]inductive dfin : ℕ → Type u
+@[derive decidable_eq]inductive dfin : ℕ → Type
 | fz {n} : dfin (n+1)
 | fs {n} : dfin n → dfin (n+1)
 
@@ -72,7 +72,7 @@ def of_nat_lt : ∀ {n} m, m < n → dfin n
 def of_fin : ∀{n}, fin n → dfin n
 | n ⟨val, h⟩ := of_nat_lt val h
 
-meta instance reflect : ∀ n, has_reflect (dfin.{0} n)
+meta instance reflect : ∀ n, has_reflect (dfin n)
 | _ fz := `(fz)
 | _ (fs n) := `(fs).subst (reflect _ n)
 
