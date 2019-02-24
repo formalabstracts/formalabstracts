@@ -1,7 +1,7 @@
 /- This file contains various definitions and lemmas which don't fit anywhere else, or when there
   is not enough material to make its own file -/
 
-import data.pfun data.set.finite data.nat.enat topology.basic
+import data.pfun data.set.finite data.nat.enat topology.basic tactic.omitted
 universes u v
 
 variables {α : Type*} {β : Type*}
@@ -16,8 +16,13 @@ noncomputable def roption.classical_to_option {α} (x : roption α) : option α 
 by haveI := classical.dec; exact x.to_option
 
 namespace vector
-  noncomputable def vector_one_equiv : vector α 1 ≃ α :=
-  classical.choice omitted
+
+def vector_one_equiv : vector α 1 ≃ α :=
+{ to_fun := λ x, x.head,
+  inv_fun := λ x, ⟨[x], dec_trivial⟩,
+  left_inv := omitted,
+  right_inv := omitted}
+
 end vector
 
 namespace set
