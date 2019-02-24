@@ -5,6 +5,7 @@ import
        category_theory.opposites
        category_theory.limits.limits
        ..category_theory.group_object
+       tactic.omitted
 
 open category_theory ideal set topological_space
 
@@ -126,6 +127,27 @@ intros F 𝒥 X, haveI := F,
   exact ⟨w, classical.choice h⟩
 end
 
+def FRAlgebra_self : (FRAlgebra K) :=
+{ β := K,
+  ring := (by apply_instance),
+  algebra := by {split, split, omit_props, exact {1}}}
+
+lemma FRAlgebra_self_hom (R : FRAlgebra K) : (R ⟶ (FRAlgebra_self K)) = (R →ₐ[K] K) :=
+by refl
+
+lemma FRAlgebra_self_hom' (R : FRAlgebra K) :
+  (by exact (R ⟶ (FRAlgebra_self K))) = (spectrum K R) :=
+by refl
+
+/- The underlying type of an affine variety G = Rᵒᵖ is Spec(R), equivalently the global points
+   of G in the category of affine varieties. It is easy to show that the global points functor
+   in a category with finite limits is left-exact. -/
+def algebraic_variety.type : (affine_variety K) ⥤ Type* :=
+{ obj := λ X, (unop X) ⟶ (FRAlgebra_self K), 
+  map := λ X Y f ϕ, f.unop ≫ ϕ,
+  map_id' := by tidy,
+  map_comp' := by tidy}
+
 variables {K R}
 
 /- to do:
@@ -141,19 +163,12 @@ section algebraic_group
 open algebraic_geometry
 variables (K) [discrete_field K]
 /- For our purposes, an algebraic group is a group object in the category of affine varieties -/
-
 def algebraic_group : Type* :=
 @group_object (affine_variety K) (affine_variety.category K) (by apply affine_variety.complete)
 
-
-
--- /- The underlying type of an affine variety G = Rᵒᵖ is Spec(R), equivalently the global points
---    of G in the category of affine varieties. It is easy to show that the global points functor
---    in a category with finite limits is left-exact. -/
--- def algebraic_group.type : (affine_variety K) ⥤ Type u :=
--- { obj := sorry,
---   map := sorry,
---   map_id' := sorry,
---   map_comp' := sorry }
+/- to do:
+* group instance on underlying type of algebraic group
+* statement that algebraic_variety.type preserves finite products (is just left-exact)
+-/
 
 end algebraic_group

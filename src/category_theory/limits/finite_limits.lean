@@ -22,15 +22,15 @@ example : fintype pempty := by apply_instance
 variables (C : Type u) [𝒞 : category.{v u} C]
 include 𝒞 
 
-@[class]def has_finite_products := ∀ α : Type*, (nonempty (fintype α)) → has_limits_of_shape (discrete α) C
+@[class]def has_finite_products := ∀ α : Type*, (fintype α) → has_limits_of_shape (discrete α) C
 
 @[class]def has_equalizers := has_limits_of_shape (walking_pair) C
 
 def has_binary_products_of_has_finite_products [H : has_finite_products C] :
-  has_limits_of_shape (discrete two) C := H _ ⟨by apply_instance⟩
+  has_limits_of_shape (discrete two) C := H _ $ by apply_instance
                                 -- fails without the instance declaration above
 
 def has_terminal_object_of_has_finite_products [H : has_finite_products C] :
-  has_limits_of_shape (discrete pempty) C := H _ ⟨by apply_instance⟩
+  has_limits_of_shape (discrete pempty) C := H _ $ by apply_instance
 
 @[class]def has_finite_limits := (has_finite_products C) × (has_equalizers C)

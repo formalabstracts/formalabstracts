@@ -2,6 +2,7 @@ import ..basic
        group_theory.sylow group_theory.perm group_theory.free_group
        data.zmod.basic data.nat.enat data.set.finite
        category_theory.concrete_category category_theory.isomorphism
+       tactic.omitted
 
 universes u v
 open equiv
@@ -27,7 +28,7 @@ end Group
 def group.equiv {α β} (e : α ≃ β) [group α] : group β :=
 begin
   refine {mul := λ x y, e (e.symm x * e.symm y), one := e 1, inv := λ x, e (e.symm x)⁻¹, ..},
-  all_goals {exact omitted}
+  omit_props
 end
 
 /-- The group structure on the universe lift of a type -/
@@ -163,7 +164,7 @@ let r := pullback_rel f (≤) in
 begin
   haveI : is_antisymm _ r := pullback_rel.is_antisymm f (≤) h,
   dsimp [number_of_conjugacy_classes_of_order, list_conjugacy_class_of_order],
-  exact omitted --rw [finset.sort_length]
+  omitted --rw [finset.sort_length]
 end
 
 /- The m-th conjugacy class of order N -/

@@ -1,7 +1,7 @@
 /- This file contains various definitions and lemmas which don't fit anywhere else, or when there
   is not enough material to make its own file -/
 
-import data.pfun data.set.finite data.nat.enat topology.basic tactic.omitted
+import data.pfun data.set.finite data.nat.enat topology.basic
 universes u v
 
 variables {α : Type*} {β : Type*}

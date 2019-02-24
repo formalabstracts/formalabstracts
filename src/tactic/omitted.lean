@@ -12,9 +12,7 @@ Some goodies for reducing tactic goals to only data obligations with `omitted`
 `tidy_with_omitted` runs `tidy` and lets it use `omitted` (and still produces proof traces)
 -/
 
-import data.set.finite tactic.tidy
-
-axiom omitted {P : Prop} : P
+import data.set.finite tactic.tidy ..basic
 
 section omitted_tactics
 open tactic
