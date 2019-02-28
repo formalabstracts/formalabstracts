@@ -1,12 +1,12 @@
 /-
-Copyright (c) 2018 Koundinya Vajjha. All rights reserved.
+Copyright (c) 2019 Koundinya Vajjha. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Koundinya Vajjha
 
 A meta def called `#depends` which gives the names of all the theorems (the statement of) a given definition/theorem depends on.
 -/
 
-import ..basic
+import data.pfun
 
 open tactic expr interactive nat native name list lean.parser environment
 
@@ -69,9 +69,6 @@ do env ← get_env,
     else
     pure $ list_names l.value
 
--- run_cmd name_dir_deps `mathieu_group.steiner_system >>= tactic.trace
-
--- run_cmd name_dir_deps_val `J4 >>= tactic.trace
 
 /-- Recursively return a joint list of the m-th sub-dependencies of the type of given name.-/
 meta def name_dir_deps_depth (n : name) : ℕ → tactic(list name)
@@ -83,10 +80,6 @@ meta def name_dir_deps_depth (n : name) : ℕ → tactic(list name)
     list.join (l :: l'),
     -- tactic.trace k.length,
     pure $ k
-
--- run_cmd do l ← name_dir_deps_depth `mathieu_group.steiner_system 3, tactic.trace l
-
--- run_cmd name_dir_deps_depth `sends_identity_to_1 5 >>= tactic.trace
 
 /-- Recursively return a joint list of the m-th sub-dependencies of the type of given name.-/
 meta def name_dir_deps_depth_val (n : name) : ℕ → tactic(list name)

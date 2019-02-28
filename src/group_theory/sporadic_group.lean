@@ -1,6 +1,6 @@
 import .basic .monster .presentation .suzuki .higman_sims .mclaughlin .conway_groups .mathieu_group
-import tactic.fattribute
-import tactic.metadata
+
+-- import tactic.metadata
 noncomputable theory
 open monster suzuki higman_sims mclaughlin conway_groups mathieu_group is_monoid_action coxeter_vertices
 open category_theory (mk_ob)
