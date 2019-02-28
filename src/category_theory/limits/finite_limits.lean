@@ -6,6 +6,8 @@ import category_theory.limits.shapes.binary_products
        category_theory.limits.shapes.equalizers
        category_theory.limits.limits
 
+
+
 open category_theory.limits.binary_product category_theory.limits category_theory
 
 open category_theory.limits
