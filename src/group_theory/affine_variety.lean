@@ -130,7 +130,7 @@ end
 def FRAlgebra_self : (FRAlgebra K) :=
 { β := K,
   ring := (by apply_instance),
-  algebra := by {split, split, omit_props, exact {1}}}
+  algebra := by {split, split, omit_proofs, exact {1}}}
 
 lemma FRAlgebra_self_hom (R : FRAlgebra K) : (R ⟶ (FRAlgebra_self K)) = (R →ₐ[K] K) :=
 by refl
@@ -163,8 +163,9 @@ section algebraic_group
 open algebraic_geometry
 variables (K) [discrete_field K]
 /- For our purposes, an algebraic group is a group object in the category of affine varieties -/
+include K
 def algebraic_group : Type* :=
-@group_object (affine_variety K) (affine_variety.category K) (by apply affine_variety.complete)
+@group_object (affine_variety K) (by apply_instance) (by apply_instance) (by apply_instance)
 
 /- to do:
 * group instance on underlying type of algebraic group

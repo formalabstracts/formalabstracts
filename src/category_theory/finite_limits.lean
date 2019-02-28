@@ -12,20 +12,20 @@ open category_theory
 
 namespace category_theory.limits
 
-@[derive decidable_eq] inductive two : Type v
+@[derive decidable_eq] inductive two : Type u
 | left | right
 
-def two.map {C : Type u} (X Y : C) : two → C
+def two.map {C : Type*} (X Y : C) : two → C
 | two.left := X
 | two.right := Y
 
-def two.functor {C : Type u} (X Y : C) [category C] : (discrete two) ⥤ C :=
+def two.functor {C : Type u} (X Y : C) [category.{v u} C] : (discrete two) ⥤ C :=
 functor.of_function (two.map X Y)
 
-def empty.functor (C : Type u) [category C] : (discrete pempty) ⥤ C :=
+def empty.functor (C : Type*) [category C] : (discrete pempty) ⥤ C :=
 functor.of_function (λ x, by {cases x} : pempty → C)
 
-def empty_cone {C} [category C] (A : C) : limits.cone (empty.functor C) :=
+def empty_cone {C : Type u} [category.{v u} C] (A : C) : limits.cone (empty.functor C) :=
 { X := A,
   π := { app := λ x, by cases x,
   naturality' := by tidy}}
@@ -38,7 +38,7 @@ variables {C : Type u} [𝒞 : category.{v u} C]
 include 𝒞 
 
 variable(C)
-@[class] def has_binary_products := has_limits_of_shape (discrete two) C
+@[class, reducible] def has_binary_products := has_limits_of_shape (discrete two) C
 
 @[instance] def has_limit_two_of_has_binary_products [H : has_binary_products C] {X Y : C} :
   has_limit $ two.functor X Y :=
@@ -139,17 +139,18 @@ example : fintype pempty := by apply_instance
 section finite_products
 
 variable (C)
-@[class]def has_finite_products := ∀ α : Type*, (fintype α) → has_limits_of_shape (discrete α) C
+@[class]def has_finite_products := Π α : Type*, (fintype α) → has_limits_of_shape (discrete α) C
 
 @[class]def has_equalizers := has_limits_of_shape (walking_pair) C
 
-@[instance]def has_binary_products_of_has_finite_products [H : has_finite_products C] :
+def has_binary_products_of_has_finite_products [H : has_finite_products C] :
   has_binary_products C := H _ $ by apply_instance
+attribute [instance] has_binary_products_of_has_finite_products
 
 @[instance]def has_terminal_object_of_has_finite_products [H : has_finite_products C] :
   has_limits_of_shape (discrete pempty) C := H _ $ by apply_instance
 
-@[class]def has_finite_limits := (has_finite_products C) × (has_equalizers C)
+@[class]def has_finite_limits := (@has_finite_products C 𝒞) × (@has_equalizers C 𝒞)
 
 end finite_products
 

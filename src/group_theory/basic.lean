@@ -28,7 +28,7 @@ end Group
 def group.equiv {α β} (e : α ≃ β) [group α] : group β :=
 begin
   refine {mul := λ x y, e (e.symm x * e.symm y), one := e 1, inv := λ x, e (e.symm x)⁻¹, ..},
-  omit_props
+  omit_proofs
 end
 
 /-- The group structure on the universe lift of a type -/
