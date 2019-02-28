@@ -7,8 +7,9 @@ The fabstract user attribute.
 -/
 
 import tactic.metadata
+import system.io
 
-open interactive interactive.types lean.parser tactic native 
+open interactive interactive.types lean.parser tactic native io
 
 @[user_attribute]
 meta def fabstract_attr : user_attribute (rb_map name (string)) (list name) :=
@@ -30,7 +31,7 @@ def test₁ : 1+1 =2 := by simp
 -- @[fabstract ABC101 ABC200]
 def test₂ : 1+1 =2 := by simp
 
--- @[fabstract ABC101 XYZ200]
+@[fabstract ABC101 XYZ200]
 def welp : 1+1 =2 := by simp
 
 @[fabstract JBX190 AXX200]
@@ -44,18 +45,29 @@ do m ← fabstract_attr.get_cache,
   v ← m.find n,
   pure v
 
-meta def prod_list_to_JSON {key : Type} {data : Type} [has_to_format data]: list (key × data) → string 
+meta def prod_list_to_JSON {key : Type} {data : Type} [has_to_format key][has_to_format data]: list (key × data) → string 
 | [] :=  " "
-| ((k,v) :: kvs) := if list.length kvs = 0 then to_string (format!"\"k\" :{v}}") else to_string (format!"{{\"k\" :{v},") ++ prod_list_to_JSON kvs
+| ((k,v) :: kvs) := if list.length kvs = 0 then to_string (format!"\"{k}\" :{v}}") else to_string (format!"\"{k}\" :{v},") ++ prod_list_to_JSON kvs
 
-meta def rb_map_to_JSON {key : Type} {data : Type} [has_to_format data] (m : rb_map key data) : tactic string :=
-pure $ prod_list_to_JSON $ rb_map.to_list m
+meta def rb_map_to_JSON {key : Type} {data : Type} [has_to_format key][has_to_format data] (m : rb_map key data) : tactic string :=
+pure $ "{" ++ (prod_list_to_JSON $ rb_map.to_list m)
 
+
+def write_json (cnts : string) : io unit := do
+h ← mk_file_handle "fabstract.json" io.mode.write,
+io.fs.write h cnts.to_char_buffer,
+io.fs.close h
+
+meta def mk_JSON_dump : tactic unit := 
+do  m ← fabstract_attr.get_cache >>= rb_map_to_JSON,
+    unsafe_run_io $ write_json m,
+    skip
+
+-- #check fabstract_attr.get_cache 
 -- run_cmd attribute.get_instances `fabstract >>= tactic.trace
-
--- run_cmd do
-  -- m ← fabstract_attr.get_cache,
-  -- l ← rb_map_to_JSON m,
-  -- tactic.trace l,
-  -- skip 
-
+-- run_cmd mk_JSON_dump
+run_cmd do
+  m ← fabstract_attr.get_cache,
+  l ← rb_map_to_JSON m,
+  tactic.trace l,
+  skip 
