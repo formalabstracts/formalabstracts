@@ -161,7 +161,7 @@ let C_Mx : set Monster := centralizer {x} in
 let span_x : set C_Mx := induced_subgroup (group.closure {x}) C_Mx in
 by exact mk_ob (quotient_group.quotient span_x)
 
-/-- the Harada–Norton group	is C_M(x)/<x> for some element x in 5A -/
+/-- the Harada–Norton group is C_M(x)/<x> for some element x in 5A -/
 @[fabstract]
 def HN : Group :=
 let C := conj_class Monster 5 'A' in
@@ -348,4 +348,4 @@ def Ru : Group := ⟪dfin 3 | {u^4, v^2, (u*v)^7, (u^2*v)^3, t^2, ⟦t,u↑↑v�
                             ((u*t↑↑u*v)*(t*u^2)^4*(t↑↑u*v))^2, (u*(t↑↑v)*⟦t↑↑u*v,u⟧^2)^2}⟫
 end Ru
 
--- run_cmd fabstract_attr.get_cache >>= tactic.trace 
+-- run_cmd mk_JSON_dump
