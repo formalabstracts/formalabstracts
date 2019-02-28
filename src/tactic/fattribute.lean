@@ -1,5 +1,5 @@
 /-
-Copyright (c) 2018 Koundinya Vajjha. All rights reserved.
+Copyright (c) 2019 Koundinya Vajjha. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Koundinya Vajjha
 
@@ -8,19 +8,7 @@ The fabstract user attribute.
 
 import tactic.metadata
 
-open interactive interactive.types lean.parser tactic native
-
--- @[user_attribute]
--- meta def fabstract_attr : user_attribute (rb_map name (list name)) (list name) :=
--- {
---   name := `fabstract,
---   descr := "The fabstract user attribute. Used to mark lemmas captured in order to capture meta data.",
---   parser := many ident <|> pure [],
---   cache_cfg := ⟨ λ l, l.mfoldl (λ m n, do
---       tags ← fabstract_attr.get_param n,
---       return $ tags.foldl (λ m t, m.insert_cons t n) m) mk_rb_map
---    , [] ⟩
--- }
+open interactive interactive.types lean.parser tactic native 
 
 @[user_attribute]
 meta def fabstract_attr : user_attribute (rb_map name (string)) (list name) :=
@@ -45,10 +33,10 @@ def test₂ : 1+1 =2 := by simp
 -- @[fabstract ABC101 XYZ200]
 def welp : 1+1 =2 := by simp
 
--- @[fabstract JBX190 AXX200]
+@[fabstract JBX190 AXX200]
 def woolp : 1+1 =2 := by simp
 
--- @[fabstract]
+@[fabstract]
 def flump : 1+1 =2 := by simp
 
 meta def query_cache (n : name) : tactic (string) :=
@@ -56,10 +44,18 @@ do m ← fabstract_attr.get_cache,
   v ← m.find n,
   pure v
 
+meta def prod_list_to_JSON {key : Type} {data : Type} [has_to_format data]: list (key × data) → string 
+| [] :=  " "
+| ((k,v) :: kvs) := if list.length kvs = 0 then to_string (format!"\"k\" :{v}}") else to_string (format!"{{\"k\" :{v},") ++ prod_list_to_JSON kvs
+
+meta def rb_map_to_JSON {key : Type} {data : Type} [has_to_format data] (m : rb_map key data) : tactic string :=
+pure $ prod_list_to_JSON $ rb_map.to_list m
+
 -- run_cmd attribute.get_instances `fabstract >>= tactic.trace
 
 -- run_cmd do
---   m ← fabstract_attr.get_cache,
---   v ← m.find `flump,
---   trace m
+  -- m ← fabstract_attr.get_cache,
+  -- l ← rb_map_to_JSON m,
+  -- tactic.trace l,
+  -- skip 
 

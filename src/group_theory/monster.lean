@@ -1,5 +1,5 @@
 import ..data.dvector .presentation
-import tactic.fattribute
+
 open category_theory (mk_ob)
 
 local notation h :: t  := dvector.cons h t

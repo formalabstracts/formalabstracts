@@ -1,5 +1,5 @@
 /-
-Copyright (c) 2018 Koundinya Vajjha. All rights reserved.
+Copyright (c) 2019 Koundinya Vajjha. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Koundinya Vajjha
 
@@ -7,7 +7,6 @@ Generating meta data for a formal abstract.
 -/
 
 import .depends
-import init.meta.interactive
 
 open tactic expr interactive nat native name list environment
 
