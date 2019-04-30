@@ -35,31 +35,36 @@ def commutative_square {C : Type u} [category.{v u} C] {A B A' B' : C}
 f_top ≫ d_right = d_left ≫ f_bot
 
 variables {C : Type u} [𝒞 : category.{v u} C]
-include 𝒞 
+include 𝒞
 
 variable(C)
-@[class, reducible] def has_binary_products := has_limits_of_shape (discrete two) C
+@[class] def has_binary_products := has_limits_of_shape (discrete two) C
+@[class] def has_terminal_object : Type* := has_limits_of_shape (discrete pempty) C
 
 @[instance] def has_limit_two_of_has_binary_products [H : has_binary_products C] {X Y : C} :
   has_limit $ two.functor X Y :=
 H (two.functor _ _)
+
+@[instance] def has_limit_empty_of_has_terminal_object [H : has_terminal_object C] :
+  has_limit $ empty.functor C :=
+H (empty.functor C)
+
 variable{C}
 
 /-- The binary product is the vertex of the limiting cone to the canonical functor two → 𝒞
     associated to X and Y -/
 def binary_product (X Y : C) [has_limit $ two.functor X Y] : C :=
-  limit (two.functor X Y)
-
+limit (two.functor X Y)
 
 namespace binary_product
-def π₁ {X Y : C} [has_limit $ two.functor X Y] : binary_product X Y ⟶ X := limit.π _ two.left
-
-def π₂ {X Y : C} [has_limit $ two.functor X Y] : binary_product X Y ⟶ Y := limit.π _ two.right
-
 local infix ` × `:60 := binary_product
 
+def π₁ {X Y : C} [has_limit $ two.functor X Y] : X × Y ⟶ X := limit.π _ two.left
+
+def π₂ {X Y : C} [has_limit $ two.functor X Y] : X × Y ⟶ Y := limit.π _ two.right
+
 def dfin.map {n : ℕ} : dvector C n → dfin n → C :=
-  λ v d, by {induction v, cases d, cases d, exact v_x, exact v_ih d_a}
+λ v d, by {induction v, cases d, cases d, exact v_x, exact v_ih d_a}
 
 example {X : C} [has_binary_products C] : X × X × X = (X × X) × X := by refl
 
@@ -68,31 +73,30 @@ def cone_of_two_maps {W A₁ A₂: C} (f₁ : W ⟶ A₁) (f₂ : W ⟶ A₂) : 
   π := { app := λ l, two.rec_on l f₁ f₂,
   naturality' := by tidy}}
 
-lemma cone_of_two_maps_object [has_binary_products C] {B₁ B₂ A₁ A₂: C} {f₁ : B₁ × B₂ ⟶ A₁} {f₂ : B₁ × B₂ ⟶ A₂}
-  : (cone_of_two_maps f₁ f₂).X = B₁ × B₂ := by refl
+lemma cone_of_two_maps_object [has_binary_products C] {B₁ B₂ A₁ A₂: C} {f₁ : B₁ × B₂ ⟶ A₁}
+  {f₂ : B₁ × B₂ ⟶ A₂} : (cone_of_two_maps f₁ f₂).X = B₁ × B₂ := by refl
 
-def map_to_product.mk [H : has_binary_products C] {W B₁ B₂ : C} (f₁ : W ⟶ B₁) (f₂ : W ⟶ B₂) : W ⟶ B₁ × B₂ :=
-  is_limit.lift (by apply limit.is_limit) (cone_of_two_maps f₁ f₂)
+def map_to_product.mk {H : has_binary_products C} {W B₁ B₂ : C} (f₁ : W ⟶ B₁) (f₂ : W ⟶ B₂) :
+  W ⟶ B₁ × B₂ :=
+is_limit.lift (limit.is_limit _) (cone_of_two_maps f₁ f₂)
 
-set_option trace.class_instances false
-set_option class.instance_max_depth 15
-def binary_product.map [H : has_binary_products C] {A A' B B' : C} (f : A ⟶ A') (g : B ⟶ B') : A × B ⟶ A' × B' :=
-by apply map_to_product.mk (π₁ ≫ f) (π₂ ≫ g)
-
+def binary_product.map {H : has_binary_products C} {A A' B B' : C} (f : A ⟶ A') (g : B ⟶ B') :
+  A × B ⟶ A' × B' :=
+map_to_product.mk (π₁ ≫ f) (π₂ ≫ g)
 
 local infix ` ×.map `:60 := binary_product.map
 
-def reassoc_hom [has_binary_products C] (X : C) : ((X × X) × X) ⟶ (X × (X × X)) :=
+def reassoc_hom {H : has_binary_products C} (X : C) : ((X × X) × X) ⟶ (X × (X × X)) :=
 by apply map_to_product.mk (π₁ ≫ π₁) (π₂ ×.map (𝟙 X))
 
-def reassoc_inv [has_binary_products C] (X : C) : (X × (X × X)) ⟶ ((X × X) × X) :=
+def reassoc_inv {H : has_binary_products C} (X : C) : (X × (X × X)) ⟶ ((X × X) × X) :=
 by apply  map_to_product.mk ((𝟙 X) ×.map π₁)(π₂ ≫ π₂)
 
-def reassoc_iso [has_binary_products C] (X : C) : iso ((X × X) × X) (X × (X × X)) :=
+def reassoc_iso {H : has_binary_products C} (X : C) : iso ((X × X) × X) (X × (X × X)) :=
 { hom := by apply reassoc_hom X,
   inv := by apply reassoc_inv X,
   hom_inv_id' := omitted,
-  inv_hom_id' := omitted} 
+  inv_hom_id' := omitted}
 
 example :
   commutative_square
@@ -104,22 +108,24 @@ example :
 
 section terminal_object
 
-def terminal_object [has_limits_of_shape (discrete pempty) C] : C
-  := limit (functor.of_function (λ x, by {cases x} : pempty → C))
+def terminal_object [has_terminal_object C] : C :=
+limit (empty.functor C)
 
 notation `term` := terminal_object
 
-def terminal_map [has_limits_of_shape (discrete pempty) C] (A : C) : A ⟶ term :=
-(is_limit.lift (limit.is_limit (empty.functor C)) (empty_cone A))
+def terminal_map [has_terminal_object C] (A : C) : A ⟶ term :=
+is_limit.lift (limit.is_limit (empty.functor C)) (empty_cone A)
 
-lemma mul_one [has_limits_of_shape (discrete pempty) C] [has_binary_products C] (G : C) : nonempty $ iso (term × G) G := omitted
+lemma mul_one [has_terminal_object C] [has_binary_products C] (G : C) :
+  nonempty $ iso (term × G) G := omitted
 
-lemma one_mul [has_limits_of_shape (discrete pempty) C] [has_binary_products C] (G : C) : nonempty $ iso (G × term) G := omitted
+lemma one_mul [has_terminal_object C] [has_binary_products C] (G : C) :
+  nonempty $ iso (G × term) G := omitted
 
-def mul_one_inv [has_limits_of_shape (discrete pempty) C] [has_binary_products C] (G : C) : G ⟶ (G × term) :=
-by apply  map_to_product.mk (𝟙 _) (terminal_map G)
+def mul_one_inv [has_terminal_object C] [has_binary_products C] (G : C) : G ⟶ G × term :=
+by apply map_to_product.mk (𝟙 _) (terminal_map G)
 
-def one_mul_inv [has_limits_of_shape (discrete pempty) C] [has_binary_products C] (G : C) : G ⟶ (term × G) :=
+def one_mul_inv [has_terminal_object C] [has_binary_products C] (G : C) : G ⟶ term × G :=
 by apply map_to_product.mk (terminal_map G) (𝟙 _)
 
 end terminal_object
