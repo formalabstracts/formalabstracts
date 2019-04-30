@@ -41,6 +41,9 @@ variable(C)
 @[class] def has_binary_products := has_limits_of_shape (discrete two) C
 @[class] def has_terminal_object : Type* := has_limits_of_shape (discrete pempty) C
 
+@[class] def has_binary_coproducts := has_colimits_of_shape (discrete two) C
+@[class] def has_initial_object : Type* := has_colimits_of_shape (discrete pempty) C
+
 @[instance] def has_limit_two_of_has_binary_products [H : has_binary_products C] {X Y : C} :
   has_limit $ two.functor X Y :=
 H (two.functor _ _)

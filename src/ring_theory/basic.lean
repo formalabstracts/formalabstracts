@@ -48,6 +48,19 @@ linear_map.mem_ker
 lemma is_reduced_quotient {I : ideal α} (h : I.is_radical) : is_reduced (quotient I) :=
 omitted
 
+/-- Every integral domain is reduced -/
+lemma is_reduced_integral_domain {α : Type*} [integral_domain α] : is_reduced α :=
+omitted
+
+section
+variables {R : Type u} [comm_ring R]
+variables {A : Type*} {B : Type*} [comm_ring A] [comm_ring B] [algebra R A] [algebra R B]
+
+/-- The tensor product of two reduced algebras is reduced -/
+lemma is_reduced_tensor (hA : is_reduced A) (hB : is_reduced B) : is_reduced (A ⊗[R] B) :=
+omitted
+end
+
 /-- the map f → range f is a ring homomorphism -/
 instance range_factorization.is_ring_hom (f : α → β) [is_ring_hom f] :
   is_ring_hom (range_factorization f) :=

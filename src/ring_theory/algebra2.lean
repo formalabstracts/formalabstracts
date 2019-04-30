@@ -10,8 +10,8 @@ universes u v w
 /- move to ideal-/
 namespace ideal
 namespace quotient
-variables {α : Type*} {β : Type*} [comm_ring α] [comm_ring β] {S : ideal α} {T : ideal β} {f : α → β}
-  {H : ∀ {{a : α}}, a ∈ S → f a ∈ T}
+variables {α : Type*} {β : Type*} [comm_ring α] [comm_ring β] {S : ideal α} {T : ideal β}
+  {f : α → β} {H : ∀ {{a : α}}, a ∈ S → f a ∈ T}
 
 -- replace lift
 def lift' (S : ideal α) (f : α → β) [is_add_group_hom f] (H : ∀ (a : α), a ∈ S → f a = 0) :
@@ -46,8 +46,8 @@ variables [module R M]
 instance smul.is_add_group_hom {r : R} : is_add_group_hom (λ x : M, r • x) :=
 by refine_struct {..}; simp [smul_add]
 
-def quotient_add_group.quotient.module {s : set M} [normal_add_subgroup s] (h : ∀(r : R) {x : M}, x ∈ s → r • x ∈ s) :
-  module R (quotient_add_group.quotient s) :=
+def quotient_add_group.quotient.module {s : set M} [normal_add_subgroup s]
+  (h : ∀(r : R) {x : M}, x ∈ s → r • x ∈ s) : module R (quotient_add_group.quotient s) :=
 { smul := λ r, quotient_add_group.map _ _ (λ(x : M), r • x) (λ x h', h r h'),
   smul_add := omitted,
   add_smul := omitted,
@@ -59,10 +59,11 @@ def quotient_add_group.quotient.module {s : set M} [normal_add_subgroup s] (h : 
 end module
 
 variables {R : Type u} {S : Type*} [comm_ring R] [comm_ring S]
-variables {M : Type*} {N : Type*} {A : Type*} [ring M] [ring N] [comm_ring A]
-variables [algebra R M] [algebra R N] [algebra R A]
+variables {M : Type*} {N : Type*} {P : Type*} [ring M] [ring N] [ring P]
+variables {A : Type*} {B : Type*} {X : Type*} [comm_ring A] [comm_ring B] [comm_ring X]
+variables [algebra R M] [algebra R N] [algebra R P] [algebra R A] [algebra R B] [algebra R X]
 
-local notation M ` ⊗[`:100 R `] ` N:100 := tensor_product R M N
+notation M ` ⊗[`:100 R `] ` N:100 := tensor_product R M N
 
 namespace algebra
 
@@ -125,8 +126,37 @@ instance : ring (M ⊗[R] N) :=
   right_distrib := omitted,
   ..tensor_product.add_comm_group M N }
 
+lemma mul_def (m m' : M) (n n' : N) : tmul R m n * tmul R m' n' = tmul R (m * m') (n * n') := rfl
+
+instance : comm_ring (A ⊗[R] B) :=
+{ mul_comm := omitted,
+  ..tensor_product.ring }
+
 /-- The algebra structure on the tensor product of two R-algebras -/
 instance : algebra R (M ⊗[R] N) := algebra.of_module omitted
+
+@[simp] lemma algebra_map_tensor (r : R) : algebra_map (M ⊗[R] N) r = r • 1 := rfl
+
+def tensor_inl : M →ₐ[R] M ⊗[R] N :=
+{ to_fun := λ m, tmul R m 1,
+  hom := ⟨rfl, by { intros, rw [mul_def, one_mul] }, λ x y, add_tmul x y 1⟩,
+  commutes' := λ r, omitted }
+
+def tensor_inr : N →ₐ[R] M ⊗[R] N :=
+{ to_fun := λ n, tmul R 1 n,
+  hom := omitted,
+  commutes' := omitted }
+
+def tensor_lift (f : A →ₐ[R] X) (g : B →ₐ[R] X) : A ⊗[R] B →ₐ[R] X :=
+begin
+  refine ⟨lift_aux _, _⟩,
+  fapply linear_map.mk₂,
+  exact (λ a b, f a * g b),
+  all_goals {exact omitted}
+end
+
+def tensor_lift_equiv : ((A →ₐ[R] X) × (B →ₐ[R] X)) ≃ (A ⊗[R] B →ₐ[R] X) :=
+⟨λ fg, tensor_lift fg.1 fg.2, λ f, ⟨f.comp tensor_inl, f.comp tensor_inr⟩, omitted, omitted⟩
 
 end tensor_product
 
@@ -160,6 +190,7 @@ instance quotient.algebra (I : ideal A) : algebra R I.quotient :=
   smul_def' := λ r x, quotient.induction_on' x $ λ a, congr_arg (ideal.quotient.mk _) $
     smul_def r a }
 
+open mv_polynomial
 local attribute [instance, priority 0] classical.prop_decidable
 /-- An algebra `β` is finitely generated over a ring `α` if there is a finite subset `s` of `β` such that every element of `β` can be expressed as a polynomial in the elements of `s` with coefficients in `α` -/
 def is_finitely_generated (α : Type u) [comm_ring α] (β : Type v) [comm_ring β] [algebra α β] :
@@ -167,10 +198,18 @@ def is_finitely_generated (α : Type u) [comm_ring α] (β : Type v) [comm_ring 
 ∃(s : finset β), ∀(x : β), ∃(p : mv_polynomial {x // x ∈ s} α),
   p.eval₂ (algebra_map β) subtype.val = x
 
+def is_finitely_generated_base (α : Type u) [comm_ring α] : is_finitely_generated α α :=
+⟨∅, λ x, ⟨C x, eval₂_C _ _ _⟩⟩
+
 /-- Every quotient algebra is finitely generated -/
 lemma is_finitely_generated_quotient {α : Type u} [comm_ring α] {β : Type v} [comm_ring β]
   [algebra α β] [decidable_eq α] [decidable_eq β] (h : is_finitely_generated α β) (I : ideal β) :
   is_finitely_generated α (I.quotient) :=
+omitted
+
+/-- The tensor product of two finitely generated algebras is finitely generated -/
+lemma is_finitely_generated_tensor (hA : is_finitely_generated R A)
+  (hB : is_finitely_generated R B) : is_finitely_generated R (A ⊗[R] B) :=
 omitted
 
 /-- The type of algebras over a fixed commutative ring. -/

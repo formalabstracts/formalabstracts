@@ -1,10 +1,8 @@
-import 
-       ..basic
+import ..basic
        ring_theory.basic
        topology.basic
-       category_theory.opposites
-       category_theory.limits.limits
        ..category_theory.group_object
+       ..category_theory.limits2
        tactic.omitted
 
 open category_theory ideal set topological_space
@@ -27,10 +25,11 @@ class finitely_generated_reduced_algebra (R : Type u) (A : Type v)
 (reduced : is_reduced A)
 
 variables (K : Type u) [discrete_field K]
-          (R : Type v) [comm_ring R]
-          [finitely_generated_reduced_algebra K R]
+          (R : Type v) [comm_ring R] (S : Type w) [comm_ring S]
+          [finitely_generated_reduced_algebra K R] [finitely_generated_reduced_algebra K S]
           {σ : Type w} [decidable_eq σ]
 
+open finitely_generated_reduced_algebra
 namespace algebraic_geometry
 
 /-- The spectrum `Specm(R)` of a `K`-algebra `R` is the set of homomorphisms from `R` to `K`. -/
@@ -82,12 +81,27 @@ def radical_ideal_of_closed_set (X : closed_set (spectrum K R)) :
 def Nullstellensatz : radical_ideal R ≃ closed_set (spectrum K R) :=
 ⟨closed_set_of_radical_ideal, radical_ideal_of_closed_set, omitted, omitted⟩
 
+instance base.finitely_generated_reduced_algebra :
+  finitely_generated_reduced_algebra K K :=
+{ finitely_generated := is_finitely_generated_base K,
+  reduced := is_reduced_integral_domain,
+  .._inst_1 }
+
 instance quotient.finitely_generated_reduced_algebra (I : radical_ideal R) :
   finitely_generated_reduced_algebra K I.1.quotient :=
-{ finitely_generated := is_finitely_generated_quotient
-  (finitely_generated_reduced_algebra.finitely_generated K R) I.1,
+{ finitely_generated := is_finitely_generated_quotient (finitely_generated K R) I.1,
   reduced := is_reduced_quotient I.2,
   ..quotient.algebra I.1 }
+
+variables (R S)
+instance tensor.finitely_generated_reduced_algebra :
+  finitely_generated_reduced_algebra K (R ⊗[K] S) :=
+{ finitely_generated := is_finitely_generated_tensor
+  (finitely_generated K R) (finitely_generated K S),
+  reduced := is_reduced_tensor (reduced K R) (reduced K S),
+  ..tensor_product.algebra }
+
+variables {R S}
 
 /-- The type of finitely generated reduced algebras over a fixed commutative ring. -/
 structure FRAlgebra (R : Type u) [comm_ring R] : Type max u (v+1) :=
@@ -101,7 +115,7 @@ instance (R : Type u) [comm_ring R] : has_coe_to_sort (FRAlgebra.{u v} R) :=
 
 open category_theory
 /-- The category of finitely generated reduced algebras over a fixed commutative ring. -/
-instance Algebra.category (R : Type u) [comm_ring R] : category (FRAlgebra.{u v} R) :=
+instance FRAlgebra.category (R : Type u) [comm_ring R] : category (FRAlgebra.{u v} R) :=
 { hom   := λ a b, a.β →ₐ[R] b.β,
   id    := λ a, alg_hom.id R a,
   comp  := λ a b c f g, alg_hom.comp g f }
@@ -109,7 +123,28 @@ instance Algebra.category (R : Type u) [comm_ring R] : category (FRAlgebra.{u v}
 def FRAlgebra.quotient (R : FRAlgebra K) (Z : closed_set (spectrum K R)) : FRAlgebra K :=
 ⟨K, (radical_ideal_of_closed_set Z).1.quotient⟩
 
+def FRAlgebra_tensor (R S : FRAlgebra.{u v} K) : FRAlgebra.{u v} K :=
+{ β := R ⊗[K] S,
+  ring := _,
+  algebra := tensor.finitely_generated_reduced_algebra R S }
+
 variables (K)
+def FRAlgebra_self : FRAlgebra.{u u} K := ⟨K, K⟩
+
+lemma FRAlgebra_self_hom (R : FRAlgebra K) : (R ⟶ FRAlgebra_self K) = (R →ₐ[K] K) := by refl
+lemma FRAlgebra_self_hom' (R : FRAlgebra K) : (by exact R ⟶ FRAlgebra_self K) = spectrum K R := rfl
+
+open tensor_product
+lemma FRAlgebra.binary_coproduct : limits.has_binary_coproducts (FRAlgebra K) :=
+begin
+  intros F, resetI,
+  use FRAlgebra_tensor
+    (F.obj category_theory.limits.two.left) (F.obj category_theory.limits.two.right),
+  { refine ⟨_, omitted⟩, intro x, cases x, apply tensor_inl, apply tensor_inr },
+  refine ⟨_, omitted, omitted⟩, intro s,
+  refine tensor_lift (s.ι.app limits.two.left) (s.ι.app limits.two.right)
+end
+
 /-- In algebraic geometry, the categories of algebra's over K and affine varieties are opposite of each other. In this development we take a shortcut, and *define* affine varieties as the opposite of algebra's over K. -/
 @[reducible] def affine_variety : Type* := opposite (FRAlgebra K)
 
@@ -119,31 +154,31 @@ def affine_variety.subobject (R : affine_variety K) (Z : closed_set (spectrum K 
   FRAlgebra K :=
 FRAlgebra.quotient (unop R) Z
 
+@[instance] lemma affine_variety.binary_product : limits.has_binary_products (affine_variety K) :=
+begin
+  intros F, resetI,
+  use op (FRAlgebra_tensor
+    (unop $ F.obj category_theory.limits.two.left) (unop $ F.obj category_theory.limits.two.right)),
+  refine ⟨_, omitted⟩, intro x, simp,
+  /- TODO using FRAlgebra.binary_coproduct -/
+  exact classical.choice omitted,
+  exact classical.choice omitted
+end
+
 @[instance] lemma affine_variety.complete : limits.has_limits (affine_variety K) :=
 begin
-intros F 𝒥 X, haveI := F,
+  intros F 𝒥 X, resetI,
   cases classical.indefinite_description _
     (omitted : ∃ t : limits.cone X, nonempty (limits.is_limit t)) with w h,
   exact ⟨w, classical.choice h⟩
 end
 
-def FRAlgebra_self : (FRAlgebra K) :=
-{ β := K,
-  ring := (by apply_instance),
-  algebra := by {split, split, omit_proofs, exact {1}}}
-
-lemma FRAlgebra_self_hom (R : FRAlgebra K) : (R ⟶ (FRAlgebra_self K)) = (R →ₐ[K] K) :=
-by refl
-
-lemma FRAlgebra_self_hom' (R : FRAlgebra K) :
-  (by exact (R ⟶ (FRAlgebra_self K))) = (spectrum K R) :=
-by refl
 
 /- The underlying type of an affine variety G = Rᵒᵖ is Spec(R), equivalently the global points
    of G in the category of affine varieties. It is easy to show that the global points functor
    in a category with finite limits is left-exact. -/
 def algebraic_variety.type : (affine_variety K) ⥤ Type* :=
-{ obj := λ X, (unop X) ⟶ (FRAlgebra_self K), 
+{ obj := λ X, (unop X) ⟶ (FRAlgebra_self K),
   map := λ X Y f ϕ, f.unop ≫ ϕ,
   map_id' := by tidy,
   map_comp' := by tidy}
@@ -164,8 +199,7 @@ open algebraic_geometry
 variables (K) [discrete_field K]
 /- For our purposes, an algebraic group is a group object in the category of affine varieties -/
 include K
-def algebraic_group : Type* :=
-@group_object (affine_variety K) (by apply_instance) (by apply_instance) (by apply_instance)
+def algebraic_group : Type* := group_object (affine_variety K)
 
 /- to do:
 * group instance on underlying type of algebraic group
