@@ -245,7 +245,7 @@ by {induction v, refl, simp*}
 | 0 0 _ xs := []
 | 0 (m+1) _ xs := []
 | (n+1) 0 _ xs := by {exfalso, cases _x}
-| (n+1) (m+1) h (x::xs) := (x::@trunc n m (by simp at h; exact h) xs)
+| (n+1) (m+1) h (x::xs) := (x::@trunc n m (nat.le_of_succ_le_succ h) xs)
 
 @[simp]protected lemma trunc_n_n {n : ℕ} {h : n ≤ n} {v : dvector α n} : dvector.trunc n h v = v :=
   by {induction v, refl, solve_by_elim}
@@ -262,7 +262,7 @@ end
 
 protected lemma nth_irrel1 : ∀{n k : ℕ} {h : k < n + 1} {h' : k < n + 1 + 1} (v : dvector α (n+1)) (x : α),
   (x :: (v.trunc n (nat.le_succ n))).nth k h = (x::v).nth k h' :=
-by {intros, apply @dvector.trunc_nth _ _ _ _ (by {simp, exact dec_trivial}) h (x::v)}
+by {intros, apply @dvector.trunc_nth _ _ _ _ (nat.le_succ _) h (x::v)}
 
 protected def cast {n m} (p : n = m) : dvector α n → dvector α m :=
   by subst p; exact id
