@@ -2,7 +2,7 @@
 -- Released under Apache 2.0 license as described in the file LICENSE.
 -- Authors: Scott Morrison
 
-import .pullbacks basic
+import .pullbacks ...basic
 
 open category_theory
 
@@ -24,21 +24,18 @@ inductive walking_pair_hom : walking_pair → walking_pair → Type v
 
 open walking_pair_hom
 
-instance walking_pair_category : small_category walking_pair :=
+instance walking_pair_category : small_category.{v+1} walking_pair :=
 { hom := walking_pair_hom,
   id := walking_pair_hom.id,
   comp := λ X Y Z f g, match X, Y, Z, f, g with
   | _, _ ,_, (id _), h := h
   | _, _, _, left, (id one) := left
   | _, _, _, right, (id one) := right
-  end,
-  id_comp' := omitted,
-  comp_id' := omitted,
-  assoc' := omitted}
+  end }
 
 lemma walking_pair_hom_id (X : walking_pair.{v}) : walking_pair_hom.id X = 𝟙 X := rfl
 
-variables {C : Type u} [𝒞 : category.{v} C]
+variables {C : Type u} [𝒞 : category.{v+1} C]
 include 𝒞
 variables {X Y : C}
 
@@ -51,9 +48,7 @@ def pair (f g : X ⟶ Y) : walking_pair.{v} ⥤ C :=
   | a, b, (id c) := 𝟙 _
   | a, b, left := f
   | a, b, right := g
-  end,
-  map_id' := omitted,
-  map_comp' := by exact omitted } -- what the heck
+  end }
 
 @[simp] lemma pair_map_left (f g : X ⟶ Y) : (pair f g).map left = f := rfl
 @[simp] lemma pair_map_right (f g : X ⟶ Y) : (pair f g).map right = g := rfl

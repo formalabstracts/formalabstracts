@@ -2,7 +2,7 @@
 -- Released under Apache 2.0 license as described in the file LICENSE.
 -- Authors: Scott Morrison
 
-import category_theory.limits.shapes.products
+import ...basic .products
 
 universes u v
 
@@ -17,8 +17,8 @@ def two.map {C : Type u} (X Y : C) : two → C
 | two.left := X
 | two.right := Y
 
-variables {C : Type u} [𝒞 : category.{u} C]
-include 𝒞 
+variables {C : Type u} [𝒞 : category.{v+1} C]
+include 𝒞
 
 variables {X Y : C}
 

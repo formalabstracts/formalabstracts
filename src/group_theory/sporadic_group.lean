@@ -2,7 +2,7 @@ import .basic .monster .presentation .suzuki .higman_sims .mclaughlin .conway_gr
 
 -- import tactic.metadata
 noncomputable theory
-open monster suzuki higman_sims mclaughlin conway_groups mathieu_group is_monoid_action coxeter_vertices
+open monster suzuki higman_sims mclaughlin conway_groups mathieu_group coxeter_vertices mul_action
 open category_theory (mk_ob)
 local infix ` ≅ `:60 := isomorphic
 local notation `⟪`:50 a `⟫`:50 := free_group.of a
@@ -16,7 +16,7 @@ local infix ` ↑↑ `:65 := right_conjugation
   under the evaluation action of its Automorphism group.-/
 @[fabstract]
 def M11 : Group :=
-mk_ob $ stabilizer (evaluation_action s_5_6_12)
+mk_ob $ @stabilizer _ _ _ (mathieu_group.evaluation_action s_5_6_12)
   (classical.choice $ nonempty_steiner_system dec_trivial)
 
 /--The group $M_{12}$ is the automorphism group of the steiner system $S(5,6,12)$.-/
@@ -28,13 +28,13 @@ def M12 : Group := mk_ob $ Aut(s_5_6_12)
 @[fabstract]
 def M22 : Group :=
 have H : ∃x : s_5_8_24 × s_5_8_24, x.1 ≠ x.2, from omitted,
-mk_ob $ two_pt_stabilizer (evaluation_action s_5_8_24) (classical.some_spec H)
+mk_ob $ two_pt_stabilizer (mathieu_group.evaluation_action s_5_8_24) (classical.some_spec H)
 
 /-- The group $M_{23}$ is the stabilizer of an arbitrary point of the steiner system $S(5,8,24)$
   under the evaluation action of its automorphism group.-/
 @[fabstract]
 def M23 : Group :=
-mk_ob $ stabilizer (evaluation_action s_5_8_24)
+mk_ob $ @stabilizer _ _ _ (mathieu_group.evaluation_action s_5_8_24)
   (classical.choice $ nonempty_steiner_system dec_trivial)
 
 /-- The group $M_{24}$ is the automorphism group of the steiner system $S(5,8,24)$. -/

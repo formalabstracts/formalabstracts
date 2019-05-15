@@ -14,7 +14,7 @@ def compatible (o₁ o₂ : roption α) : Prop := ∀{{x y}}, x ∈ o₁ → y �
 namespace compatible
   variables {o₁ o₂ o₃ : roption α}
   infix ` =. `:50 := roption.compatible
-  protected lemma compatible_of_eq {x y : α} (h : x = y) : 
+  protected lemma compatible_of_eq {x y : α} (h : x = y) :
     compatible (roption.some x) (roption.some y) :=
   omitted
   protected lemma symm (h : o₁ =. o₂) : o₂ =. o₁ := λx y hx hy, (h hy hx).symm
@@ -44,9 +44,6 @@ end compatible
 def restrict' (f : α →. β) (p : set α) : α →. β :=
 pfun.restrict f (inter_subset_right p (dom f))
 
-def image (f : α →. β) (p : set α) : set β :=
-λy, ∃ x (hx : x ∈ dom f), f.fn x hx = y
-
 end pfun
 
 /- a partial equivalence -/
@@ -73,9 +70,9 @@ namespace pequiv
 instance : has_coe (α ≃. β) (α →. β) := ⟨pequiv.to_fun⟩
 protected def rfl : α ≃. α := equiv.rfl.to_pequiv
 protected def refl (α) : α ≃. α := pequiv.rfl
-protected def symm (e : α ≃. β) : β ≃. α := 
+protected def symm (e : α ≃. β) : β ≃. α :=
 ⟨e.inv_fun, e.to_fun, e.dom_to_fun, e.dom_inv_fun, e.right_inv, e.left_inv⟩
-protected def trans (e₁ : α ≃. β) (e₂ : β ≃. γ) : α ≃. γ := 
+protected def trans (e₁ : α ≃. β) (e₂ : β ≃. γ) : α ≃. γ :=
 ⟨e₂.to_fun ∘. e₁.to_fun, e₁.inv_fun ∘. e₂.inv_fun, omitted, omitted, omitted, omitted⟩
 
 def restrict' (e : α ≃. β) (p : set α) : α ≃. β :=

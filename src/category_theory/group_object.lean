@@ -12,7 +12,7 @@ universes u v
 local infix ` × `:60 := binary_product
 local infix ` ×.map `:90 := binary_product.map
 
-structure group_object (C : Type u) [𝓒 : category.{v u} C] [H : has_binary_products C]
+structure group_object (C : Type u) [𝓒 : category.{v+1} C] [H : has_binary_products C]
   [H' : has_terminal_object C]  : Type (max u v) :=
 (G : C)
 (mul : G × G ⟶ G)

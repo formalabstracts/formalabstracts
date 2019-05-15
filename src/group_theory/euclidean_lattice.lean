@@ -24,10 +24,10 @@ instance euclidean_space_add_comm_group {n} : add_comm_group $ euclidean_space n
 
 noncomputable instance euclidean_space_vector_space {n} : vector_space ℝ $ euclidean_space n :=
 { smul := by {induction n, exact λ _ _, [], intros r x, cases x, exact (r * x_x :: n_ih r x_xs)},
-  smul_add := λ _, omitted,
+  smul_add := omitted,
   add_smul := omitted,
   mul_smul := omitted,
-  one_smul := omitted,
+  one_smul := by omitted,
   zero_smul := omitted,
   smul_zero := omitted}
 
@@ -38,11 +38,11 @@ def inner_product : ∀ {n}, euclidean_space n → euclidean_space n → ℝ
 def is_linear {n} (f : euclidean_space n → ℝ) :=
   (∀ x y, f(x+y) = f x + f y) ∧ ∀ (r : ℝ) x, f(r • x) = r • (f x)
 
-def is_multilinear {n k} (f : dvector (euclidean_space (n)) k → ℝ) : Prop := 
+def is_multilinear {n k} (f : dvector (euclidean_space (n)) k → ℝ) : Prop :=
 begin
   induction k with k ih, exact ∀ x, f x = 0,
   exact ∀ k' (xs : euclidean_space n) (xss : dvector (euclidean_space n) k),
-      is_linear $ λ xs, f $ dvector.insert xs k' xss  
+      is_linear $ λ xs, f $ dvector.insert xs k' xss
 end
 
 

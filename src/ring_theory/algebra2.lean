@@ -17,7 +17,7 @@ variables {α : Type*} {β : Type*} [comm_ring α] [comm_ring β] {S : ideal α}
 def lift' (S : ideal α) (f : α → β) [is_add_group_hom f] (H : ∀ (a : α), a ∈ S → f a = 0) :
   quotient S → β :=
 λ x, quotient.lift_on' x f $ λ (a b) (h : _ ∈ _),
-eq_of_sub_eq_zero (by simpa only [is_add_group_hom.sub f] using H _ h)
+eq_of_sub_eq_zero (by simpa only [is_add_group_hom.map_sub f] using H _ h)
 
 def map (S : ideal α) (T : ideal β) (f : α → β) [is_add_group_hom f]
   (H : ∀ {{a : α}}, a ∈ S → f a ∈ T) : quotient S → quotient T :=
@@ -102,6 +102,7 @@ namespace tensor_product
 protected def add_comm_group' : add_comm_group (M ⊗[R] N) := by apply_instance
 protected def module' : module R (M ⊗[R] N) := by apply_instance
 local attribute [instance, priority 2000] tensor_product.add_comm_group' tensor_product.module'
+  linear_map.module
 protected def lmap_add_comm_group : add_comm_group (M ⊗[R] N →ₗ[R] M ⊗[R] N) := by apply_instance
 protected def lmap_module : module R (M ⊗[R] N →ₗ[R] M ⊗[R] N) := by apply_instance
 local attribute [instance, priority 2000]

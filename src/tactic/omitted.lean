@@ -22,7 +22,7 @@ Some goodies for working with `omitted`
    `tidy_omitted {trace_result := tt}
 -/
 
-import data.set.finite tactic.tidy ..basic tactic.explode
+import tactic.tidy ..basic tactic.explode
 
 section omitted_tactics
 open tactic
@@ -43,7 +43,7 @@ tactic.interactive.omitted >> tactic.trace "`tidy` used `omitted`, please replac
 open tactic.tidy
 
 meta def omitted_default_tactics : list (tactic string) :=
-[ reflexivity                                 >> pure "refl", 
+[ reflexivity                                 >> pure "refl",
   `[exact dec_trivial]                        >> pure "exact dec_trivial",
   -- propositional_goal >> assumption            >> pure "assumption",
   ext1_wrapper,
@@ -52,12 +52,12 @@ meta def omitted_default_tactics : list (tactic string) :=
   `[apply_auto_param]                         >> pure "apply_auto_param",
   -- `[dsimp at *]                               >> pure "dsimp at *",
   -- `[simp at *]                                >> pure "simp at *",
-  fsplit                                      >> pure "fsplit", 
+  fsplit                                      >> pure "fsplit",
   injections_and_clear                        >> pure "injections_and_clear",
   -- propositional_goal >> (`[solve_by_elim])    >> pure "solve_by_elim",2
 
   `[unfold_aux]                               >> pure "unfold_aux",--
-  -- tidy.run_tactics 
+  -- tidy.run_tactics
   tactic.verbose_omitted ]
 
 meta structure omitted_cfg :=

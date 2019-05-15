@@ -2,8 +2,8 @@
 -- Released under Apache 2.0 license as described in the file LICENSE.
 -- Authors: Jesse Han
 
-import category_theory.limits.shapes.products basic data.dvector
-       category_theory.limits.shapes.equalizers
+import .limits.shapes.products basic data.dvector
+       .limits.shapes.equalizers
        category_theory.limits.limits
 
 universes u v
@@ -15,42 +15,42 @@ namespace category_theory.limits
 @[derive decidable_eq] inductive two : Type u
 | left | right
 
-def two.map {C : Type*} (X Y : C) : two → C
+def two.map {C : Sort*} (X Y : C) : two → C
 | two.left := X
 | two.right := Y
 
-def two.functor {C : Type u} (X Y : C) [category.{v u} C] : (discrete two) ⥤ C :=
+def two.functor {C : Sort u} (X Y : C) [category.{v+1} C] : (discrete two) ⥤ C :=
 functor.of_function (two.map X Y)
 
-def empty.functor (C : Type*) [category C] : (discrete pempty) ⥤ C :=
+def empty.functor (C : Sort*) [category.{v+1} C] : (discrete pempty) ⥤ C :=
 functor.of_function (λ x, by {cases x} : pempty → C)
 
-def empty_cone {C : Type u} [category.{v u} C] (A : C) : limits.cone (empty.functor C) :=
+def empty_cone {C : Sort u} [category.{v+1} C] (A : C) : limits.cone (empty.functor C) :=
 { X := A,
   π := { app := λ x, by cases x,
   naturality' := by tidy}}
 
-def commutative_square {C : Type u} [category.{v u} C] {A B A' B' : C}
+def commutative_square {C : Sort u} [category.{v u} C] {A B A' B' : C}
   (f_top : A ⟶ B) (d_left : A ⟶ A') (d_right : B ⟶ B') (f_bot : A' ⟶ B') :=
 f_top ≫ d_right = d_left ≫ f_bot
 
-variables {C : Type u} [𝒞 : category.{v u} C]
+variables {C : Type u} [𝒞 : category.{v+1} C]
 include 𝒞
 
 variable(C)
-@[class] def has_binary_products := has_limits_of_shape (discrete two) C
-@[class] def has_terminal_object : Type* := has_limits_of_shape (discrete pempty) C
+@[class] def has_binary_products := has_limits_of_shape (discrete two.{v}) C
+@[class] def has_terminal_object : Sort* := has_limits_of_shape.{v} (discrete pempty) C
 
-@[class] def has_binary_coproducts := has_colimits_of_shape (discrete two) C
-@[class] def has_initial_object : Type* := has_colimits_of_shape (discrete pempty) C
+@[class] def has_binary_coproducts := has_colimits_of_shape (discrete two.{v}) C
+@[class] def has_initial_object : Sort* := has_colimits_of_shape.{v} (discrete pempty) C
 
 @[instance] def has_limit_two_of_has_binary_products [H : has_binary_products C] {X Y : C} :
   has_limit $ two.functor X Y :=
-H (two.functor _ _)
+@has_limits_of_shape.has_limit _ _ _ _ H (two.functor X Y)
 
 @[instance] def has_limit_empty_of_has_terminal_object [H : has_terminal_object C] :
   has_limit $ empty.functor C :=
-H (empty.functor C)
+@has_limits_of_shape.has_limit _ _ _ _ H (empty.functor C)
 
 variable{C}
 
@@ -148,16 +148,15 @@ example : fintype pempty := by apply_instance
 section finite_products
 
 variable (C)
-@[class]def has_finite_products := Π α : Type*, (fintype α) → has_limits_of_shape (discrete α) C
+@[class]def has_finite_products := Π α : Type*, fintype α → has_limits_of_shape.{v} (discrete α) C
 
-@[class]def has_equalizers := has_limits_of_shape (walking_pair) C
+@[class]def has_equalizers := has_limits_of_shape.{v} (walking_pair) C
 
-def has_binary_products_of_has_finite_products [H : has_finite_products C] :
-  has_binary_products C := H _ $ by apply_instance
-attribute [instance] has_binary_products_of_has_finite_products
+@[instance] def has_binary_products_of_has_finite_products [H : has_finite_products C] :
+  has_binary_products C := H _ infer_instance
 
-@[instance]def has_terminal_object_of_has_finite_products [H : has_finite_products C] :
-  has_limits_of_shape (discrete pempty) C := H _ $ by apply_instance
+@[instance] def has_terminal_object_of_has_finite_products [H : has_finite_products C] :
+  has_limits_of_shape.{v} (discrete pempty) C := H _ infer_instance
 
 @[class]def has_finite_limits := (@has_finite_products C 𝒞) × (@has_equalizers C 𝒞)
 

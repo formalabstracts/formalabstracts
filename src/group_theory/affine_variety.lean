@@ -1,9 +1,8 @@
-import ..basic
-       ring_theory.basic
-       topology.basic
+import ring_theory.basic
        ..category_theory.group_object
        ..category_theory.limits2
        tactic.omitted
+       category_theory.limits.opposites
 
 open category_theory ideal set topological_space
 
@@ -104,18 +103,18 @@ instance tensor.finitely_generated_reduced_algebra :
 variables {R S}
 
 /-- The type of finitely generated reduced algebras over a fixed commutative ring. -/
-structure FRAlgebra (R : Type u) [comm_ring R] : Type max u (v+1) :=
-  (β : Type v)
+structure FRAlgebra (R : Type u) [comm_ring R] : Type (u+1) :=
+  (β : Type u)
   [ring : comm_ring β]
   [algebra : finitely_generated_reduced_algebra R β]
 
 attribute [instance] FRAlgebra.ring FRAlgebra.algebra
-instance (R : Type u) [comm_ring R] : has_coe_to_sort (FRAlgebra.{u v} R) :=
+instance (R : Type v) [comm_ring R] : has_coe_to_sort (FRAlgebra R) :=
 { S := Type v, coe := FRAlgebra.β }
 
 open category_theory
 /-- The category of finitely generated reduced algebras over a fixed commutative ring. -/
-instance FRAlgebra.category (R : Type u) [comm_ring R] : category (FRAlgebra.{u v} R) :=
+instance FRAlgebra.category (R : Type u) [comm_ring R] : large_category (FRAlgebra R) :=
 { hom   := λ a b, a.β →ₐ[R] b.β,
   id    := λ a, alg_hom.id R a,
   comp  := λ a b c f g, alg_hom.comp g f }
@@ -123,21 +122,21 @@ instance FRAlgebra.category (R : Type u) [comm_ring R] : category (FRAlgebra.{u 
 def FRAlgebra.quotient (R : FRAlgebra K) (Z : closed_set (spectrum K R)) : FRAlgebra K :=
 ⟨K, (radical_ideal_of_closed_set Z).1.quotient⟩
 
-def FRAlgebra_tensor (R S : FRAlgebra.{u v} K) : FRAlgebra.{u v} K :=
+def FRAlgebra_tensor (R S : FRAlgebra K) : FRAlgebra K :=
 { β := R ⊗[K] S,
   ring := _,
   algebra := tensor.finitely_generated_reduced_algebra R S }
 
 variables (K)
-def FRAlgebra_self : FRAlgebra.{u u} K := ⟨K, K⟩
+def FRAlgebra_self : FRAlgebra K := ⟨K, K⟩
 
 lemma FRAlgebra_self_hom (R : FRAlgebra K) : (R ⟶ FRAlgebra_self K) = (R →ₐ[K] K) := by refl
 lemma FRAlgebra_self_hom' (R : FRAlgebra K) : (by exact R ⟶ FRAlgebra_self K) = spectrum K R := rfl
 
 open tensor_product
-lemma FRAlgebra.binary_coproduct : limits.has_binary_coproducts (FRAlgebra K) :=
+lemma FRAlgebra.has_binary_coproducts : limits.has_binary_coproducts (FRAlgebra K) :=
 begin
-  intros F, resetI,
+  constructor, intros F, resetI,
   use FRAlgebra_tensor
     (F.obj category_theory.limits.two.left) (F.obj category_theory.limits.two.right),
   { refine ⟨_, omitted⟩, intro x, cases x, apply tensor_inl, apply tensor_inr },
@@ -145,34 +144,35 @@ begin
   refine tensor_lift (s.ι.app limits.two.left) (s.ι.app limits.two.right)
 end
 
+lemma FRAlgebra.has_initial_object : limits.has_initial_object (FRAlgebra K) :=
+begin
+  constructor, intros F, resetI,
+  use FRAlgebra_self K,
+  { refine ⟨_, omitted⟩, rintro ⟨⟩ },
+  refine ⟨_, omitted, omitted⟩, intro s, dsimp,
+  exact sorry --todo
+end
+
 /-- In algebraic geometry, the categories of algebra's over K and affine varieties are opposite of each other. In this development we take a shortcut, and *define* affine varieties as the opposite of algebra's over K. -/
 @[reducible] def affine_variety : Type* := opposite (FRAlgebra K)
 
-@[instance]def affine_variety.category : category (affine_variety K) := by apply_instance
+@[instance] def affine_variety.category : large_category (affine_variety K) := by apply_instance
 
 def affine_variety.subobject (R : affine_variety K) (Z : closed_set (spectrum K ↥(unop R))) :
   FRAlgebra K :=
 FRAlgebra.quotient (unop R) Z
 
-@[instance] lemma affine_variety.binary_product : limits.has_binary_products (affine_variety K) :=
-begin
-  intros F, resetI,
-  use op (FRAlgebra_tensor
-    (unop $ F.obj category_theory.limits.two.left) (unop $ F.obj category_theory.limits.two.right)),
-  refine ⟨_, omitted⟩, intro x, simp,
-  /- TODO using FRAlgebra.binary_coproduct -/
-  exact classical.choice omitted,
-  exact classical.choice omitted
-end
+@[instance] lemma affine_variety.has_binary_products :
+  limits.has_binary_products (affine_variety K) :=
+by { haveI : limits.has_colimits_of_shape.{u} (discrete limits.two) (FRAlgebra K) :=
+     FRAlgebra.has_binary_coproducts K, exact limits.has_products_opposite _ }
 
-@[instance] lemma affine_variety.complete : limits.has_limits (affine_variety K) :=
-begin
-  intros F 𝒥 X, resetI,
-  cases classical.indefinite_description _
-    (omitted : ∃ t : limits.cone X, nonempty (limits.is_limit t)) with w h,
-  exact ⟨w, classical.choice h⟩
-end
+@[instance] lemma affine_variety.has_terminal_object :
+  limits.has_terminal_object (affine_variety K) :=
+by { haveI : limits.has_colimits_of_shape.{u} (discrete pempty) (FRAlgebra K) :=
+     FRAlgebra.has_initial_object K, exact limits.has_products_opposite _ }
 
+-- @[instance] lemma affine_variety.complete : limits.has_limits.{u} (affine_variety K) := _
 
 /- The underlying type of an affine variety G = Rᵒᵖ is Spec(R), equivalently the global points
    of G in the category of affine varieties. It is easy to show that the global points functor

@@ -4,15 +4,9 @@
 
 import category_theory.eq_to_hom
 import category_theory.limits.cones
+import ...basic
 
 open category_theory
-
-namespace tactic
-meta def case_bash : tactic unit :=
-do l ← local_context,
-   r ← successes (l.reverse.map (λ h, cases h >> skip)),
-   when (r.empty) failed
-end tactic
 
 namespace category_theory.limits
 
@@ -40,7 +34,7 @@ inductive walking_span_hom : walking_span → walking_span → Type v
 open walking_cospan_hom
 open walking_span_hom
 
-instance walking_cospan_category : small_category walking_cospan :=
+instance walking_cospan_category : small_category.{v+1} walking_cospan :=
 { hom := walking_cospan_hom,
   id := walking_cospan_hom.id,
   comp := λ X Y Z f g, match X, Y, Z, f, g with
@@ -48,7 +42,8 @@ instance walking_cospan_category : small_category walking_cospan :=
   | _, _, _, inl, (id one) := inl
   | _, _, _, inr, (id one) := inr
   end }
-instance walking_span_category : small_category walking_span :=
+
+instance walking_span_category : small_category.{v+1} walking_span :=
 { hom := walking_span_hom,
   id := walking_span_hom.id,
   comp := λ X Y Z f g, match X, Y, Z, f, g with
@@ -60,7 +55,7 @@ instance walking_span_category : small_category walking_span :=
 lemma walking_cospan_hom_id (X : walking_cospan.{v}) : walking_cospan_hom.id X = 𝟙 X := rfl
 lemma walking_span_hom_id (X : walking_span.{v}) : walking_span_hom.id X = 𝟙 X := rfl
 
-variables {C : Type u} [𝒞 : category.{v} C]
+variables {C : Type u} [𝒞 : category.{v+1} C]
 include 𝒞
 
 def cospan {X Y Z : C} (f : X ⟶ Z) (g : Y ⟶ Z) : walking_cospan.{v} ⥤ C :=

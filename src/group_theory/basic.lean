@@ -1,8 +1,7 @@
-import ..basic
-       group_theory.sylow group_theory.perm group_theory.free_group
-       data.zmod.basic data.nat.enat data.set.finite
+import tactic.omitted
+       group_theory.sylow group_theory.perm.cycles group_theory.free_group
+       data.nat.enat data.set.finite
        category_theory.concrete_category category_theory.isomorphism
-       tactic.omitted
 
 universes u v
 open equiv

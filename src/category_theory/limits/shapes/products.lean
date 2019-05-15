@@ -4,6 +4,7 @@
 
 import category_theory.limits.limits
 import category_theory.discrete_category
+import ...basic
 
 open category_theory
 
@@ -12,7 +13,7 @@ namespace category_theory.limits
 universes u v w
 
 variables {β : Type v}
-variables {C : Type u} [𝒞 : category.{v} C]
+variables {C : Type u} [𝒞 : category.{v+1} C]
 include 𝒞
 
 def fan (f : β → C) := cone (functor.of_function f)
