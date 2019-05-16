@@ -13,6 +13,9 @@ local infix ` × `:60 := binary_product
 local infix ` ×.map `:90 := binary_product.map
 local infix ` ×.iso `:90 := binary_product.iso
 
+/-- A group object in a category with finite products is an object `G` equipped with morphisms
+  `μ : G × G ⟶ G`, `e : 1 ⟶ G` and `i : G ⟶ G` such that the axioms for a group hold
+  (which is expressed in terms of commuting diagrams) -/
 structure group_object (C : Type u) [𝓒 : category.{v+1} C] [H : has_binary_products.{v} C]
   [H' : has_terminal_object.{v} C]  : Type (max u v) :=
 (obj : C)
@@ -22,8 +25,10 @@ structure group_object (C : Type u) [𝓒 : category.{v+1} C] [H : has_binary_pr
 (one_mul : 𝟙 obj = one_mul_inv ≫ one ×.map 𝟙 obj ≫ mul)
 (mul_one : 𝟙 obj = mul_one_inv ≫ 𝟙 obj ×.map one ≫ mul)
 (inv : obj ⟶ obj)
-(mul_left_inv : 𝟙 obj = map_to_product.mk inv (𝟙 obj) ≫ mul)
+(mul_left_inv : terminal_map _ ≫ one = map_to_product.mk inv (𝟙 obj) ≫ mul)
 
+/-- A morphism between group objects is a morphism between the objects that commute with
+  multiplication -/
 structure group_hom {C : Type u} [category.{v+1} C] [has_binary_products C]
   [has_terminal_object C] (G G' : group_object C) : Type (max u v) :=
 (map : G.obj ⟶ G'.obj)
@@ -35,9 +40,11 @@ include 𝓒 p𝓒 t𝓒
 
 namespace group_hom
 
+/-- The identity morphism between group objects -/
 def id (G : group_object C) : group_hom G G :=
 ⟨𝟙 G.obj, omitted⟩
 
+/-- Composition of morphisms between group objects -/
 def comp (f : group_hom G₁ G₂) (g : group_hom G₂ G₃) : group_hom G₁ G₃ :=
 ⟨f.map ≫ g.map, omitted⟩
 
@@ -48,11 +55,13 @@ end group_hom
 
 namespace group_object
 
-instance group_object.category : category (group_object C) :=
+/-- The category of group objects -/
+instance category : category (group_object C) :=
 { hom := group_hom,
   id := group_hom.id,
   comp := λ X Y Z, group_hom.comp }
 
+/-- The terminal group object -/
 def terminal_group : group_object C :=
 { obj := term,
   mul := terminal_map _,
@@ -63,12 +72,15 @@ def terminal_group : group_object C :=
   inv := terminal_map _,
   mul_left_inv := terminal_map_eq _ _ }
 
+/-- The morphism into the terminal group object -/
 def hom_terminal_group (G : group_object C) : G ⟶ terminal_group :=
 by exact ⟨terminal_map G.obj, omitted⟩
 
+/-- The category of group objects has a terminal object -/
 def has_terminal_object : has_terminal_object (group_object C) :=
 has_terminal_object.mk terminal_group hom_terminal_group omitted
 
+/-- The binary product of group objects -/
 protected def prod (G G' : group_object C) : group_object C :=
 { obj := G.obj × G'.obj,
   mul := product_assoc4.hom ≫ G.mul ×.map G'.mul,
@@ -84,6 +96,7 @@ protected def pr2 : G.prod G' ⟶ G' := by exact ⟨π₂, omitted⟩
 protected def lift (f : H ⟶ G) (g : H ⟶ G') : H ⟶ G.prod G' :=
 by exact ⟨map_to_product.mk f.map g.map, omitted⟩
 
+/-- The category of group objects has binary products -/
 def has_binary_products : has_binary_products (group_object C) :=
 begin
   apply has_binary_products.mk group_object.prod (λ G G', group_object.pr1)
@@ -91,6 +104,7 @@ begin
   omit_proofs
 end
 
-
+/-- A group object is abelian if multiplication is commutative -/
+def is_abelian (G : group_object C) : Prop := product_comm.hom ≫ G.mul = G.mul
 
 end group_object
