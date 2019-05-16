@@ -191,6 +191,20 @@ instance quotient.algebra (I : ideal A) : algebra R I.quotient :=
   smul_def' := λ r x, quotient.induction_on' x $ λ a, congr_arg (ideal.quotient.mk _) $
     smul_def r a }
 
+namespace algebra.quotient
+
+def mk (I : ideal A) : A →ₐ[R] I.quotient :=
+{ to_fun := ideal.quotient.mk I,
+  hom := by apply_instance,
+  commutes' := omitted }
+
+def lift (I : ideal A) (f : A →ₐ[R] B) (H : ∀ (a : A), a ∈ I → f a = 0) : I.quotient →ₐ[R] B :=
+{ to_fun := ideal.quotient.lift I f.to_fun H,
+  hom := by apply_instance,
+  commutes' := omitted }
+
+end algebra.quotient
+
 open mv_polynomial
 local attribute [instance, priority 0] classical.prop_decidable
 /-- An algebra `β` is finitely generated over a ring `α` if there is a finite subset `s` of `β` such that every element of `β` can be expressed as a polynomial in the elements of `s` with coefficients in `α` -/

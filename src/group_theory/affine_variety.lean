@@ -3,6 +3,7 @@ import ring_theory.basic
        ..category_theory.limits2
        tactic.omitted
        category_theory.limits.opposites
+       topology.opens
 
 open category_theory ideal set topological_space
 
@@ -67,18 +68,17 @@ instance Zariski_topology : topological_space (spectrum K R) :=
 
 variables {K R}
 /-- A radical ideal gives rise to a closed set in the Zariski topology -/
-def closed_set_of_radical_ideal (I : radical_ideal R) : closed_set (spectrum K R) :=
+def closeds_of_radical_ideal (I : radical_ideal R) : closeds (spectrum K R) :=
 ⟨Z K I.val, mem_range_self I.val⟩
 
 /-- A closed set in the Zariski topology gives rise to a radical ideal -/
-def radical_ideal_of_closed_set (X : closed_set (spectrum K R)) :
-  radical_ideal R :=
-⟨⟨ I K X, omitted, omitted, omitted⟩, omitted⟩
+def radical_ideal_of_closeds (X : closeds (spectrum K R)) : radical_ideal R :=
+⟨⟨ I K X.val, omitted, omitted, omitted⟩, omitted⟩
 
 /-- Hilbert's Nullstellensatz: there is a correspondence between radical ideals in R and
  closed sets in the spectrum of R. -/
-def Nullstellensatz : radical_ideal R ≃ closed_set (spectrum K R) :=
-⟨closed_set_of_radical_ideal, radical_ideal_of_closed_set, omitted, omitted⟩
+def Nullstellensatz : radical_ideal R ≃ closeds (spectrum K R) :=
+⟨closeds_of_radical_ideal, radical_ideal_of_closeds, omitted, omitted⟩
 
 instance base.finitely_generated_reduced_algebra :
   finitely_generated_reduced_algebra K K :=
@@ -119,8 +119,8 @@ instance FRAlgebra.category (R : Type u) [comm_ring R] : large_category (FRAlgeb
   id    := λ a, alg_hom.id R a,
   comp  := λ a b c f g, alg_hom.comp g f }
 
-def FRAlgebra.quotient (R : FRAlgebra K) (Z : closed_set (spectrum K R)) : FRAlgebra K :=
-⟨K, (radical_ideal_of_closed_set Z).1.quotient⟩
+def FRAlgebra.quotient (R : FRAlgebra K) (Z : closeds (spectrum K R)) : FRAlgebra K :=
+⟨K, (radical_ideal_of_closeds Z).1.quotient⟩
 
 def FRAlgebra_tensor (R S : FRAlgebra K) : FRAlgebra K :=
 { β := R ⊗[K] S,
@@ -128,29 +128,26 @@ def FRAlgebra_tensor (R S : FRAlgebra K) : FRAlgebra K :=
   algebra := tensor.finitely_generated_reduced_algebra R S }
 
 variables (K)
-def FRAlgebra_self : FRAlgebra K := ⟨K, K⟩
+def FRAlgebra_id : FRAlgebra K := ⟨K, K⟩
 
-lemma FRAlgebra_self_hom (R : FRAlgebra K) : (R ⟶ FRAlgebra_self K) = (R →ₐ[K] K) := by refl
-lemma FRAlgebra_self_hom' (R : FRAlgebra K) : (by exact R ⟶ FRAlgebra_self K) = spectrum K R := rfl
+lemma FRAlgebra_id_hom (R : FRAlgebra K) : (R ⟶ FRAlgebra_id K) = (R →ₐ[K] K) := by refl
+lemma FRAlgebra_id_hom' (R : FRAlgebra K) : (by exact R ⟶ FRAlgebra_id K) = spectrum K R := rfl
 
 open tensor_product
-lemma FRAlgebra.has_binary_coproducts : limits.has_binary_coproducts (FRAlgebra K) :=
+def FRAlgebra.has_binary_coproducts : limits.has_binary_coproducts (FRAlgebra K) :=
 begin
-  constructor, intros F, resetI,
-  use FRAlgebra_tensor
-    (F.obj category_theory.limits.two.left) (F.obj category_theory.limits.two.right),
-  { refine ⟨_, omitted⟩, intro x, cases x, apply tensor_inl, apply tensor_inr },
-  refine ⟨_, omitted, omitted⟩, intro s,
-  refine tensor_lift (s.ι.app limits.two.left) (s.ι.app limits.two.right)
+  fapply limits.has_binary_coproducts.mk FRAlgebra_tensor,
+  exact λ X Y, tensor_inl,
+  exact λ X Y, tensor_inr,
+  exact λ X Y Z, tensor_lift,
+  omit_proofs
 end
 
-lemma FRAlgebra.has_initial_object : limits.has_initial_object (FRAlgebra K) :=
+def FRAlgebra.has_initial_object : limits.has_initial_object (FRAlgebra K) :=
 begin
-  constructor, intros F, resetI,
-  use FRAlgebra_self K,
-  { refine ⟨_, omitted⟩, rintro ⟨⟩ },
-  refine ⟨_, omitted, omitted⟩, intro s, dsimp,
-  exact sorry --todo
+  fapply limits.has_initial_object.mk (FRAlgebra_id K),
+  intro X, exact algebra.of_id K X,
+  omitted
 end
 
 /-- In algebraic geometry, the categories of algebra's over K and affine varieties are opposite of each other. In this development we take a shortcut, and *define* affine varieties as the opposite of algebra's over K. -/
@@ -158,16 +155,16 @@ end
 
 @[instance] def affine_variety.category : large_category (affine_variety K) := by apply_instance
 
-def affine_variety.subobject (R : affine_variety K) (Z : closed_set (spectrum K ↥(unop R))) :
+def affine_variety.subobject (R : affine_variety K) (Z : closeds (spectrum K ↥(unop R))) :
   FRAlgebra K :=
 FRAlgebra.quotient (unop R) Z
 
-@[instance] lemma affine_variety.has_binary_products :
+@[instance] def affine_variety.has_binary_products :
   limits.has_binary_products (affine_variety K) :=
 by { haveI : limits.has_colimits_of_shape.{u} (discrete limits.two) (FRAlgebra K) :=
      FRAlgebra.has_binary_coproducts K, exact limits.has_products_opposite _ }
 
-@[instance] lemma affine_variety.has_terminal_object :
+@[instance] def affine_variety.has_terminal_object :
   limits.has_terminal_object (affine_variety K) :=
 by { haveI : limits.has_colimits_of_shape.{u} (discrete pempty) (FRAlgebra K) :=
      FRAlgebra.has_initial_object K, exact limits.has_products_opposite _ }
@@ -177,29 +174,60 @@ by { haveI : limits.has_colimits_of_shape.{u} (discrete pempty) (FRAlgebra K) :=
 /- The underlying type of an affine variety G = Rᵒᵖ is Spec(R), equivalently the global points
    of G in the category of affine varieties. It is easy to show that the global points functor
    in a category with finite limits is left-exact. -/
-def algebraic_variety.type : (affine_variety K) ⥤ Type* :=
-{ obj := λ X, (unop X) ⟶ (FRAlgebra_self K),
+def algebraic_variety.type : affine_variety K ⥤ Type u :=
+{ obj := λ X, unop X ⟶ FRAlgebra_id K,
   map := λ X Y f ϕ, f.unop ≫ ϕ,
   map_id' := by tidy,
   map_comp' := by tidy}
 
 variables {K R}
 
-/- to do:
-* quotient algebras,
-* if Z is closed in Spec R, then R / I(Z) is an algebra over K
-* The spectrum of this algebra is Z
-* affine_variety has a terminal object and binary products
--/
+example (Z : closeds (spectrum K R)) : algebra K (radical_ideal_of_closeds Z).val.quotient :=
+infer_instance
+
+def spectrum_quotient (Z : closeds (spectrum K R)) :
+  spectrum K (radical_ideal_of_closeds Z).val.quotient ≃ₜ Z.val :=
+{ to_fun := λ x, ⟨x.comp $ algebra.quotient.mk _, omitted⟩,
+  inv_fun := λ y, algebra.quotient.lift _ y omitted,
+  left_inv := omitted,
+  right_inv := omitted,
+  continuous_to_fun := omitted,
+  continuous_inv_fun := omitted }
+
+/- For our purposes, an algebraic group is a group object in the category of affine varieties -/
+
+variable (K)
+def affine_group : Type* := group_object (affine_variety K)
+
+variables {K} {G : affine_group K}
+-- Given an algebraic group `G`, we get a group structure on the spectum of `G`
+section
+set_option class.instance_max_depth 80
+/-- The multiplication on `Specm(G)` for an affine group `G` -/
+def group_spectrum_mul (f g : spectrum K (unop G.obj).β) : spectrum K (unop G.obj).β :=
+(tensor_lift f g).comp G.mul.unop
+
+/-- The inversion on `Specm(G)` for an affine group `G` -/
+def group_spectrum_inv (f : spectrum K (unop G.obj).β) : spectrum K (unop G.obj).β :=
+f.comp G.inv.unop
+
+/-- The unit in `Specm(G)` for an affine group `G` -/
+def group_spectrum_one : spectrum K (unop G.obj).β := G.one.unop
+end
+
+/-- Given an algebraic group `G`, we get a group structure on the spectum of `G` -/
+def group_spectrum (G : affine_group K) : group (spectrum K (unop G.obj).β) :=
+{ mul := group_spectrum_mul,
+  mul_assoc := omitted,
+  one := group_spectrum_one,
+  one_mul := omitted,
+  mul_one := omitted,
+  inv := group_spectrum_inv,
+  mul_left_inv := omitted }
 
 end algebraic_geometry
 
 section algebraic_group
-open algebraic_geometry
-variables (K) [discrete_field K]
-/- For our purposes, an algebraic group is a group object in the category of affine varieties -/
-include K
-def algebraic_group : Type* := group_object (affine_variety K)
 
 /- to do:
 * group instance on underlying type of algebraic group

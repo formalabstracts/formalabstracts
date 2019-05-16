@@ -10,3 +10,4 @@ sphinx/.vscode/**
 sphinx/.venv/**
 sphinx/__pycache__/**
 sphinx/_test/
+_cache

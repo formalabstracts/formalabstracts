@@ -10,7 +10,7 @@ open category_theory
 
 namespace category_theory.limits
 
-universes u v w
+universes v u
 
 local attribute [tidy] tactic.case_bash
 

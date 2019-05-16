@@ -1,7 +1,3 @@
-import category_theory.category ..basic
+import category_theory.category tactic.omitted
 
-namespace tactic
-@[obviously] meta def obviously₂ :=
-do t ← target,
-   mk_mapp `omitted [some t] >>= exact >> skip
-end tactic
+@[obviously] meta def obviously_omitted : tactic unit := tactic.interactive.omitted

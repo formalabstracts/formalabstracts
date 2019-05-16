@@ -4,7 +4,7 @@
 
 import ...basic .products
 
-universes u v
+universes v u
 
 open category_theory
 

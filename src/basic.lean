@@ -61,10 +61,3 @@ instance (f : α → β) (r : β → β → Prop) [is_total β r] : is_total α 
 instance (f : α → β) (r : β → β → Prop) [decidable_rel r] : decidable_rel (pullback_rel f r) :=
 by dsimp [pullback_rel]; apply_instance
 end pullback_rel
-
-namespace topological_space
-
-variables (α) [topological_space α]
-@[reducible] def closed_set : Type* := subtype (is_closed : set α → Prop)
-
-end topological_space

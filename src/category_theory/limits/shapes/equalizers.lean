@@ -10,7 +10,7 @@ namespace category_theory.limits
 
 -- local attribute [tidy] tactic.case_bash
 
-universes u v
+universes v u
 
 @[derive decidable_eq] inductive walking_pair : Type v
 | zero | one
