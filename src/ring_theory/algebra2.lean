@@ -60,8 +60,10 @@ end module
 
 variables {R : Type u} {S : Type*} [comm_ring R] [comm_ring S]
 variables {M : Type*} {N : Type*} {P : Type*} [ring M] [ring N] [ring P]
-variables {A : Type*} {B : Type*} {X : Type*} [comm_ring A] [comm_ring B] [comm_ring X]
-variables [algebra R M] [algebra R N] [algebra R P] [algebra R A] [algebra R B] [algebra R X]
+variables {A : Type*} {B : Type*} {A' : Type*} {B' : Type*} {X : Type*}
+variables [comm_ring A] [comm_ring B] [comm_ring A'] [comm_ring B'] [comm_ring X]
+variables [algebra R M] [algebra R N] [algebra R P]
+variables [algebra R A] [algebra R B] [algebra R A'] [algebra R B'] [algebra R X]
 
 notation M ` ⊗[`:100 R `] ` N:100 := tensor_product R M N
 
@@ -156,6 +158,9 @@ begin
   all_goals {exact omitted}
 end
 
+def tensor_functor (f : A →ₐ[R] A') (g : B →ₐ[R] B') : A ⊗[R] B →ₐ[R] A' ⊗[R] B' :=
+tensor_lift (tensor_inl.comp f) (tensor_inr.comp g)
+
 def tensor_lift_equiv : ((A →ₐ[R] X) × (B →ₐ[R] X)) ≃ (A ⊗[R] B →ₐ[R] X) :=
 ⟨λ fg, tensor_lift fg.1 fg.2, λ f, ⟨f.comp tensor_inl, f.comp tensor_inr⟩, omitted, omitted⟩
 
@@ -198,10 +203,14 @@ def mk (I : ideal A) : A →ₐ[R] I.quotient :=
   hom := by apply_instance,
   commutes' := omitted }
 
-def lift (I : ideal A) (f : A →ₐ[R] B) (H : ∀ (a : A), a ∈ I → f a = 0) : I.quotient →ₐ[R] B :=
+def lift {I : ideal A} (f : A →ₐ[R] B) (H : ∀ (a : A), a ∈ I → f a = 0) : I.quotient →ₐ[R] B :=
 { to_fun := ideal.quotient.lift I f.to_fun H,
   hom := by apply_instance,
   commutes' := omitted }
+
+def functor {I : ideal A} {J : ideal B} (f : A →ₐ[R] B) (H : ∀ (a : A), a ∈ I → f a ∈ J) :
+  I.quotient →ₐ[R] J.quotient :=
+lift ((mk J).comp f) omitted
 
 end algebra.quotient
 

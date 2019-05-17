@@ -10,6 +10,12 @@ open category_theory ideal set topological_space
 noncomputable theory
 universes u v w
 
+-- we set some priorities of instances very low, because they cause problems in this file
+local attribute [instance, priority 1] limits.category_theory.limits.has_limit
+  limits.category_theory.limits.has_colimit limits.category_theory.limits.has_colimits
+  limits.category_theory.limits.has_limits limits.category_theory.limits.has_limits_of_shape
+  limits.category_theory.limits.has_colimits_of_shape
+
 def has_coe_ideal {α : Type u} [comm_ring α] : has_coe (ideal α) (set α) := by apply_instance
 local attribute [instance] has_coe_ideal
 
@@ -108,7 +114,7 @@ infer_instance
 def spectrum_quotient (Z : closeds (spectrum K R)) :
   spectrum K (radical_ideal_of_closeds Z).val.quotient ≃ₜ Z.val :=
 { to_fun := λ x, ⟨x.comp $ algebra.quotient.mk _, omitted⟩,
-  inv_fun := λ y, algebra.quotient.lift _ y omitted,
+  inv_fun := λ y, algebra.quotient.lift y omitted,
   left_inv := omitted,
   right_inv := omitted,
   continuous_to_fun := omitted,
@@ -178,13 +184,13 @@ end
 example : large_category (affine_variety K) := by apply_instance
 
 /-- The category of affine varieties has binary products -/
-@[instance] def affine_variety.has_binary_products :
+@[instance, priority 1200] def affine_variety.has_binary_products :
   limits.has_binary_products (affine_variety K) :=
 by { haveI : limits.has_colimits_of_shape.{u} (discrete limits.two) (FRAlgebra K) :=
      FRAlgebra.has_binary_coproducts K, exact limits.has_products_opposite _ }
 
 /-- The category of affine varieties has a terminal object -/
-@[instance] def affine_variety.has_terminal_object :
+@[instance, priority 1200] def affine_variety.has_terminal_object :
   limits.has_terminal_object (affine_variety K) :=
 by { haveI : limits.has_colimits_of_shape.{u} (discrete pempty) (FRAlgebra K) :=
      FRAlgebra.has_initial_object K, exact limits.has_products_opposite _ }
@@ -268,15 +274,33 @@ instance (f : G ⟶ G') : is_group_hom f.type := omitted
 class is_closed_subgroup (s : set G.obj.type) extends is_subgroup s : Prop :=
 (closed : is_closed s)
 
+instance is_closed_subgroup_univ (G : affine_group K) :
+  is_closed_subgroup (univ : set G.obj.type) :=
+omitted
+
+def to_closeds (s : set G.obj.type) [is_closed_subgroup s] : closeds G.obj.type :=
+⟨s, is_closed_subgroup.closed s⟩
+
+def mul_op (s : set G.obj.type) [is_closed_subgroup s] : (unop G.obj).quotient (to_closeds s) ⟶
+  FRAlgebra_tensor ((unop G.obj).quotient (to_closeds s)) ((unop G.obj).quotient (to_closeds s)) :=
+algebra.quotient.lift
+  begin
+    refine alg_hom.comp _ G.mul.unop,
+    exact tensor_functor (algebra.quotient.mk _) (algebra.quotient.mk _)
+  end
+ omitted
+
 /-- From a closed subgroup we can construct an affine group -/
 def sub (s : set G.obj.type) [is_closed_subgroup s] : affine_group K :=
-{ obj := affine_variety.subobject G.obj ⟨s, is_closed_subgroup.closed s⟩,
-  mul := sorry,
+{ obj := G.obj.subobject (to_closeds s),
+  mul := (mul_op s).op,
   mul_assoc := omitted,
-  one := sorry,
+  one := (show (unop G.obj).quotient (to_closeds s) ⟶ FRAlgebra_id K,
+          from algebra.quotient.lift G.one.unop omitted).op,
   one_mul := omitted,
   mul_one := omitted,
-  inv := sorry,
+  inv := (show (unop G.obj).quotient (to_closeds s) ⟶ (unop G.obj).quotient (to_closeds s),
+          from algebra.quotient.functor G.inv.unop omitted).op,
   mul_left_inv := omitted }
 
 def affine_group.incl (G : affine_group K) (s : set G.obj.type) [is_closed_subgroup s] :
@@ -318,24 +342,59 @@ def is_Borel_subgroup (s : set G.obj.type) : Prop :=
 is_maximal { t : set G.obj.type |
   ∃(h : is_closed_subgroup t), is_connected t ∧ by exactI solvable (sub t) } s
 
-/-- There is a unique maximal subgroup of G that is a kernel of a morphism `ψ : G ⟶ A` -/
+/-- There is a unique maximal closed subgroup of `G` that is a kernel of a morphism `ψ : G ⟶ A`
+  for an abelian group `A` -/
 theorem closed_derived_subgroup_unique (G : affine_group K) :
   ∃!(s : set G.obj.type), is_maximal { t : set G.obj.type |
     ∃(A : affine_group K) (ψ : G ⟶ A), A.is_abelian ∧ t = kernel ψ } s :=
 omitted
 
+/-- The closed derived subgroup of `G` is the unique maximal subgroup of `G` that is a kernel of a
+  morphism `ψ : G ⟶ A` for an abelian group `A` -/
 def closed_derived_subgroup (G : affine_group K) : set G.obj.type :=
 classical.some (closed_derived_subgroup_unique G)
 
 open category_theory.limits.binary_product
+local infix ` × `:60 := limits.binary_product
 local infix ` ×.map `:90 := binary_product.map
-/-- `C` centralizes `H` if `C × H ⟶ G` given by `(c,h) ↦ chc⁻¹` is equal to the inclusion `H ⟶ G`.
-In the notes H is not assumed to be closed, but an arbitrary subgroup. In that case does `H` represent an affine variety? -/
-def centralizes (C : set G.obj.type) (H : set G.obj.type) [is_closed_subgroup C]
-  [is_closed_subgroup H] : Prop :=
-(((G.incl C).map ≫ diag) ×.map (G.incl H).map) ≫
-product_assoc.hom ≫ (𝟙 G.obj ×.map (product_comm.hom ≫ G.mul)) ≫ G.mul =
-π₂' ≫ (G.incl H).map
+
+/-- The conjugation map `H₁ × H₂⟶ G` given by `(h₁,h₂) ↦ h₁*h₂*h₁⁻¹`-/
+def conjugation (H₁ H₂ : set G.obj.type) [is_closed_subgroup H₁] [is_closed_subgroup H₂] :
+  (sub H₁).obj × (sub H₂).obj ⟶ G.obj :=
+(((G.incl H₁).map ≫ diag) ×.map (G.incl H₂).map) ≫
+product_assoc.hom ≫ (𝟙 G.obj ×.map (product_comm.hom ≫ G.mul)) ≫ G.mul
+-- calc
+--   H₁ × H₂ ⟶ (G × G) × G : ((G.incl H₁).map ≫ diag) ×.map (G.incl H₂).map
+--       ... ⟶ G × (G × G) : product_assoc.hom
+--       ... ⟶ G × G       : 𝟙 G.obj ×.map (product_comm.hom ≫ G.mul)
+--       ... ⟶ G           : G.mul
+
+/-- `C` centralizes `H` if `C × H ⟶ G` given by `(c,h) ↦ c*h*c⁻¹` is equal to the inclusion
+`H ⟶ G`.
+In the notes H is not assumed to be closed, but an arbitrary subgroup.
+In that case does `H` represent an affine variety? -/
+def centralizes (C H : set G.obj.type) [is_closed_subgroup C] [is_closed_subgroup H] : Prop :=
+conjugation C H = π₂ ≫ (G.incl H).map
+
+/-- There is a unique maximal closed subgroup of `G` that centralizes `H` -/
+theorem centralizer_unique (H : set G.obj.type) [is_closed_subgroup H] :
+  ∃!(C : set G.obj.type), is_maximal { C' : set G.obj.type |
+    ∃(h : is_closed_subgroup C'), by exactI centralizes C' H } C :=
+omitted
+
+/-- The centralizer of `H` is the unique maximal closed subgroup of `G` that centralizes `H` -/
+-- typo in notes: G -> H
+def centralizer (H : set G.obj.type) [is_closed_subgroup H] : set G.obj.type :=
+classical.some (centralizer_unique H)
+
+/-- The center of `G` is the centralizer of `G` as closed subgroup of `G` -/
+def center (G : affine_group K) : set G.obj.type :=
+centralizer set.univ
+
+/-- `N` normalizes `H` if the conjugation map `N × H ⟶ G` factors through `H` -/
+-- this is a slightly different formulation than in the notes
+def normalizes (N H : set G.obj.type) [is_closed_subgroup N] [is_closed_subgroup H] : Prop :=
+∃(f : (sub N).obj × (sub H).obj ⟶ (sub H).obj), conjugation N H = f ≫ (G.incl H).map
 
 end algebraic_geometry
 
