@@ -116,6 +116,11 @@ def π₁ {X Y : C} [has_limit $ two.functor X Y] : X × Y ⟶ X := limit.π _ t
 
 def π₂ {X Y : C} [has_limit $ two.functor X Y] : X × Y ⟶ Y := limit.π _ two.right
 
+/-- An alternative version of `π₁` if type-class inference fails -/
+def π₁' {X Y : C} {H : has_binary_products C} : X × Y ⟶ X := π₁
+/-- An alternative version of `π₂` if type-class inference fails -/
+def π₂' {X Y : C} {H : has_binary_products C} : X × Y ⟶ Y := π₂
+
 def dfin.map {n : ℕ} : dvector C n → dfin n → C :=
 λ v d, by {induction v, cases d, cases d, exact v_x, exact v_ih d_a}
 
@@ -132,6 +137,9 @@ lemma cone_of_two_maps_object [has_binary_products C] {B₁ B₂ A₁ A₂: C} {
 def map_to_product.mk {H : has_binary_products C} {W B₁ B₂ : C} (f₁ : W ⟶ B₁) (f₂ : W ⟶ B₂) :
   W ⟶ B₁ × B₂ :=
 is_limit.lift (limit.is_limit _) (cone_of_two_maps f₁ f₂)
+
+def diag [H : has_binary_products C] {B : C} : B ⟶ B × B :=
+map_to_product.mk (𝟙 B) (𝟙 B)
 
 def binary_product.map {H : has_binary_products C} {A A' B B' : C} (f : A ⟶ A') (g : B ⟶ B') :
   A × B ⟶ A' × B' :=

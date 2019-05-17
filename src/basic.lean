@@ -61,3 +61,6 @@ instance (f : α → β) (r : β → β → Prop) [is_total β r] : is_total α 
 instance (f : α → β) (r : β → β → Prop) [decidable_rel r] : decidable_rel (pullback_rel f r) :=
 by dsimp [pullback_rel]; apply_instance
 end pullback_rel
+
+def is_maximal {α : Type*} [preorder α] (s : set α) (x : α) : Prop := x ∈ s ∧ ∀(y ∈ s), ¬y > x
+def is_minimal {α : Type*} [preorder α] (s : set α) (x : α) : Prop := x ∈ s ∧ ∀(y ∈ s), ¬y < x

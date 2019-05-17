@@ -126,14 +126,20 @@ attribute [instance] FRAlgebra.ring FRAlgebra.algebra
 instance (R : Type v) [comm_ring R] : has_coe_to_sort (FRAlgebra R) :=
 { S := Type v, coe := FRAlgebra.β }
 
-/-- The category of finitely generated reduced algebras over a fixed commutative ring. -/
+/-- The category of finitely generated reduced (f.g.r.) algebras over a fixed commutative ring. -/
 instance FRAlgebra.category (R : Type u) [comm_ring R] : large_category (FRAlgebra R) :=
 { hom   := λ a b, a.β →ₐ[R] b.β,
   id    := λ a, alg_hom.id R a,
   comp  := λ a b c f g, alg_hom.comp g f }
 
+/-- Quotients in the category of f.g.r. algebras -/
 def FRAlgebra.quotient (R : FRAlgebra K) (Z : closeds (spectrum K R)) : FRAlgebra K :=
 ⟨K, (radical_ideal_of_closeds Z).val.quotient⟩
+
+/-- The quotient map in the category of f.g.r. algebras -/
+def FRAlgebra.quotient_map (R : FRAlgebra K) (Z : closeds (spectrum K R)) :
+  R ⟶ R.quotient Z :=
+algebra.quotient.mk _
 
 /-- The tensor product of two finitely generated reduced algebras over `K` -/
 def FRAlgebra_tensor (R S : FRAlgebra K) : FRAlgebra K :=
@@ -207,7 +213,12 @@ algebraic_geometry.Zariski_topology _ _
 
 /-- A subobject of an affine variety given by a closed set on its type -/
 def affine_variety.subobject (X : affine_variety K) (Z : closeds X.type) : affine_variety K :=
-op (FRAlgebra.quotient (unop X) Z)
+op ((unop X).quotient Z)
+
+/-- A subobject of an affine variety given by a closed set on its type -/
+def affine_variety.incl (X : affine_variety K) (Z : closeds X.type) :
+  X.subobject Z ⟶ X :=
+(FRAlgebra.quotient_map _ _).op
 
 variable (K)
 /-- An affine group is a group object in the category of affine varieties -/
@@ -258,7 +269,7 @@ class is_closed_subgroup (s : set G.obj.type) extends is_subgroup s : Prop :=
 (closed : is_closed s)
 
 /-- From a closed subgroup we can construct an affine group -/
-def closed_subgroup (s : set G.obj.type) [is_closed_subgroup s] : affine_group K :=
+def sub (s : set G.obj.type) [is_closed_subgroup s] : affine_group K :=
 { obj := affine_variety.subobject G.obj ⟨s, is_closed_subgroup.closed s⟩,
   mul := sorry,
   mul_assoc := omitted,
@@ -267,6 +278,10 @@ def closed_subgroup (s : set G.obj.type) [is_closed_subgroup s] : affine_group K
   mul_one := omitted,
   inv := sorry,
   mul_left_inv := omitted }
+
+def affine_group.incl (G : affine_group K) (s : set G.obj.type) [is_closed_subgroup s] :
+  sub s ⟶ G :=
+by exact ⟨affine_variety.incl _ _, omitted⟩
 
 /-- The kernel of a morphism between affine groups is given by the preimage of 1.
 
@@ -296,12 +311,31 @@ def normal_subgroup_structure (s : set G.obj.type) : Type* :=
 inductive solvable : affine_group K → Prop
 | base {{G : affine_group K}} : G.is_abelian → solvable G
 | step {{G H : affine_group K}} (ψ : G ⟶ H) :
-  solvable H → solvable (closed_subgroup (kernel ψ)) → solvable G
+  solvable H → solvable (sub (kernel ψ)) → solvable G
 
-def connected (G : affine_group K) : Prop := connected_space (univ : set G.obj.type)
+/-- A Borel subgroup is a maximal closed connected solvable subgroup of `G` -/
+def is_Borel_subgroup (s : set G.obj.type) : Prop :=
+is_maximal { t : set G.obj.type |
+  ∃(h : is_closed_subgroup t), is_connected t ∧ by exactI solvable (sub t) } s
 
--- def is_Borel_subgroup (s : set G.obj.type) : Prop :=
--- is_maximal
+/-- There is a unique maximal subgroup of G that is a kernel of a morphism `ψ : G ⟶ A` -/
+theorem closed_derived_subgroup_unique (G : affine_group K) :
+  ∃!(s : set G.obj.type), is_maximal { t : set G.obj.type |
+    ∃(A : affine_group K) (ψ : G ⟶ A), A.is_abelian ∧ t = kernel ψ } s :=
+omitted
+
+def closed_derived_subgroup (G : affine_group K) : set G.obj.type :=
+classical.some (closed_derived_subgroup_unique G)
+
+open category_theory.limits.binary_product
+local infix ` ×.map `:90 := binary_product.map
+/-- `C` centralizes `H` if `C × H ⟶ G` given by `(c,h) ↦ chc⁻¹` is equal to the inclusion `H ⟶ G`.
+In the notes H is not assumed to be closed, but an arbitrary subgroup. In that case does `H` represent an affine variety? -/
+def centralizes (C : set G.obj.type) (H : set G.obj.type) [is_closed_subgroup C]
+  [is_closed_subgroup H] : Prop :=
+(((G.incl C).map ≫ diag) ×.map (G.incl H).map) ≫
+product_assoc.hom ≫ (𝟙 G.obj ×.map (product_comm.hom ≫ G.mul)) ≫ G.mul =
+π₂' ≫ (G.incl H).map
 
 end algebraic_geometry
 
