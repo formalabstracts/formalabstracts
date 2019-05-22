@@ -214,6 +214,22 @@ lift ((mk J).comp f) omitted
 
 end algebra.quotient
 
+namespace mv_polynomial
+
+variables {σ : Type*} [decidable_eq σ] [decidable_eq R]
+
+/-- (σ → A) → Hom[R-Alg](R[σ],A). Maybe this should replace aeval? -/
+def aeval₂ (f : σ → A) : mv_polynomial σ R →ₐ[R] A :=
+{ to_fun := eval₂ (algebra_map A) f,
+  hom := ⟨eval₂_one _ _, λ _ _, eval₂_mul _ _, λ _ _, eval₂_add _ _⟩,
+  commutes' := λ r, eval₂_C _ _ _ }
+
+-- def alg_hom {σ τ : Type*} [decidable_eq σ] [decidable_eq τ] [decidable_eq R] :
+--   mv_polynomial σ R →ₐ[R] mv_polynomial τ R :=
+-- sorry
+
+end mv_polynomial
+
 open mv_polynomial
 local attribute [instance, priority 0] classical.prop_decidable
 /-- An algebra `β` is finitely generated over a ring `α` if there is a finite subset `s` of `β` such that every element of `β` can be expressed as a polynomial in the elements of `s` with coefficients in `α` -/

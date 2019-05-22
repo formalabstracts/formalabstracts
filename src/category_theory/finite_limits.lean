@@ -110,6 +110,7 @@ def binary_product (X Y : C) [has_limit $ two.functor X Y] : C :=
 limit (two.functor X Y)
 
 namespace binary_product
+
 local infix ` × `:60 := binary_product
 
 def π₁ {X Y : C} [has_limit $ two.functor X Y] : X × Y ⟶ X := limit.π _ two.left
@@ -187,8 +188,12 @@ example :
          /-unit-/ (𝟙 unit) /- unit -/
   := by tidy
 
+end binary_product
+open binary_product
 
 section terminal_object
+
+local infix ` × `:60 := binary_product
 
 def terminal_object [has_terminal_object C] : C :=
 limit (empty.functor C)
@@ -215,7 +220,17 @@ by apply map_to_product.mk (terminal_map G) (𝟙 _)
 
 end terminal_object
 
-end binary_product
+section pow
+
+local infix ` × `:60 := binary_product
+
+/-- The n-fold product of an object with itself -/
+def category.pow [has_binary_products C] [has_terminal_object C] (X : C) : ℕ → C
+| 0     := term
+| 1     := X
+| (n+2) := X × category.pow (n+1)
+
+end pow
 
 namespace finite_limits
 open binary_product

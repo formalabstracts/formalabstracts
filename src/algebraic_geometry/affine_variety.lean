@@ -1,3 +1,7 @@
+/- In this file we define affine varieties and affine groups over a discrete field `K`.
+  We take a shortcut in the definition, by defining affine varieties as the opposite
+  category of finitely generated reduced algebras. We define affine groups and basic
+  group theory for affine groups: closed subgroups, kernels, normal subgroups, solvable groups, Borel subgroups, centralizers. -/
 import ring_theory.basic
        ..category_theory.group_object
        ..category_theory.limits2
@@ -38,7 +42,8 @@ variables (K : Type u) [discrete_field K]
 open finitely_generated_reduced_algebra category_theory tensor_product
 namespace algebraic_geometry
 
-/-- The spectrum `Specm(R)` of a `K`-algebra `R` is the set of homomorphisms from `R` to `K`. -/
+/-- The spectrum `Specm(R)` of a `K`-algebra `R` is the set of homomorphisms from `R` to `K`.
+  This corresponds to maximal ideals in `R`. -/
 @[reducible] def spectrum : Type* := R →ₐ[K] K
 
 variables {R K}
@@ -128,7 +133,7 @@ structure FRAlgebra (R : Type u) [comm_ring R] : Type (u+1) :=
   [ring : comm_ring β]
   [algebra : finitely_generated_reduced_algebra R β]
 
-attribute [instance] FRAlgebra.ring FRAlgebra.algebra
+attribute [instance, priority 1100] FRAlgebra.ring FRAlgebra.algebra
 instance (R : Type v) [comm_ring R] : has_coe_to_sort (FRAlgebra R) :=
 { S := Type v, coe := FRAlgebra.β }
 
@@ -228,10 +233,9 @@ def affine_variety.incl (X : affine_variety K) (Z : closeds X.type) :
 
 variable (K)
 /-- An affine group is a group object in the category of affine varieties -/
-def affine_group : Type* := group_object (affine_variety K)
+abbreviation affine_group : Type* := group_object (affine_variety K)
 
-
-instance : category (affine_group K) := group_object.category
+example : category (affine_group K) := by apply_instance
 
 end algebraic_geometry
 
@@ -274,14 +278,17 @@ instance (f : G ⟶ G') : is_group_hom f.type := omitted
 class is_closed_subgroup (s : set G.obj.type) extends is_subgroup s : Prop :=
 (closed : is_closed s)
 
+/-- The type of `G` is a closed subgroup of itself -/
 instance is_closed_subgroup_univ (G : affine_group K) :
   is_closed_subgroup (univ : set G.obj.type) :=
 omitted
 
+/-- A closed subgroup gives a closed set (by forgetting that it is a subgroup) -/
 def to_closeds (s : set G.obj.type) [is_closed_subgroup s] : closeds G.obj.type :=
 ⟨s, is_closed_subgroup.closed s⟩
 
-def mul_op (s : set G.obj.type) [is_closed_subgroup s] : (unop G.obj).quotient (to_closeds s) ⟶
+/-- The (opposite of the) multiplication on a subgroup -/
+def sub_mul_op (s : set G.obj.type) [is_closed_subgroup s] : (unop G.obj).quotient (to_closeds s) ⟶
   FRAlgebra_tensor ((unop G.obj).quotient (to_closeds s)) ((unop G.obj).quotient (to_closeds s)) :=
 algebra.quotient.lift
   begin
@@ -293,7 +300,7 @@ algebra.quotient.lift
 /-- From a closed subgroup we can construct an affine group -/
 def sub (s : set G.obj.type) [is_closed_subgroup s] : affine_group K :=
 { obj := G.obj.subobject (to_closeds s),
-  mul := (mul_op s).op,
+  mul := (sub_mul_op s).op,
   mul_assoc := omitted,
   one := (show (unop G.obj).quotient (to_closeds s) ⟶ FRAlgebra_id K,
           from algebra.quotient.lift G.one.unop omitted).op,
@@ -325,7 +332,6 @@ def is_normal_subgroup (s : set G.obj.type) : Prop :=
 /-- The structure of being a normal subgroup -/
 def normal_subgroup_structure (s : set G.obj.type) : Type* :=
 Σ(G' : affine_group K), {f : G ⟶ G' // kernel f = s }
-
 
 /-- An affine group `G` is solvable if it is abelian or inductively if there is a morphism
   `ψ : G ⟶ H` such that both `ker(ψ)` and `H` are solvable. -/
@@ -363,6 +369,8 @@ def conjugation (H₁ H₂ : set G.obj.type) [is_closed_subgroup H₁] [is_close
   (sub H₁).obj × (sub H₂).obj ⟶ G.obj :=
 (((G.incl H₁).map ≫ diag) ×.map (G.incl H₂).map) ≫
 product_assoc.hom ≫ (𝟙 G.obj ×.map (product_comm.hom ≫ G.mul)) ≫ G.mul
+/- The following more explicit definition is hard on the elaborator;
+  Probably because of type-class inference for `×` -/
 -- calc
 --   H₁ × H₂ ⟶ (G × G) × G : ((G.incl H₁).map ≫ diag) ×.map (G.incl H₂).map
 --       ... ⟶ G × (G × G) : product_assoc.hom

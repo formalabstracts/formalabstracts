@@ -77,7 +77,7 @@ def hom_terminal_group (G : group_object C) : G ⟶ terminal_group :=
 by exact ⟨terminal_map G.obj, omitted⟩
 
 /-- The category of group objects has a terminal object -/
-def has_terminal_object : has_terminal_object (group_object C) :=
+instance has_terminal_object : has_terminal_object (group_object C) :=
 has_terminal_object.mk terminal_group hom_terminal_group omitted
 
 /-- The binary product of group objects -/
@@ -97,14 +97,42 @@ protected def lift (f : H ⟶ G) (g : H ⟶ G') : H ⟶ G.prod G' :=
 by exact ⟨map_to_product.mk f.map g.map, omitted⟩
 
 /-- The category of group objects has binary products -/
-def has_binary_products : has_binary_products (group_object C) :=
+instance has_binary_products : has_binary_products (group_object C) :=
 begin
   apply has_binary_products.mk group_object.prod (λ G G', group_object.pr1)
     (λ G G', group_object.pr2) (λ G G' H, group_object.lift),
   omit_proofs
 end
 
+/-- Every group object has a point, i.e. a morphism from the terminal object -/
+def one_hom (G : group_object C) : term ⟶ G :=
+by exact ⟨G.one, omitted⟩
+
+omit 𝓒 p𝓒 t𝓒
 /-- A group object is abelian if multiplication is commutative -/
-def is_abelian (G : group_object C) : Prop := product_comm.hom ≫ G.mul = G.mul
+-- todo: maybe this should be a class
+class is_abelian {C : Type u} [𝓒 : category.{v+1} C] [H : has_binary_products.{v} C]
+  [H' : has_terminal_object.{v} C] (G : group_object C) : Prop :=
+(comm : product_comm.hom ≫ G.mul = G.mul)
+include 𝓒 p𝓒 t𝓒
+
+/-- Multiplication is a group homomorphism if `G` is abelian -/
+def mul_hom (G : group_object C) [G.is_abelian] : G × G ⟶ G :=
+by exact ⟨G.mul, omitted⟩
+
+/-- Inversion is a group homomorphism if `G` is abelian -/
+def inv_hom (G : group_object C) [G.is_abelian] : G ⟶ G :=
+by exact ⟨G.inv, omitted⟩
+
+instance comm_group_hom (G G' : group_object C) [G'.is_abelian] : comm_group (G ⟶ G') :=
+{ mul := λ f g, map_to_product.mk f g ≫ G'.mul_hom,
+  mul_assoc := omitted,
+  one := terminal_map G ≫ one_hom G',
+  one_mul := omitted,
+  mul_one := omitted,
+  inv := λ f, f ≫ inv_hom G',
+  mul_left_inv := omitted,
+  mul_comm := omitted }
+
 
 end group_object
