@@ -159,6 +159,22 @@ def FRAlgebra_tensor (R S : FRAlgebra K) : FRAlgebra K :=
   algebra := tensor.finitely_generated_reduced_algebra R S }
 
 variables (K)
+section
+local attribute [instance, priority 1500] algebra.mv_polynomial algebra.polynomial
+/-- Polynomials over `K` as an f.g.r. algebra over `K` -/
+def FRAlgebra_polynomial : FRAlgebra K :=
+{ β := polynomial K,
+  algebra := { finitely_generated := omitted,
+               reduced := omitted } }
+
+/-- Multivariate polynomials over `K` as an f.g.r. algebra over `K` -/
+def FRAlgebra_mv_polynomial (K : Type (max u v)) [discrete_field K] (σ : Type v)
+  [decidable_eq σ] : FRAlgebra K :=
+{ β := mv_polynomial σ K,
+  algebra := { finitely_generated := omitted,
+               reduced := omitted } }
+end
+
 /-- `K` forms a finitely generated reduced algebras over `K` -/
 def FRAlgebra_id : FRAlgebra K := ⟨K, K⟩
 
@@ -200,9 +216,7 @@ by { haveI : limits.has_colimits_of_shape.{u} (discrete limits.two) (FRAlgebra K
 by { haveI : limits.has_colimits_of_shape.{u} (discrete pempty) (FRAlgebra K) :=
      FRAlgebra.has_initial_object K, exact limits.has_products_opposite _ }
 
--- @[instance] lemma affine_variety.complete : limits.has_limits.{u} (affine_variety K) := _
-
-/- The underlying type of an affine variety G = Rᵒᵖ is Spec(R), equivalently the global points
+/-- The underlying type of an affine variety G = Rᵒᵖ is Spec(R), equivalently the global points
    of G in the category of affine varieties. -/
 def affine_variety.type_functor : affine_variety K ⥤ Type u :=
 yoneda.obj (FRAlgebra_id K)
@@ -230,6 +244,17 @@ op ((unop X).quotient Z)
 def affine_variety.incl (X : affine_variety K) (Z : closeds X.type) :
   X.subobject Z ⟶ X :=
 (FRAlgebra.quotient_map _ _).op
+
+/-- A subobject of an affine variety given by a closed set on its type -/
+def incl_of_subset {X : affine_variety K} {Z₁ Z₂ : closeds X.type} (h : Z₁.1 ⊆ Z₂.1) :
+  X.subobject Z₁ ⟶ X.subobject Z₂ :=
+has_hom.hom.op (algebra.quotient.lift (algebra.quotient.mk _) omitted)
+
+/-- Inclusion of a set on the type of a subobject into the sets on type type of `X` -/
+def set_sub_incl {X : affine_variety K} {Z : closeds X.type} :
+  set (X.subobject Z).type → set X.type :=
+image $ (affine_variety.type_functor K).map $ X.incl Z
+
 
 variable (K)
 /-- An affine group is a group object in the category of affine varieties -/
@@ -314,6 +339,10 @@ def affine_group.incl (G : affine_group K) (s : set G.obj.type) [is_closed_subgr
   sub s ⟶ G :=
 by exact ⟨affine_variety.incl _ _, omitted⟩
 
+instance set_sub_incl.is_closed_subgroup {H : set G.obj.type} {h : is_closed_subgroup H}
+  (K' : set (sub H).obj.type) [hK : is_closed_subgroup K'] : is_closed_subgroup (set_sub_incl K') :=
+omitted
+
 /-- The kernel of a morphism between affine groups is given by the preimage of 1.
 
 More precisely, we can view `f : G ⟶ G'` as a map between the type of `G` and the type of `G'`,
@@ -325,7 +354,7 @@ is_group_hom.ker f.type
 instance (f : G ⟶ G') : is_closed_subgroup (kernel f) := omitted
 
 /-- A subset of the type of `G` is a normal subgroup if it the kernel of a morphism between
-  affine groups -/
+  affine groups. Any normal subgroup is automatically closed. -/
 def is_normal_subgroup (s : set G.obj.type) : Prop :=
 ∃(G' : affine_group K) (f : G ⟶ G'), kernel f = s
 
@@ -350,25 +379,30 @@ is_maximal { t : set G.obj.type |
 
 /-- There is a unique maximal closed subgroup of `G` that is a kernel of a morphism `ψ : G ⟶ A`
   for an abelian group `A` -/
-theorem closed_derived_subgroup_unique (G : affine_group K) :
+theorem closed_derived_subgroup_unique (H : set G.obj.type) [is_closed_subgroup H] :
   ∃!(s : set G.obj.type), is_maximal { t : set G.obj.type |
-    ∃(A : affine_group K) (ψ : G ⟶ A), A.is_abelian ∧ t = kernel ψ } s :=
+    ∃(A : affine_group K) (ψ : sub H ⟶ A), A.is_abelian ∧ t = set_sub_incl (kernel ψ) } s :=
 omitted
 
-/-- The closed derived subgroup of `G` is the unique maximal subgroup of `G` that is a kernel of a
-  morphism `ψ : G ⟶ A` for an abelian group `A` -/
-def closed_derived_subgroup (G : affine_group K) : set G.obj.type :=
-classical.some (closed_derived_subgroup_unique G)
+/-- The closed derived subgroup of `H` is the unique maximal subgroup of `H` that is a kernel of a
+  morphism `ψ : H ⟶ A` for an abelian group `A` -/
+def closed_derived_subgroup (H : set G.obj.type) [is_closed_subgroup H] : set G.obj.type :=
+classical.some (closed_derived_subgroup_unique H)
 
-open category_theory.limits.binary_product
-local infix ` × `:60 := limits.binary_product
+/-- The closed derived subgroup is a closed subgroup -/
+instance closed_derived_subgroup.is_closed_subgroup (H : set G.obj.type) [is_closed_subgroup H] :
+  is_closed_subgroup (closed_derived_subgroup H) :=
+omitted
+
+open category_theory.limits category_theory.limits.binary_product
+local infix ` × `:60 := binary_product
 local infix ` ×.map `:90 := binary_product.map
 
-/-- The conjugation map `H₁ × H₂⟶ G` given by `(h₁,h₂) ↦ h₁*h₂*h₁⁻¹`-/
+/-- The conjugation map `H₁ × H₂ ⟶ G` given by `(h₁,h₂) ↦ h₁*h₂*h₁⁻¹`-/
 def conjugation (H₁ H₂ : set G.obj.type) [is_closed_subgroup H₁] [is_closed_subgroup H₂] :
   (sub H₁).obj × (sub H₂).obj ⟶ G.obj :=
-(((G.incl H₁).map ≫ diag) ×.map (G.incl H₂).map) ≫
-product_assoc.hom ≫ (𝟙 G.obj ×.map (product_comm.hom ≫ G.mul)) ≫ G.mul
+((G.incl H₁).map ≫ diag) ×.map (G.incl H₂).map ≫
+product_assoc.hom ≫ 𝟙 G.obj ×.map (product_comm.hom ≫ G.mul) ≫ G.mul
 /- The following more explicit definition is hard on the elaborator;
   Probably because of type-class inference for `×` -/
 -- calc
@@ -378,9 +412,7 @@ product_assoc.hom ≫ (𝟙 G.obj ×.map (product_comm.hom ≫ G.mul)) ≫ G.mul
 --       ... ⟶ G           : G.mul
 
 /-- `C` centralizes `H` if `C × H ⟶ G` given by `(c,h) ↦ c*h*c⁻¹` is equal to the inclusion
-`H ⟶ G`.
-In the notes H is not assumed to be closed, but an arbitrary subgroup.
-In that case does `H` represent an affine variety? -/
+`H ⟶ G`. -/
 def centralizes (C H : set G.obj.type) [is_closed_subgroup C] [is_closed_subgroup H] : Prop :=
 conjugation C H = π₂ ≫ (G.incl H).map
 
@@ -391,9 +423,13 @@ theorem centralizer_unique (H : set G.obj.type) [is_closed_subgroup H] :
 omitted
 
 /-- The centralizer of `H` is the unique maximal closed subgroup of `G` that centralizes `H` -/
--- typo in notes: G -> H
 def centralizer (H : set G.obj.type) [is_closed_subgroup H] : set G.obj.type :=
 classical.some (centralizer_unique H)
+
+/-- The centralizer is a closed subgroup -/
+instance centralizer.is_closed_subgroup (H : set G.obj.type) {h : is_closed_subgroup H} :
+  is_closed_subgroup (centralizer H) :=
+let ⟨h, _⟩ := (classical.some_spec (centralizer_unique H)).1.1 in h
 
 /-- The center of `G` is the centralizer of `G` as closed subgroup of `G` -/
 def center (G : affine_group K) : set G.obj.type :=
@@ -402,7 +438,22 @@ centralizer set.univ
 /-- `N` normalizes `H` if the conjugation map `N × H ⟶ G` factors through `H` -/
 -- this is a slightly different formulation than in the notes
 def normalizes (N H : set G.obj.type) [is_closed_subgroup N] [is_closed_subgroup H] : Prop :=
+--factors_through (conjugation N H) (G.incl H).map
 ∃(f : (sub N).obj × (sub H).obj ⟶ (sub H).obj), conjugation N H = f ≫ (G.incl H).map
+
+/-- If `N` normalizes `H` then `N` acts on `H` by conjucation -/
+def conjugation_action {N H : set G.obj.type} [is_closed_subgroup N] [is_closed_subgroup H]
+  (h : normalizes N H) : group_action (sub N) (sub H).obj :=
+⟨classical.some h, omitted, omitted⟩
+
+/-- An affine group is almost simple if it has no proper normal closed connected subgroup.
+  Note: by our definition, every normal subgroup is automatically closed -/
+def almost_simple (G : affine_group K) : Prop :=
+¬∃(T : set G.obj.type), T ≠ set.univ ∧ is_normal_subgroup T ∧ is_connected T
+
+/-- The type of a almost simple affine group is connected -/
+lemma connected_space_of_almost_simple : almost_simple G → connected_space G.obj.type :=
+omitted
 
 end algebraic_geometry
 

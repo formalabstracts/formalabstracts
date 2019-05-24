@@ -34,6 +34,13 @@ structure group_hom {C : Type u} [category.{v+1} C] [has_binary_products C]
 (map : G.obj ⟶ G'.obj)
 (map_mul : G.mul ≫ map = map ×.map map ≫ G'.mul)
 
+/- An action of a group object on any object in the category -/
+structure group_action {C : Type u} [category.{v+1} C] [has_binary_products C]
+  [has_terminal_object C] (G : group_object C) (X : C) : Type (max u v) :=
+(map : G.obj × X ⟶ X)
+(map_one : map_to_product.mk (terminal_map X ≫ G.one) (𝟙 X) ≫ map = 𝟙 X)
+(map_mul : G.mul ×.map 𝟙 X ≫ map = assoc_hom ≫ 𝟙 G.obj ×.map map ≫ map)
+
 variables {C : Type u} [𝓒 : category.{v+1} C] [p𝓒 : has_binary_products.{v} C]
   [t𝓒 : has_terminal_object.{v} C] {X Y : C} {G G' G₁ G₂ G₃ H : group_object C}
 include 𝓒 p𝓒 t𝓒

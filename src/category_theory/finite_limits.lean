@@ -142,13 +142,13 @@ is_limit.lift (limit.is_limit _) (cone_of_two_maps f₁ f₂)
 def diag [H : has_binary_products C] {B : C} : B ⟶ B × B :=
 map_to_product.mk (𝟙 B) (𝟙 B)
 
-def binary_product.map {H : has_binary_products C} {A A' B B' : C} (f : A ⟶ A') (g : B ⟶ B') :
+protected def map {H : has_binary_products C} {A A' B B' : C} (f : A ⟶ A') (g : B ⟶ B') :
   A × B ⟶ A' × B' :=
 map_to_product.mk (π₁ ≫ f) (π₂ ≫ g)
 
 local infix ` ×.map `:90 := binary_product.map
 
-def binary_product.iso {H : has_binary_products C} {A A' B B' : C} (f : A ≅ A') (g : B ≅ B') :
+protected def iso {H : has_binary_products C} {A A' B B' : C} (f : A ≅ A') (g : B ≅ B') :
   A × B ≅ A' × B' :=
 { hom := f.hom ×.map g.hom,
   inv := f.inv ×.map g.inv,

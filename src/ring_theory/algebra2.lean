@@ -214,6 +214,18 @@ lift ((mk J).comp f) omitted
 
 end algebra.quotient
 
+namespace pi
+
+variable {I : Type u}     -- The indexing type
+variable {f : I → Type v} -- The family of types already equiped with instances
+variables (x y : Π i, f i) (i : I)
+
+instance algebra (α) {r : comm_ring α} [∀ i, ring $ f i] [∀ i, algebra α $ f i] :
+  algebra α (Π i : I, f i) :=
+by { haveI : module α (Π i : I, f i) := infer_instance, exact algebra.of_module omitted }
+
+end pi
+
 namespace mv_polynomial
 
 variables {σ : Type*} [decidable_eq σ] [decidable_eq R]
