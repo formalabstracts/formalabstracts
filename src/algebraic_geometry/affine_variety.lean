@@ -387,7 +387,7 @@ omitted
 /-- The closed derived subgroup of `H` is the unique maximal subgroup of `H` that is a kernel of a
   morphism `ψ : H ⟶ A` for an abelian group `A` -/
 def closed_derived_subgroup (H : set G.obj.type) [is_closed_subgroup H] : set G.obj.type :=
-classical.some (closed_derived_subgroup_unique H)
+classical.the _ (closed_derived_subgroup_unique H)
 
 /-- The closed derived subgroup is a closed subgroup -/
 instance closed_derived_subgroup.is_closed_subgroup (H : set G.obj.type) [is_closed_subgroup H] :
@@ -424,12 +424,12 @@ omitted
 
 /-- The centralizer of `H` is the unique maximal closed subgroup of `G` that centralizes `H` -/
 def centralizer (H : set G.obj.type) [is_closed_subgroup H] : set G.obj.type :=
-classical.some (centralizer_unique H)
+classical.the _ (centralizer_unique H)
 
 /-- The centralizer is a closed subgroup -/
 instance centralizer.is_closed_subgroup (H : set G.obj.type) {h : is_closed_subgroup H} :
   is_closed_subgroup (centralizer H) :=
-let ⟨h, _⟩ := (classical.some_spec (centralizer_unique H)).1.1 in h
+let ⟨h, _⟩ := (classical.the_spec (centralizer_unique H)).1 in h
 
 /-- The center of `G` is the centralizer of `G` as closed subgroup of `G` -/
 def center (G : affine_group K) : set G.obj.type :=
@@ -444,7 +444,7 @@ def normalizes (N H : set G.obj.type) [is_closed_subgroup N] [is_closed_subgroup
 /-- If `N` normalizes `H` then `N` acts on `H` by conjucation -/
 def conjugation_action {N H : set G.obj.type} [is_closed_subgroup N] [is_closed_subgroup H]
   (h : normalizes N H) : group_action (sub N) (sub H).obj :=
-⟨classical.some h, omitted, omitted⟩
+classical.take_arbitrary_such_that (λ f, ⟨f, omitted, omitted⟩) h omitted
 
 /-- An affine group is almost simple if it has no proper normal closed connected subgroup.
   Note: by our definition, every normal subgroup is automatically closed -/

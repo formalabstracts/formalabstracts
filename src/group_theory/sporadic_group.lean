@@ -191,7 +191,7 @@ omitted
 
 /-- the Janko group J₁ -/
 @[fabstract]
-def J1 : Group := classical.some J1_char
+def J1 : Group := classical.the _ J1_char
 namespace J3
 def a := ⟪ff⟫
 def b := ⟪tt⟫

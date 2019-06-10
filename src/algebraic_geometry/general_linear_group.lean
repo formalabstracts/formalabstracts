@@ -135,18 +135,20 @@ def torus (r : ℕ) : affine_group K := category.pow (GL K 1) r
 
 variable {K}
 
-/-- Every group morphism `Gm ⟶ Gm` sends the variable `X` to `X^n*(X⁻¹)^m`
-  for some natural numbers `n` and `m`. -/
+/- The map `n ↦ X ^ n`. It sends `(-n)` to `(X⁻¹)^n` for a natural number n -/
+def X_pow : ℤ → (unop (Gm K).1).β
+| (int.of_nat n) := ideal.quotient.mk _ (monomial (single (inl ⟨0, 0⟩) n) 1)
+| -[1+n]         := ideal.quotient.mk _ (monomial (single (inr ⟨⟩) (n+1)) 1)
+
+/-- Every group morphism `Gm ⟶ Gm` sends the variable `X` to `X^n` for some integer `n`. -/
 def deg_aux (ϕ : Gm K ⟶ Gm K) :
-  ∃(n m : ℕ), ϕ.map.unop.to_fun (ideal.quotient.mk _ $ X $ inl ⟨0, 0⟩) =
-  ideal.quotient.mk _ (monomial (single (inl ⟨0, 0⟩) n) 1 * monomial (single (inr ⟨⟩) m) 1) :=
+  ∃!(n : ℤ), ϕ.map.unop.to_fun (ideal.quotient.mk _ $ X $ inl ⟨0, 0⟩) = X_pow n :=
 omitted
 
-/-- The degree of a group morphism `Gm K ⟶ Gm K` is `n - m` where `n` and `m`
-  are defined in `deg_aux` -/
+/-- The degree of a group morphism `Gm K ⟶ Gm K` is the unique number `n` such that it sends
+`X` to `X^n` -/
 def deg (ϕ : Gm K ⟶ Gm K) : ℤ :=
-int.of_nat (classical.some $ deg_aux ϕ) -
-int.of_nat (classical.some $ classical.some_spec $ deg_aux ϕ)
+classical.the _ (deg_aux ϕ)
 
 instance torus1.is_abelian : (Gm K).is_abelian := omitted
 
@@ -172,6 +174,10 @@ is_maximal_torus.max_torus T
 instance is_maximal_torus.is_abelian (T : set G.obj.type) [is_maximal_torus T] :
   (sub T).is_abelian := omitted
 
+/- The rank of a maximal torus -/
+def is_maximal_torus.rank (T : set G.obj.type) [h : is_maximal_torus T] : ℕ :=
+classical.take_arbitrary_such_that (λ n, n) h.elim omitted
+
 /-- Every group has a maximal torus -/
 lemma has_maximal_torus (G : affine_group K) : ∃(T : set G.obj.type), is_maximal_torus T :=
 omitted
@@ -179,7 +185,9 @@ omitted
 /-- The rank of `G` is the number `n` such that `T ≅ torus n`
   where `T` is any maximal torus of `G`. -/
 def rank (G : affine_group K) : ℕ :=
-classical.some $ (classical.some_spec $ has_maximal_torus G).elim
+classical.take_arbitrary (λ ⟨T, hT⟩, by exactI is_maximal_torus.rank T :
+  { T : set (G.obj.type) // is_maximal_torus T} → ℕ)
+  (subtype.nonempty $ has_maximal_torus G) omitted
 
 /-- The character group `X^*(T)` of `T` consists of group morphisms into `Gm K` -/
 @[reducible] def character_group (T : set G.obj.type) [is_closed_subgroup T] : Type* :=
@@ -340,6 +348,6 @@ end
 
 def simple_roots (hG : almost_simple G) (hB : is_Borel_subgroup B) (hTB : T ⊆ B) :
   set (character_group T) :=
-classical.some $ unique_simple_roots hG hB hTB
+classical.the _ $ unique_simple_roots hG hB hTB
 
 end algebraic_geometry

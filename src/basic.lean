@@ -16,14 +16,17 @@ attribute [extensionality] subtype.eq'
 
 variables {α : Sort*} {p : α → Prop}
 
-protected def subsingleton (h : ∃ x, ∀ y, p y → y = x) : subsingleton {x // p x} :=
+protected lemma subsingleton (h : ∃ x, ∀ y, p y → y = x) : subsingleton {x // p x} :=
 begin
   rcases h with ⟨x, px⟩, constructor, rintro ⟨y, py⟩ ⟨z, pz⟩, ext,
   cases px y py, cases px z pz, refl
 end
 
-protected def subsingleton' (h : ∃! x, p x) : subsingleton {x // p x} :=
+protected lemma subsingleton' (h : ∃! x, p x) : subsingleton {x // p x} :=
 let ⟨x, px, qx⟩ := h in subtype.subsingleton ⟨x, qx⟩
+
+protected lemma nonempty (h : ∃ x, p x) : nonempty {x // p x} :=
+let ⟨x, hx⟩ := h in ⟨⟨x, hx⟩⟩
 
 end subtype
 
@@ -61,6 +64,10 @@ the (range f) $ let ⟨x⟩ := h in
 noncomputable def take_arbitrary_in {α β : Type*} (s : set α) (f : α → β) (h : nonempty s)
   (hf : ∀x y ∈ s, f x = f y) : β :=
 take_arbitrary (λ x : s, f x.1) (let ⟨⟨x, hx⟩⟩ := h in ⟨⟨x, hx⟩⟩) (λ⟨x, hx⟩ ⟨y, hy⟩, hf x y hx hy)
+
+noncomputable def take_arbitrary_such_that {α β : Type*} {p : α → Prop} (f : α → β)
+  (h : ∃ x, p x) (hf : ∀x y, p x → p y → f x = f y) : β :=
+take_arbitrary_in {x | p x } f (let ⟨x, px⟩ := h in ⟨⟨x, px⟩⟩) hf
 
 end classical
 
