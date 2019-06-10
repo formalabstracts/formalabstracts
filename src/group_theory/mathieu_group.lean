@@ -52,7 +52,8 @@ instance {s : steiner_system t k v} : group (Aut s) :=
 }
 
 /-- The Steiner system $S(5,8,24)$ exists and is unique up to isomorphism.-/
-lemma is_unique_s_5_8_24 : ∃ x: steiner_system 5 8 24, ∀ y : steiner_system 5 8 24, nonempty $ steiner_system_isomorphism x y := omitted
+lemma is_unique_s_5_8_24 : ∃ x: steiner_system 5 8 24, ∀ y : steiner_system 5 8 24,
+  nonempty $ steiner_system_isomorphism x y := omitted
 
 /-- Using the axiom of choice, we can pick a representative of the isomorphism class of $S(5,8,24)$.-/
 noncomputable def s_5_8_24 : steiner_system 5 8 24 :=

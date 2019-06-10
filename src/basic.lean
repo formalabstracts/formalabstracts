@@ -5,13 +5,66 @@ import data.pfun data.set.finite data.nat.enat topology.basic
 import tactic.fattribute
 universes u v
 
-variables {α : Type*} {β : Type*}
-
 axiom omitted {P : Prop} : P
 
 notation `ℕ∞` := enat
 
 def is_finite (α : Type*) : Prop := nonempty (fintype α) -- set.finite (set.univ : set α)
+
+namespace subtype
+attribute [extensionality] subtype.eq'
+
+variables {α : Sort*} {p : α → Prop}
+
+protected def subsingleton (h : ∃ x, ∀ y, p y → y = x) : subsingleton {x // p x} :=
+begin
+  rcases h with ⟨x, px⟩, constructor, rintro ⟨y, py⟩ ⟨z, pz⟩, ext,
+  cases px y py, cases px z pz, refl
+end
+
+protected def subsingleton' (h : ∃! x, p x) : subsingleton {x // p x} :=
+let ⟨x, px, qx⟩ := h in subtype.subsingleton ⟨x, qx⟩
+
+end subtype
+
+namespace trunc
+instance nonempty {α : Sort u} [h : nonempty α] : nonempty (trunc α) :=
+let ⟨x⟩ := h in ⟨trunc.mk x⟩
+
+end trunc
+
+namespace classical
+variables {α : Sort u} {β : Sort v} {p : α → Prop}
+noncomputable def unique_choice : nonempty α ∧ subsingleton α → α :=
+classical.choice ∘ and.left
+
+noncomputable def unique_indefinite_description (p : α → Prop)
+  (h : ∃! x, p x) : {x // p x} :=
+unique_choice $ let ⟨x, px, qx⟩ := h in ⟨⟨⟨x, px⟩⟩, subtype.subsingleton' h⟩
+
+noncomputable def the (p : α → Prop) (h : ∃! x, p x) : α :=
+(unique_indefinite_description p h).1
+lemma the_spec (h : ∃! x, p x) : p (the p h) :=
+(unique_indefinite_description p h).2
+lemma the_unique (h : ∃! x, p x) (y : α) (py : p y) : y = the p h :=
+let ⟨x, px, qx⟩ := h in (qx y py).trans (qx _ (the_spec h)).symm
+
+noncomputable def choose_trunc (h : nonempty α) : trunc α :=
+unique_choice $ by split; apply_instance
+
+open set
+noncomputable def take_arbitrary {α β : Type*} (f : α → β) (h : nonempty α)
+  (hf : ∀x y : α, f x = f y) : β :=
+the (range f) $ let ⟨x⟩ := h in
+  ⟨f x, mem_range_self x, λ y hy, let ⟨x', hx'⟩ := hy in hx'.symm.trans $ hf x' x⟩
+
+noncomputable def take_arbitrary_in {α β : Type*} (s : set α) (f : α → β) (h : nonempty s)
+  (hf : ∀x y ∈ s, f x = f y) : β :=
+take_arbitrary (λ x : s, f x.1) (let ⟨⟨x, hx⟩⟩ := h in ⟨⟨x, hx⟩⟩) (λ⟨x, hx⟩ ⟨y, hy⟩, hf x y hx hy)
+
+end classical
+
+variables {α : Type*} {β : Type*}
 
 noncomputable def roption.classical_to_option {α} (x : roption α) : option α :=
 by haveI := classical.dec; exact x.to_option
@@ -32,7 +85,7 @@ finite_subset (finset.finite_to_set t) h
 
 /-- The cardinality of any subset of a finite type. -/
 noncomputable def cardinality [fintype α] (s : set α) : ℕ :=
-by haveI := classical.prop_decidable; haveI := (set_fintype s); exact fintype.card s
+by haveI := classical.dec; haveI := (set_fintype s); exact fintype.card s
 
 end set
 
@@ -45,7 +98,9 @@ by rw [←list.to_finset_card_of_nodup (sort_nodup r s), sort_to_finset r s]
 
 end finset
 
+
 /-- the pullback of a relation along a function -/
+-- cf. preorder_lift
 def pullback_rel (f : α → β) (r : β → β → Prop) : α → α → Prop := λ x y, r (f x) (f y)
 namespace pullback_rel
 instance (f : α → β) (r : β → β → Prop) [is_trans β r] : is_trans α (pullback_rel f r) :=

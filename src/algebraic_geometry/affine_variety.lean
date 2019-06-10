@@ -50,7 +50,7 @@ variables {R K}
 /-- The quotient of R by a maximal ideal is isomorphic to K -/
 def quotient_maximal_ideal (I : maximal_ideal R) :
   { f : I.val.quotient ≃ K // is_ring_hom f.to_fun } :=
-classical.choice omitted
+classical.choice omitted -- TODO: fix non-canoncial choice
 
 /-- The spectrum of R is equivalent to the set of maximal ideals on R -/
 def spectrum_equiv_maximal_ideal : spectrum K R ≃ maximal_ideal R :=

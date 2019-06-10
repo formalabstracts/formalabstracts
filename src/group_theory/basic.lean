@@ -18,7 +18,8 @@ instance concrete_is_group_hom : concrete_category @is_group_hom :=
 namespace Group
 /-- The order of a finite group is defined as its cardinality  -/
 noncomputable def order (G : Group) (h : is_finite G) : ℕ :=
-@fintype.card G (classical.choice h)
+classical.take_arbitrary (λ h' : fintype G, @fintype.card G h') h
+ (λ h₁ h₂, @fintype.card_congr _ _ h₁ h₂ $ equiv.refl _)
 
 @[priority 2000] instance (G : Group) : group G := G.str
 end Group
@@ -118,16 +119,22 @@ def right_conjugation {α : Type*} [group α] (x y : α) := y⁻¹ * x * y
 
 /-- A conjugacy class is a set of the form { h * g * h⁻¹ | h : α} for some element g : α -/
 def is_conjugacy_class : set (set α) := {s | ∃g, s = set.range (λh, h * g * h⁻¹) }
-
 variable {α}
+
+/-- Every conjugacy class is nonempty -/
+lemma is_conjugacy_class.nonempty (s : is_conjugacy_class α) : nonempty s.1 :=
+let ⟨g, hg⟩ := s.2 in ⟨⟨g, by { rw [hg], exact ⟨1, by simp⟩ }⟩⟩
+
 /-- Elements in the same conjugacy class have equal order -/
-def order_irrel_in_conjugacy_class [fintype α] [decidable_eq α] (s : is_conjugacy_class α)
+lemma order_irrel_in_conjugacy_class [fintype α] [decidable_eq α] (s : is_conjugacy_class α)
   (h₁ : x ∈ s.1) (h₂ : y ∈ s.1) : order_of x = order_of y :=
 omitted
 
 /-- The order of any element in the conjugacy class -/
 noncomputable def order_in [fintype α] [decidable_eq α] (s : is_conjugacy_class α) : ℕ :=
-order_of (classical.some s.2)
+classical.take_arbitrary_in s.1 order_of
+  (is_conjugacy_class.nonempty s)
+  (λ x y, order_irrel_in_conjugacy_class s)
 
 /-- A conjugacy class of a finite group is finite -/
 noncomputable instance [fintype α] [decidable_eq α] : fintype (is_conjugacy_class α) :=
@@ -181,6 +188,6 @@ end char
 conj_class G 7 'C'.
 Beware: when using this notation we assume that the group is finite, there are no two conjugacy
 classes of the same cardinality with the given order and that there are sufficiently many conjugacy
-classes of that order -/
+classes of that order. -/
 notation `conj_class` := (λ β N X, @conjugacy_class_classification β (classical.choice omitted)
   (classical.dec_rel _) N (char.to_nat_m65 X) omitted omitted)
