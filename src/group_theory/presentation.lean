@@ -48,7 +48,7 @@ def generated_of {G : Type*} {R : set (free_group G)} : G → ⟪G | R⟫ :=
 
 local notation `⟪`:50 a `⟫`:50 := free_group.of a
 
-def cyclic_group_presentation (n : ℕ) : Group := ⟪unit |{ ⟪()⟫^n }⟫ 
+def cyclic_group_presentation (n : ℕ) : Group := ⟪unit |{ ⟪()⟫^n }⟫
 
 /- The dihedral groups -/
 
@@ -66,7 +66,7 @@ def dihedral_group (n : ℕ) : Group := ⟪bool | {r^n, s^2, s * r * s * r}⟫
 If m_{i,j} = ∞, then no relation is imposed on r_ir_j. -/
 -- Note: we currently don't require that m i i = 1 for all i, and that m i j ≥ 2 for i ≠ j.
 def coxeter_group {α : Type*} (m : α → α → enat) : Group :=
-⟪α | set.range (λ(x : α × α), (⟪x.1⟫ * ⟪x.2⟫)^m x.1 x.2) ⟫
+⟪α | set.range (λ(x : α × α), (⟪x.1⟫ * ⟪x.2⟫)^(m x.1 x.2)) ⟫
 
 /-- coxeter_group' adds new generators with no Coxeter relations on them -/
 def coxeter_group' {α : Type*} (m : α → α → enat) (β : Type*) : Group :=
